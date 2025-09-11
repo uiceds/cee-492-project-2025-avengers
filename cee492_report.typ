@@ -15,7 +15,7 @@
     ),
     (
       name: "Jack",
-      department: [ivil & Environmental Engineering],
+      department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
       email: "frjack2@illinois.edu.edu",

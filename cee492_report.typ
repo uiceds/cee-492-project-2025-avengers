@@ -1,24 +1,24 @@
 #import "@preview/charged-ieee:0.1.4": ieee
 
 #show: ieee.with(
-  title: [Report Template],
+  title: [CEE 492 Report_Git],
   abstract: [
-    This is where you put your abstract. Abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract abstract.
+    This is my first report using Git Version Control
   ],
   authors: (
     (
-      name: "Author 1",
+      name: "Nazmus Sakib Pallab",
       department: [Department 1],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "author1@illinois.edu",
+      email: "npalla2@illinois.edu",
     ),
     (
-      name: "Author 2",
+      name: "Jack",
       department: [Department 2],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "author2@illinois.edu",
+      email: "frjack2@illinois.edu.edu",
     ),
   ),
   index-terms: ("Optional", "Keywords", "Here"),

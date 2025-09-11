@@ -8,14 +8,14 @@
   authors: (
     (
       name: "Nazmus Sakib Pallab",
-      department: [Department 1],
+      department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
       email: "npalla2@illinois.edu",
     ),
     (
       name: "Jack",
-      department: [Department 2],
+      department: [ivil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
       email: "frjack2@illinois.edu.edu",

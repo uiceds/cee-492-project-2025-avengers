@@ -20,6 +20,13 @@
       location: [Urbana, IL, USA],
       email: "frjack2@illinois.edu.edu",
     ),
+    (
+      name: "Jiarui",
+      department: [Civil & Environmental Engineering],
+      organization: [University of Illinois Urbana-Champaign],
+      location: [Urbana, IL, USA],
+      email: "jiaruiy9@illinois.edu.edu",
+    ),
   ),
   index-terms: ("Optional", "Keywords", "Here"),
   bibliography: bibliography("refs.bib"),

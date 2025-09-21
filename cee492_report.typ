@@ -18,7 +18,7 @@
       department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "frjack2@illinois.edu.edu",
+      email: "frjack2@illinois.edu",
     ),
   ),
   index-terms: ("Optional", "Keywords", "Here"),

@@ -16,7 +16,7 @@
     (
       name: "Jiarui Yu",
       department: [Civil & Environmental Engineering],
-      organization: [University of Illinois chicago ],
+      organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
       email: "jiaruiy9@illinois.edu",
     ),

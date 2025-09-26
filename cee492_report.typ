@@ -46,9 +46,9 @@ Together, these predictive and spatial approaches are expected to enhance respon
   bibliography: bibliography("refs.bib"),
 )
 
-== Description of Dataset
-    The dataset used for this project is the “Crime Data from 2020 to Present” dataset for the City of Los Angeles, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present
-    ). It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
+= Description of Dataset
+    The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV (#link:
+[#underline[#text(fill: blue)[https://catalog.data.gov/dataset/crime-data-from-2020-to-present]]]). It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
 
     The dataset is provided in CSV format and contains over 1 million rows of crime incidents. For computational feasibility on personal laptops, we will reduce the working dataset to approximately 100,000 rows. The full dataset consists of 28 columns, while our project will focus on the following 12 key attributes:
 
@@ -68,7 +68,4 @@ Together, these predictive and spatial approaches are expected to enhance respon
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
   
 
-
-
-#pagebreak()
 

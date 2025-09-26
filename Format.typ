@@ -7,7 +7,7 @@ Other options to get BibTeX entries for your references include https://www.bibt
 
 More information about citations can be found in the Typst documentation: https://typst.app/docs/reference/model/cite.
 
-== First Subsection
+=== First Subsection
 
 
 

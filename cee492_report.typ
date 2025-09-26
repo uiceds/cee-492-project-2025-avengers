@@ -1,9 +1,12 @@
 #import "@preview/charged-ieee:0.1.4": ieee
 
 #show: ieee.with(
-  title: [CEE 492 Report_Git],
+  title: [Infrastructure Planning under a Analysis of Crime Data in Los Angeles],
   abstract: [
-    This is my first report using Git Version Control
+    Integrating safety into transportation and pedestrian planning requires leveraging crime data. For example, crime location, time, and its nature (type) in order to identify unsafe streets, intersections, and transit hubs to uncover vulnerable areas. Having such knowledge can help in better designing like reducing dead-end streets, improving pedestrian connectivity, and relocating public transit drop-off points to enhance safety.
+
+
+    Moreover, authors will predict specific locations which are likely to evolve into future crime hotspots to allow proactive deployment of patrols and surveillance for security vehicles. Together, these predictive and spatial approaches authors aim to enhance response efficiency and inform long-term city planning efforts, from improving street lighting and redesigning public spaces to enhancing transit access and targeting community resources. 
   ],
   authors: (
     (
@@ -14,11 +17,25 @@
       email: "npalla2@illinois.edu",
     ),
     (
+      name: "Jiarui Yu",
+      department: [Civil & Environmental Engineering],
+      organization: [University of Illinois Urbana-Champaign],
+      location: [Urbana, IL, USA],
+      email: "jiaruiy9@illinois.edu",
+    ),
+    (
       name: "Jack",
       department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "frjack2@illinois.edu",
+      email: "frjack2@illinois.edu", 
+    ),
+    (
+      name: "Muhammad Fahad Ali",
+      department: [Civil & Environmental Engineering],
+      organization: [University of Illinois Urbana-Champaign],
+      location: [Urbana, IL, USA],
+      email: "mali19@illinois.edu",
     ),
   ),
   index-terms: ("Optional", "Keywords", "Here"),
@@ -31,15 +48,36 @@ To add citations to the report, go to https://scholar.google.com, search for a p
 
 Other options to get BibTeX entries for your references include https://www.bibtex.com/converters/ and asking ChatGPT to generate the a BibTeX entry for you. (If you use ChatGPT, make sure to verify the generated BibTeX entry for correctness.)
 
+
+I am trying to commit lets see 
+
 More information about citations can be found in the Typst documentation: https://typst.app/docs/reference/model/cite.
 
 == First Subsection
+Dataset description:
+The dataset we will be analyzing is the "Crime Data from 2020 to Present" dataset in Los Angeles city, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present). The dataset in a CSV file contains more than 1 million rows. For our project, we will reduce it to 100,000 rows due to laptop memory limitations. 
+There are 28 columns in the dataset, and we will be using the following 12 columns for our analysis:
+- `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.
+- `Date Rptd`: Date the incident was reported. The data type is Floating and Timestamp.
+- `DATE OCC`: Date the incident occurred. The data type is Floating and Timestamp.  
+- `TIME OCC`: Time the incident occurred. The data type is Text.
+- `AREA`: Area where the incident occurred. The data type is Text.
+- `AREA NAME`: ID of the area where the incident occurred. The data type is Text.
+- `Rpt Dist No`: A four-digit code that represents a sub-area within a Geographic Area.  The data type is Text.
+- `Vict Age`: Age of the victim. The data type is Text.
+- `Vict Sex`: Sex of the victim. The data type is Text.
+- `Vict Descent`: Descent of the victim. The data type is Text.
+- `LAT`: Latitude coordinate of the incident. The data type is Number.
+- `LON`: Longitude coordinate of the incident. The data type is Number.
+
+
+
 
 To add figures to your report, save the image file in the `figures` folder and use the `#figure` command as shown below to include it in your document. You can specify the width of the image and add a caption. Then you can reference the figure like this: @proofread.
 
 #figure(
   image("figures/proof-read.png", width: 80%),
-  caption: [A humble request. (Copyright: University of the Fraser Valley.)],
+  caption: [A humble request. (Copyright: University of the Fraser Valley.)], 
 ) <proofread>
 
 === First Subsubsection

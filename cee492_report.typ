@@ -2,8 +2,8 @@
 
 #show: ieee.with(
   title: [Infrastructure Planning under a Analysis of Crime Data in Los Angeles],
-  abstract: [
-  Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
+  abstract: 
+  [\ Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
 
 Therefore, as part of this study, raw crime record data will be transformed into actionable hotspot maps and predictive risk models that optimize the allocation of traffic police and patrol routes, ensuring coverage in the areas of highest need. Using advanced machine learning techniques, the study will predict crime types based on factors such as location, time of day, victim profile, and premises description. These results will provide Civil Engineers and Urban Planners with evidence-based tools to prioritize infrastructure improvements and safety-related investments. Moreover, the study will identify specific locations that are likely to evolve into future crime hotspots, supporting proactive deployment of patrols, surveillance systems, and security vehicles.
 
@@ -40,23 +40,12 @@ Together, these predictive and spatial approaches are expected to enhance respon
       email: "mali19@illinois.edu",
     ),
   ),
-  index-terms: ("Optional", "Keywords", "Here"),
+  index-terms: ("Transportation safety" "Crime data analysis" "Predictive risk modeling" "Hotspot mapping" "Machine learning" "Urban infrastructure planning" "Pedestrian safety"),
   bibliography: bibliography("refs.bib"),
 )
 
 = First Section
-
-To add citations to the report, go to https://scholar.google.com, search for a paper, click on the quotation mark icon below the search result, and copy the BibTeX entry. Then paste it into the `refs.bib` file. You can cite papers using the `@` symbol followed by the citation key, e.g., @lowry1951protein.
-
-Other options to get BibTeX entries for your references include https://www.bibtex.com/converters/ and asking ChatGPT to generate the a BibTeX entry for you. (If you use ChatGPT, make sure to verify the generated BibTeX entry for correctness.)
-
-
-I am trying to commit lets see 
-
-More information about citations can be found in the Typst documentation: https://typst.app/docs/reference/model/cite.
-
-== First Subsection
-Dataset description:
+Description of Dataset:[
 The dataset we will be analyzing is the "Crime Data from 2020 to Present" dataset in Los Angeles city, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present). The dataset in a CSV file contains more than 1 million rows. For our project, we will reduce it to 100,000 rows due to laptop memory limitations. 
 There are 28 columns in the dataset, and we will be using the following 12 columns for our analysis:
 - `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.
@@ -70,8 +59,18 @@ There are 28 columns in the dataset, and we will be using the following 12 colum
 - `Vict Sex`: Sex of the victim. The data type is Text.
 - `Vict Descent`: Descent of the victim. The data type is Text.
 - `LAT`: Latitude coordinate of the incident. The data type is Number.
-- `LON`: Longitude coordinate of the incident. The data type is Number.
+- `LON`: Longitude coordinate of the incident. The data type is Number.]
 
+To add citations to the report, go to https://scholar.google.com, search for a paper, click on the quotation mark icon below the search result, and copy the BibTeX entry. Then paste it into the `refs.bib` file. You can cite papers using the `@` symbol followed by the citation key, e.g., @lowry1951protein.
+
+Other options to get BibTeX entries for your references include https://www.bibtex.com/converters/ and asking ChatGPT to generate the a BibTeX entry for you. (If you use ChatGPT, make sure to verify the generated BibTeX entry for correctness.)
+
+
+I am trying to commit lets see 
+
+More information about citations can be found in the Typst documentation: https://typst.app/docs/reference/model/cite.
+
+== First Subsection
 
 
 

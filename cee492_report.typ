@@ -11,7 +11,7 @@
   Together, these predictive and spatial approaches are expected to enhance response efficiency and guide long-term city planning initiatives—from upgrading street lighting and redesigning public spaces to improving transit accessibility and targeting community resources—thereby strengthening the overall resilience and safety of urban infrastructure.
 
   ],
-  project-proposal: 
+  authors: (
     (
       name: "Nazmus Sakib Pallab",
       department: [Civil & Environmental Engineering],

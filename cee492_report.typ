@@ -47,23 +47,22 @@ Together, these predictive and spatial approaches are expected to enhance respon
 )
 
 = Description of Dataset
-    The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV (#link:
-[#underline[#text(fill: blue)[https://catalog.data.gov/dataset/crime-data-from-2020-to-present]]]). It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
+    The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV @lapd_crime2020. It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
 
     The dataset is provided in CSV format and contains over 1 million rows of crime incidents. For computational feasibility on personal laptops, we will reduce the working dataset to approximately 100,000 rows. The full dataset consists of 28 columns, while our project will focus on the following 12 key attributes:
 
-    - `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.
-    - `Date Rptd`: Date the incident was reported. The data type is Floating and Timestamp.
-    - `DATE OCC`: Date the incident occurred. The data type is Floating and Timestamp.  
-    - `TIME OCC`: Time the incident occurred. The data type is Text.
-    - `AREA`: Area where the incident occurred. The data type is Text.
-    - `AREA NAME`: ID of the area where the incident occurred. The data type is Text.
-    - `Rpt Dist No`: A four-digit code that represents a sub-area within a Geographic Area.  The data type is Text.
-    - `Vict Age`: Age of the victim. The data type is Text.
-    - `Vict Sex`: Sex of the victim. The data type is Text.
-    - `Vict Descent`: Descent of the victim. The data type is Text.
-    - `LAT`: Latitude coordinate of the incident. The data type is Number.
-    - `LON`: Longitude coordinate of the incident. The data type is Number.
+    - `DR_NO (Text)`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits.
+    - `Date Rptd (Floating and Timestamp)`: Date the incident was reported.
+    - `DATE OCC (Floating and Timestamp)`: Date the incident occurred.  
+    - `TIME OCC (Text)`: Time the incident occurred.
+    - `AREA (Text)`: Area where the incident occurred.
+    - `AREA NAME (Text)`: ID of the area where the incident occurred.
+    - `Rpt Dist No (Text)`: A four-digit code that represents a sub-area within a Geographic Area.
+    - `Vict Age (Text)`: Age of the victim.
+    - `Vict Sex (Text)`: Sex of the victim.
+    - `Vict Descent (Text)`: Descent of the victim.
+    - `LAT (Number)`: Latitude coordinate of the incident.
+    - `LON (Number)`: Longitude coordinate of the incident.
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
   

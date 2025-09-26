@@ -3,12 +3,12 @@
 #show: ieee.with(
   title: [Infrastructure Planning under a Analysis of Crime Data in Los Angeles],
   abstract: [
-    Integrating personal safety into transportation and pedestrian planning requires leveraging crime data. For example, crime location, time, and its nature (type) in order to identify unsafe streets, intersections, and transit hubs to uncover vulnerable areas. Having such knowledge can help in better designing like reducing dead-end streets, improving pedestrian connectivity, and relocating public transit drop-off points to enhance safety.
+  Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
 
-    This is Pallab.
+Therefore, as part of this study, raw crime record data will be transformed into actionable hotspot maps and predictive risk models that optimize the allocation of traffic police and patrol routes, ensuring coverage in the areas of highest need. Using advanced machine learning techniques, the study will predict crime types based on factors such as location, time of day, victim profile, and premises description. These results will provide Civil Engineers and Urban Planners with evidence-based tools to prioritize infrastructure improvements and safety-related investments. Moreover, the study will identify specific locations that are likely to evolve into future crime hotspots, supporting proactive deployment of patrols, surveillance systems, and security vehicles.
 
+Together, these predictive and spatial approaches are expected to enhance response efficiency and guide long-term city planning initiatives—from upgrading street lighting and redesigning public spaces to improving transit accessibility and targeting community resources—thereby strengthening the overall resilience and safety of urban infrastructure.
 
-    Moreover, authors will predict specific locations which are likely to evolve into future crime hotspots to allow proactive deployment of patrols and surveillance for security vehicles. Together, these predictive and spatial approaches authors aim to enhance response efficiency and inform long-term city planning efforts, from improving street lighting and redesigning public spaces to enhancing transit access and targeting community resources. 
   ],
   authors: (
     (
@@ -16,7 +16,7 @@
       department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "npalla2@illinois.edu",
+      email: "npallab2@illinois.edu",
     ),
     (
       name: "Jiarui Yu",
@@ -26,7 +26,7 @@
       email: "jiaruiy9@illinois.edu",
     ),
     (
-      name: "Jack",
+      name: "Favour Jack",
       department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],

@@ -4,11 +4,11 @@
   title: [Predictive Risk Modeling for Safety Interventions in Transportation Networks Using Spatial Crime History],
 
   abstract: 
-  [\ Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
+  [\ Integrating personal safety into transportation and pedestrian planning requires systematic use of crime data. Information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety.
 
-  Therefore, as part of this study, raw crime record data will be transformed into actionable hotspot maps and predictive risk models that optimize the allocation of traffic police and patrol routes, ensuring coverage in the areas of highest need. Using advanced machine learning techniques, the study will predict crime types based on factors such as location, time of day, victim profile, and premises description. These results will provide Civil Engineers and Urban Planners with evidence-based tools to prioritize infrastructure improvements and safety-related investments. Moreover, the study will identify specific locations that are likely to evolve into future crime hotspots, supporting proactive deployment of patrols, surveillance systems, and security vehicles.
+In this study, raw crime record data will be transformed into actionable hotspot maps and predictive risk models to optimize the allocation of traffic police and patrol routes, ensuring coverage in the areas of highest need. Using advanced machine learning techniques, the study predicts crime types based on factors such as location, time of day, victim profile, and premises description. These results provide Civil Engineers and Urban Planners with evidence-based tools to prioritize infrastructure improvements and safety investments, while also identifying specific locations likely to evolve into future hotspots for proactive deployment of patrols, surveillance, and safety infrastructure.
 
-  Together, these predictive and spatial approaches are expected to enhance response efficiency and guide long-term city planning initiatives—from upgrading street lighting and redesigning public spaces to improving transit accessibility and targeting community resources—thereby strengthening the overall resilience and safety of urban infrastructure.
+Together, these predictive and spatial approaches are expected to enhance response efficiency and guide long-term city planning initiatives—from upgrading street lighting and redesigning public spaces to improving transit accessibility and targeting community resources—thereby strengthening the overall resilience and safety of urban infrastructure.
 
   ],
   authors: (
@@ -45,7 +45,7 @@
   bibliography: bibliography("refs.bib"),
 )
 
-  == Description of Dataset
+== Description of Dataset
     The dataset used for this project is the “Crime Data from 2020 to Present” dataset for the City of Los Angeles, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present
     ). It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
 

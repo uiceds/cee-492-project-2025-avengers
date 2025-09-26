@@ -3,7 +3,7 @@
 #show: ieee.with(
   title: [Predictive Risk Modeling for Safety Interventions in Transportation Networks Using Spatial Crime History],
 
-  %% change: "abstract" renamed to "Project Proposal"
+  // change: "abstract" renamed to "Project Proposal"
   project-proposal: 
   [\ Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
 

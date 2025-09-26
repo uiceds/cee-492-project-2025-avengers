@@ -40,7 +40,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
       email: "mali19@illinois.edu",
     ),
   ),
-  index-terms: ("Transportation safety" "Crime data analysis" "Predictive risk modeling" "Hotspot mapping" "Machine learning" "Urban infrastructure planning" "Pedestrian safety"),
+  index-terms: ("Transportation safety","Crime data analysis","Predictive risk modeling", "Hotspot mapping","Machine learning","Urban infrastructure planning", "Pedestrian safety"),
   bibliography: bibliography("refs.bib"),
 )
 
@@ -58,7 +58,7 @@ There are 28 columns in the dataset, and we will be using the following 12 colum
 - `Vict Sex`: Sex of the victim. The data type is Text.
 - `Vict Descent`: Descent of the victim. The data type is Text.
 - `LAT`: Latitude coordinate of the incident. The data type is Number.
-- `LON`: Longitude coordinate of the incident. The data type is Number.]
+- `LON`: Longitude coordinate of the incident. The data type is Number.
 
 To add citations to the report, go to https://scholar.google.com, search for a paper, click on the quotation mark icon below the search result, and copy the BibTeX entry. Then paste it into the `refs.bib` file. You can cite papers using the `@` symbol followed by the citation key, e.g., @lowry1951protein.
 

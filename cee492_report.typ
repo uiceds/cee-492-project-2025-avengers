@@ -44,8 +44,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
   bibliography: bibliography("refs.bib"),
 )
 
-= First Section
-Description of Dataset:[
+= Description of Dataset
 The dataset we will be analyzing is the "Crime Data from 2020 to Present" dataset in Los Angeles city, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present). The dataset in a CSV file contains more than 1 million rows. For our project, we will reduce it to 100,000 rows due to laptop memory limitations. 
 There are 28 columns in the dataset, and we will be using the following 12 columns for our analysis:
 - `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.

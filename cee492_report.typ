@@ -28,11 +28,11 @@
       email: "frjack2@illinois.edu",
     ),
     (
-      name: "xxx",
+      name: "Muhammad Fahad Ali",
       department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "xxx",
+      email: "mali19@illinois.edu",
     ),
   ),
   index-terms: ("Optional", "Keywords", "Here"),

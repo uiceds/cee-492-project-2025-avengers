@@ -3,8 +3,7 @@
 #show: ieee.with(
   title: [Predictive Risk Modeling for Safety Interventions in Transportation Networks Using Spatial Crime History],
 
-  // change: "abstract" renamed to "Project Proposal"
-  project-proposal: 
+  abstract: 
   [\ Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
 
   Therefore, as part of this study, raw crime record data will be transformed into actionable hotspot maps and predictive risk models that optimize the allocation of traffic police and patrol routes, ensuring coverage in the areas of highest need. Using advanced machine learning techniques, the study will predict crime types based on factors such as location, time of day, victim profile, and premises description. These results will provide Civil Engineers and Urban Planners with evidence-based tools to prioritize infrastructure improvements and safety-related investments. Moreover, the study will identify specific locations that are likely to evolve into future crime hotspots, supporting proactive deployment of patrols, surveillance systems, and security vehicles.
@@ -12,7 +11,7 @@
   Together, these predictive and spatial approaches are expected to enhance response efficiency and guide long-term city planning initiatives—from upgrading street lighting and redesigning public spaces to improving transit accessibility and targeting community resources—thereby strengthening the overall resilience and safety of urban infrastructure.
 
   ],
-  authors: (
+  project-proposal: 
     (
       name: "Nazmus Sakib Pallab",
       department: [Civil & Environmental Engineering],
@@ -46,25 +45,38 @@
   bibliography: bibliography("refs.bib"),
 )
 
-#columns(2)
-= Description of Dataset
-The dataset we will be analyzing is the "Crime Data from 2020 to Present" dataset in Los Angeles city, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present). The dataset in a CSV file contains more than 1 million rows. For our project, we will reduce it to 100,000 rows due to laptop memory limitations. 
-There are 28 columns in the dataset, and we will be using the following 12 columns for our analysis:
-- `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.
-- `Date Rptd`: Date the incident was reported. The data type is Floating and Timestamp.
-- `DATE OCC`: Date the incident occurred. The data type is Floating and Timestamp.  
-- `TIME OCC`: Time the incident occurred. The data type is Text.
-- `AREA`: Area where the incident occurred. The data type is Text.
-- `AREA NAME`: ID of the area where the incident occurred. The data type is Text.
-- `Rpt Dist No`: A four-digit code that represents a sub-area within a Geographic Area.  The data type is Text.
-- `Vict Age`: Age of the victim. The data type is Text.
-- `Vict Sex`: Sex of the victim. The data type is Text.
-- `Vict Descent`: Descent of the victim. The data type is Text.
-- `LAT`: Latitude coordinate of the incident. The data type is Number.
-- `LON`: Longitude coordinate of the incident. The data type is Number.
+#columns(2)[
+  [
+    = Project Proposal: 
+    [\ Integrating personal safety into transportation and pedestrian planning requires the systematic use of crime data. For example, information on crime location, time, and type can be analyzed to identify unsafe streets, intersections, and transit hubs, thereby uncovering vulnerable areas in the urban network. Such insights enable engineers to propose design interventions such as reducing dead-end streets, improving pedestrian connectivity, and strategically relocating public transit drop-off points to enhance safety and accessibility.
 
+    Therefore, as part of   this study, raw crime record data will be transformed into actionable hotspot maps and predictive risk models that optimize the allocation of traffic police and patrol routes, ensuring coverage in the areas of highest need. Using advanced machine learning techniques, the study will predict crime types based on factors such as location, time of day, victim profile, and premises description. These results will provide Civil Engineers and Urban Planners with evidence-based tools to prioritize infrastructure improvements and safety-related investments. Moreover, the study will identify specific locations that are likely to evolve into future crime hotspots, supporting proactive deployment of patrols, surveillance systems, and security vehicles.
 
+    Together, these predictive and spatial approaches are expected to enhance response efficiency and guide long-term city planning initiatives—from upgrading street lighting and redesigning public spaces to improving transit accessibility and targeting community resources—thereby strengthening the overall resilience and safety of urban infrastructure.]
+  ]
+  [
+    = Description of Dataset
+    The dataset used for this project is the “Crime Data from 2020 to Present” dataset for the City of Los Angeles, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present
+    ). It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
 
+    The dataset is provided in CSV format and contains over 1 million rows of crime incidents. For computational feasibility on personal laptops, we will reduce the working dataset to approximately 100,000 rows. The full dataset consists of 28 columns, while our project will focus on the following 12 key attributes:
+
+    - `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.
+    - `Date Rptd`: Date the incident was reported. The data type is Floating and Timestamp.
+    - `DATE OCC`: Date the incident occurred. The data type is Floating and Timestamp.  
+    - `TIME OCC`: Time the incident occurred. The data type is Text.
+    - `AREA`: Area where the incident occurred. The data type is Text.
+    - `AREA NAME`: ID of the area where the incident occurred. The data type is Text.
+    - `Rpt Dist No`: A four-digit code that represents a sub-area within a Geographic Area.  The data type is Text.
+    - `Vict Age`: Age of the victim. The data type is Text.
+    - `Vict Sex`: Sex of the victim. The data type is Text.
+    - `Vict Descent`: Descent of the victim. The data type is Text.
+    - `LAT`: Latitude coordinate of the incident. The data type is Number.
+    - `LON`: Longitude coordinate of the incident. The data type is Number.
+
+    This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
+  ]
+]
 
 
 #pagebreak()

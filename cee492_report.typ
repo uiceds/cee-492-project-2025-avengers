@@ -5,6 +5,8 @@
   abstract: [
     Integrating personal safety into transportation and pedestrian planning requires leveraging crime data. For example, crime location, time, and its nature (type) in order to identify unsafe streets, intersections, and transit hubs to uncover vulnerable areas. Having such knowledge can help in better designing like reducing dead-end streets, improving pedestrian connectivity, and relocating public transit drop-off points to enhance safety.
 
+    This is Pallab.
+
 
     Moreover, authors will predict specific locations which are likely to evolve into future crime hotspots to allow proactive deployment of patrols and surveillance for security vehicles. Together, these predictive and spatial approaches authors aim to enhance response efficiency and inform long-term city planning efforts, from improving street lighting and redesigning public spaces to enhancing transit access and targeting community resources. 
   ],

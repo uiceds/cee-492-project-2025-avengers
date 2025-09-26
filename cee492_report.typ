@@ -3,7 +3,7 @@
 #show: ieee.with(
   title: [Infrastructure Planning under a Analysis of Crime Data in Los Angeles],
   abstract: [
-    This is my first report using Git Version Control
+    Integrating safety into transportation and pedestrian planning requires leveraging crime data. For example, crime location, time, and its nature (type) in order to identify unsafe streets, intersections, and transit hubs to uncover vulnerable areas. Having such knowledge can help in better designing like reducing dead-end streets, improving pedestrian connectivity, and relocating public transit drop-off points to enhance safety. 
   ],
   authors: (
     (

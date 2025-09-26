@@ -3,7 +3,7 @@
 #show: ieee.with(
   title: [Infrastructure Planning under a Analysis of Crime Data in Los Angeles],
   abstract: [
-    Integrating safety into transportation and pedestrian planning requires leveraging crime data. For example, crime location, time, and its nature (type) in order to identify unsafe streets, intersections, and transit hubs to uncover vulnerable areas. Having such knowledge can help in better designing like reducing dead-end streets, improving pedestrian connectivity, and relocating public transit drop-off points to enhance safety. 
+    Integrating safety into transportation and pedestrian planning requires leveraging crime data. For example, crime location, time, and its nature (type) in order to identify unsafe streets, intersections, and transit hubs to uncover vulnerable areas. Having such knowledge can help in better designing like reducing dead-end streets, improving pedestrian connectivity, and relocating public transit drop-off points to enhance safety. Hiiiiiii
   ],
   authors: (
     (
@@ -25,7 +25,7 @@
       department: [Civil & Environmental Engineering],
       organization: [University of Illinois Urbana-Champaign],
       location: [Urbana, IL, USA],
-      email: "frjack2@illinois.edu",
+      email: "frjack2@illinois.edu", 
     ),
     (
       name: "Muhammad Fahad Ali",
@@ -44,6 +44,9 @@
 To add citations to the report, go to https://scholar.google.com, search for a paper, click on the quotation mark icon below the search result, and copy the BibTeX entry. Then paste it into the `refs.bib` file. You can cite papers using the `@` symbol followed by the citation key, e.g., @lowry1951protein.
 
 Other options to get BibTeX entries for your references include https://www.bibtex.com/converters/ and asking ChatGPT to generate the a BibTeX entry for you. (If you use ChatGPT, make sure to verify the generated BibTeX entry for correctness.)
+
+
+I am trying to commit lets see 
 
 More information about citations can be found in the Typst documentation: https://typst.app/docs/reference/model/cite.
 
@@ -71,7 +74,7 @@ To add figures to your report, save the image file in the `figures` folder and u
 
 #figure(
   image("figures/proof-read.png", width: 80%),
-  caption: [A humble request. (Copyright: University of the Fraser Valley.)],
+  caption: [A humble request. (Copyright: University of the Fraser Valley.)], 
 ) <proofread>
 
 === First Subsubsection

@@ -48,6 +48,24 @@ Other options to get BibTeX entries for your references include https://www.bibt
 More information about citations can be found in the Typst documentation: https://typst.app/docs/reference/model/cite.
 
 == First Subsection
+Dataset description:
+The dataset we will be analyzing is the "Crime Data from 2020 to Present" dataset, which is publicly available on DATA.GOV (link: https://catalog.data.gov/dataset/crime-data-from-2020-to-present). The dataset in a CSV file contains more than 1 million rows. For our project, we will reduce it to 100,000 rows due to laptop memory limitations. 
+There are 28 columns in the dataset, and we will be using the following 12 columns for our analysis:
+- `DR_NO`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits. The data type is Text.
+- `Date Rptd`: Date the incident was reported. The data type is Floating and Timestamp.
+- `DATE OCC`: Date the incident occurred. The data type is Floating and Timestamp.  
+- `TIME OCC`: Time the incident occurred. The data type is Text.
+- `AREA`: Area where the incident occurred. The data type is Text.
+- `AREA NAME`: ID of the area where the incident occurred. The data type is Text.
+- `Rpt Dist No`: A four-digit code that represents a sub-area within a Geographic Area.  The data type is Text.
+- `Vict Age`: Age of the victim. The data type is Text.
+- `Vict Sex`: Sex of the victim. The data type is Text.
+- `Vict Descent`: Descent of the victim. The data type is Text.
+- `LAT`: Latitude coordinate of the incident. The data type is Number.
+- `LON`: Longitude coordinate of the incident. The data type is Number.
+
+
+
 
 To add figures to your report, save the image file in the `figures` folder and use the `#figure` command as shown below to include it in your document. You can specify the width of the image and add a caption. Then you can reference the figure like this: @proofread.
 

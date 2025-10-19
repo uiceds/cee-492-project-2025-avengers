@@ -65,6 +65,11 @@ Together, these predictive and spatial approaches are expected to enhance respon
     - `LON (Number)`: Longitude coordinate of the incident.
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
+
+    = Exploratory Data Analysis (EDA)
+
+
+    = Predicitive Modeling 
   
 
 

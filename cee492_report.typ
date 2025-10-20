@@ -49,7 +49,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
 = Description of Dataset
     The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV @lapd_crime2020. It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
 
-    The dataset is provided in CSV format and contains over 1 million rows of crime incidents. For computational feasibility on personal laptops, we will reduce the working dataset to approximately 100,000 rows. The full dataset consists of 28 columns, while our project will focus on the following 12 key attributes:
+    The dataset is provided in CSV format and contains over 1 million rows of crime incidents. The full dataset consists of 28 columns, while our project will focus on the following 12 key attributes:
 
     - `DR_NO (Text)`: Division of Records Number: Official file number made up of a 2 digit year, area ID, and 5 digits.
     - `Date Rptd (Floating and Timestamp)`: Date the incident was reported.
@@ -60,11 +60,26 @@ Together, these predictive and spatial approaches are expected to enhance respon
     - `Rpt Dist No (Text)`: A four-digit code that represents a sub-area within a Geographic Area.
     - `Vict Age (Text)`: Age of the victim.
     - `Vict Sex (Text)`: Sex of the victim.
-    - `Vict Descent (Text)`: Descent of the victim.
+    - `Vict Descent (Text)`: Descent odf the victim.
     - `LAT (Number)`: Latitude coordinate of the incident.
     - `LON (Number)`: Longitude coordinate of the incident.
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
   
 
+= Exploratory Data Analysis
 
+== Crime Type Patterns
+
+== Temporal Patterns of Crime 
+
+== Spatial Distribution of Crime
+
+== Demographic Patterns of Crime Victims
+For the whole dataset, we first analyzed the demographic distribution of crime victims based on age, sex, and descent. The victims are consists of 40.19% male, 35.68% female, and with 24.13% unknown or missing data.
+
+
+
+
+
+= Predictive Modeling

@@ -78,7 +78,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
 == Demographic Patterns of Crime Victims
 For the whole dataset, we first analyzed the demographic distribution of crime victims based on age, sex, and descent. The victims are consists of 40.19% male, 35.68% female, and with 24.13% unknown or missing data.
 
-
+Some changes
 
 
 

@@ -66,7 +66,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
 
-    = Exploratory Data Analysis (EDA) N
+    = Exploratory Data Analysis (EDA) 
    a. Crime Type Distribution
    #image("image.png")
     Group and rank by "Crm Cd Desc".

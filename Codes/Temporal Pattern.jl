@@ -6,6 +6,7 @@ using StatsPlots     # Easy plotting of statistical data (histograms, boxplots, 
 using CSV            # Fast reading and writing of CSV files  
 using StatsBase      # Extra statistical tools (sampling, weights, counts) 
 
+
 #Loading the CSV file
 df = CSV.read(raw"/Users/macbookair/Downloads/Github Repository/DataFrame/Crime_Data_from_2020_to_Present.csv", DataFrame)
 
@@ -35,9 +36,14 @@ df_temp=df[:, [
 
     df_clean=df_temp
 
-# ----------------------- Heatmap for hourly incident frequency  ------------------------------------------
 
-using DataFrames, Dates, StatsPlots, Missings
+
+
+
+
+
+    # ----------------------- Heatmap for hourly incident frequency  ------------------------------------------
+using Measures,Plots, DataFrames, Dates, StatsPlots, Missings
     # --- 1) Make sure types are right and derive day-of-week & hour ---
     dfh = deepcopy(df_clean)
 
@@ -71,14 +77,30 @@ using DataFrames, Dates, StatsPlots, Missings
     # reshape to matrix with rows = DOW (Mon..Sun), cols = hour 0..23
     Z = permutedims(reshape(g2.count, 24, 7))  # 7×24
 
+    
     # --- 3) Plot heatmap ---
-    heatmap(allhours, 1:7, Z;
-        yticks=(1:7, dow_names),
-        xlabel="Hour of Day (0–23)",
-        ylabel="Day of Week",
-        colorbar_title="Incident Count",
-        title="Hourly Heatmap of Incident Frequency",
-        size=(800, 400))
+# robust color limits (ignore outliers so contrast increases)
+vals = skipmissing(vec(Z))
+vmin, vmax = quantile(collect(vals), (0.01, 0.99))   # 1st–99th percentile
+
+default(background_color=:white, dpi=300)  # no transparency, hi-res
+
+hmp = heatmap(allhours, 1:7, Z;
+    yticks=(1:7, dow_names),
+    xlabel="Hour of Day (0–23)",
+    ylabel="Day of Week",
+    colorbar_title="Incident Count",
+    title="Hourly Heatmap of Incident Frequency",
+    color=cgrad(:inferno, 256, categorical=false),  # high-contrast map
+    clims=(vmin, vmax),      # use the useful range of Z
+    alpha=1,                 # no transparency
+    framestyle=:box,
+    size=(1000, 600),
+    margin=5mm
+)
+savefig("Figures/Hourly_incident_frequency.png")
+
+
 
 
 # ----------------------- Normalizing Crime Description  ------------------------------------------
@@ -88,7 +110,7 @@ unique_crimes = unique(df_clean[!, "Crm Cd Desc"])
 
 #  Write the full list to a text file
 using CSV
-CSV.write("crime_descriptions_list.csv", DataFrame(CrimeType = unique_crimes))
+CSV.write("Dataframes/crime_descriptions_list.csv", DataFrame(CrimeType = unique_crimes))
 
 
 norm_desc(s::AbstractString) = let t = uppercase(String(s))
@@ -99,7 +121,7 @@ norm_desc(s::AbstractString) = let t = uppercase(String(s))
     strip(t)
 end
 
-# ---------- 2) Ordered rules (first match wins) ----------
+# -----------------------------------  Sorting Data Type ------------------------------------------
 # Tailored to your list; extend as needed. Grouping keeps attempts with their base where sensible.
 const RULES = [
     # LIFE / PERSON
@@ -170,6 +192,9 @@ df_b.crime_bucket_short = shorten.(df_b.crime_bucket)
 # Quick check: top buckets
 combine(groupby(df_b, :crime_bucket), nrow => :count) |> x -> sort(x, :count, rev=true)
 
+
+
+
 # ----------------------- Temporal Trend of Top Crime Buckets  ------------------------------------------
 using DataFrames, Dates, StatsPlots
 
@@ -200,14 +225,25 @@ yearly_top.short_label = short_label.(yearly_top.crime_bucket)
     xlabel="Year", ylabel="Incident Count",
     title="Top 10 Crime List (2020–2024)",
     legend=:outertop, lw=0, framestyle=:box,
-    size=(1000, 600),
+    size=(800, 600),
     label_font_size=7, legendfontsize=7, tickfontsize=7,
-    titlefontsize=10, guidefontsize=9
+    titlefontsize=10, guidefontsize=9,
+    margin=5mm,
 )
-plot!(xticks=(2020:2024, string.(2020:2024)), xrotation=15)
+plt1= plot!(xticks=(2020:2024, string.(2020:2024)), xrotation=15)
+savefig(plt1,"Figures/Temporal_Trend_of_Top_Crime.png")
+
 
 
 # ----------------------- Temporal & Spatial Correlation  ------------------------------------------
+#loading boundary data
+data_boundry = CSV.read(raw"/Users/macbookair/Downloads/Github Repository/DataFrame/City_Boundary_of_Los_Angeles.csv", DataFrame)
+
+
+
+
+
+
 begin
     using DataFrames, Dates, Plots, Statistics
 
@@ -280,7 +316,7 @@ begin
     theme(:default)
     default(markerstrokewidth=0, markersize=2, alpha=0.6)
 
-    plt = plot(layout=(2,3), legend=false, size=(1200, 800))
+    plt = plot(layout=(2,3), legend=false, size=(1600, 1200))
 
     for (k, p) in enumerate(selected_periods[1:nplots])
         sub = dfm[dfm.period .== p, :]
@@ -290,12 +326,12 @@ begin
             xlim=(lon_min, lon_max), ylim=(lat_min, lat_max),
             xlabel="Longitude", ylabel="Latitude",
             title=ttl, color=:dodgerblue, grid=false, framestyle=:box,
-            subplot=k
+            subplot=k, margin=5mm,
         )
     end
 
     display(plt)
-    # savefig(plt, "incident_peaks_2x3.png")
+    savefig(plt, "figures/Incident_peaks.png")
 end
 
 # ----------------------- Delay distributed reported incidents  ------------------------------------------
@@ -328,9 +364,10 @@ begin
             xlabel="Reporting Delay (days) = Date Rptd − DATE OCC",
             ylabel="Density",
             title="Delay Distribution of Reported Incidents (2020–2024)",
-            label="Histogram (PDF)", legend=:topright, color=:steelblue, grid=:y)
+            label="Histogram (PDF)", legend=:topright, color=:steelblue, grid=:y, size=(800, 600))
         density!(:delay_days; color=:darkred, lw=2, label="KDE")
         vline!([μ];   color=:green,  lw=2, ls=:dash, label="Mean = $(round(μ,digits=2)) d")
         vline!([med]; color=:purple, lw=2, ls=:dot,  label="Median = $(round(med,digits=2)) d")
     end
+    savefig("figures/Delay_distribution.png")
 end

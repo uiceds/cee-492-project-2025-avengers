@@ -239,49 +239,119 @@ savefig(plt1,"Figures/Temporal_Trend_of_Top_Crime.png")
 #loading boundary data
 data_boundry = CSV.read(raw"/Users/macbookair/Downloads/Github Repository/DataFrame/City_Boundary_of_Los_Angeles.csv", DataFrame)
 
-
-
-
-
-
 begin
-    using DataFrames, Dates, Plots, Statistics
+    using CSV, DataFrames, Dates, Plots, Statistics, Measures
 
-    # ------------------------ use df_clean ------------------------
-    dfm = copy(df_clean)
+    # ---------------------- 1) Parse WKT boundary ----------------------
 
-    # Parse DATE OCC -> Date (robust to either "m/d/y" or "m/d/y H:M:S p")
-    function parse_occ_date(x)
-        x === missing && return missing
-        xs = String(x)
-        try
-            return Date(xs, dateformat"m/d/y")
-        catch
-            try
-                # if the column still has " 12:00:00 AM"
-                return Date(DateTime(xs, dateformat"m/d/y H:M:S p"))
-            catch
-                return missing
+    # split text inside parentheses at a specific nesting depth
+    function _groups_at_depth(s::AbstractString, want::Int)
+        out = String[]
+        lvl = 0
+        start = 0
+        for (i, ch) in enumerate(s)
+            if ch == '('
+                lvl += 1
+                if lvl == want && start == 0
+                    start = i + 1  # start *after* '('
+                end
+            elseif ch == ')'
+                if lvl == want && start > 0
+                    push!(out, strip(s[start:i-1]))
+                    start = 0
+                end
+                lvl -= 1
             end
         end
+        return out
     end
-    dfm.occ_date = parse_occ_date.(dfm."DATE OCC")
 
-    # Coerce coords (handles if stored as strings)
+    """
+    parse_polygonish_wkt(wkt) -> Vector{Vector{Tuple{Vector{Float64},Vector{Float64}}}}
+    Returns a list of polygons; each polygon is a list of rings;
+    each ring is a tuple (xs, ys) of Float64 vectors.
+    Supports POLYGON and MULTIPOLYGON.
+    """
+    function parse_polygonish_wkt(wkt::AbstractString)
+        s = strip(wkt)
+        s = replace(s, r"\s+" => " ")  # normalize whitespace
+
+        polys = Vector{Vector{Tuple{Vector{Float64},Vector{Float64}}}}()
+
+        if startswith(uppercase(s), "MULTIPOLYGON")
+            inner = strip(s[findfirst('(', s)+1 : findlast(')', s)-1])  # between the outer (...)
+            # top-level polygons are groups at depth=1
+            poly_groups = _groups_at_depth(inner, 1)
+            for pg in poly_groups
+                # rings within this polygon (depth=1 relative to `pg`)
+                rings = _groups_at_depth(pg, 1)
+                pr = Vector{Tuple{Vector{Float64},Vector{Float64}}}()
+                for rg in rings
+                    xs = Float64[]; ys = Float64[]
+                    for token in split(rg, ',')
+                        parts = split(strip(token))
+                        length(parts) == 2 || continue
+                        push!(xs, parse(Float64, parts[1]))
+                        push!(ys, parse(Float64, parts[2]))
+                    end
+                    push!(pr, (xs, ys))
+                end
+                push!(polys, pr)
+            end
+
+        elseif startswith(uppercase(s), "POLYGON")
+            inner = strip(s[findfirst('(', s)+1 : findlast(')', s)-1])
+            rings = _groups_at_depth(inner, 1)
+            pr = Vector{Tuple{Vector{Float64},Vector{Float64}}}()
+            for rg in rings
+                xs = Float64[]; ys = Float64[]
+                for token in split(rg, ',')
+                    parts = split(strip(token))
+                    length(parts) == 2 || continue
+                    push!(xs, parse(Float64, parts[1]))
+                    push!(ys, parse(Float64, parts[2]))
+                end
+                push!(pr, (xs, ys))
+            end
+            push!(polys, pr)
+
+        else
+            error("Unsupported WKT type for boundary: expected POLYGON or MULTIPOLYGON.")
+        end
+
+        return polys
+    end
+
+    # normalize to always Vector{Vector{(xs,ys)}}
+    normalize_polys(obj) = obj  # our parser already returns the normalized form
+
+    # --- get boundary polygons from your loaded `data_boundry` ---
+    @assert hasproperty(data_boundry, :the_geom) "Column `the_geom` not found in data_boundry"
+    @assert nrow(data_boundry) > 0 "data_boundry is empty"
+
+    # Some boundary CSVs have multiple rows; merge them all
+    boundary_polys_list = Vector{Vector{Tuple{Vector{Float64},Vector{Float64}}}}()
+    for w in data_boundry.the_geom
+        push!(boundary_polys_list, parse_polygonish_wkt(String(w))...)
+    end
+    norm_polys = normalize_polys(boundary_polys_list)
+
+    # ---------------------- 2) Build your scatter panels ----------------------
+
+    dfm = copy(df_clean)
+
+    # Robust date parse for "DATE OCC" (date-only in df_clean)
+    dfm.occ_date = Date.(dfm."DATE OCC", dateformat"m/d/y")
     dfm.lat = tryparse.(Float64, string.(dfm."LAT"))
     dfm.lon = tryparse.(Float64, string.(dfm."LON"))
 
-    # Keep valid rows + years 2020..2024 (drop 2025+)
     dfm = filter(r -> !ismissing(r.occ_date) && !ismissing(r.lat) && !ismissing(r.lon), dfm)
     dfm = filter(r -> 24 ≤ r.lat ≤ 50 && -125 ≤ r.lon ≤ -66, dfm)
     dfm = filter(r -> 2020 ≤ year(r.occ_date) ≤ 2024, dfm)
+    @assert nrow(dfm) > 0 "No rows remain after filtering."
 
-    @assert nrow(dfm) > 0 "No rows remain after filtering for valid date/coords and years 2020–2024."
-
-    # Month "period" key = first of month
     dfm.period = Date.(year.(dfm.occ_date), month.(dfm.occ_date), 1)
 
-    # ------------------------ pick peak months ------------------------
     per_counts = combine(groupby(dfm, :period), nrow => :count)
     per_counts.year = year.(per_counts.period)
 
@@ -292,9 +362,7 @@ begin
             push!(selected_periods, sub.period[argmax(sub.count)])
         end
     end
-    selected_periods = unique(selected_periods)
-
-    # If fewer than 6 panels, add next global peak months
+    # fill to 6 with next global peaks
     if length(selected_periods) < 6
         for r in eachrow(sort(per_counts, :count, rev=true))
             (r.period in selected_periods) && continue
@@ -302,37 +370,44 @@ begin
             length(selected_periods) == 6 && break
         end
     end
-    @assert !isempty(selected_periods)
-
-    sort!(selected_periods)  # chronological order
+    sort!(selected_periods)
     nplots = min(length(selected_periods), 6)
 
-    # ------------------------ fixed map bounds ------------------------
+    # fixed bounds from data (robust percentiles)
     lon_min, lon_max = quantile(skipmissing(dfm.lon), (0.01, 0.99))
     lat_min, lat_max = quantile(skipmissing(dfm.lat), (0.01, 0.99))
 
-    # ------------------------ 2x3 scatter panels ------------------------
-    default(fmt = :png)
-    theme(:default)
-    default(markerstrokewidth=0, markersize=2, alpha=0.6)
+    # ---------------------- 3) Plot with boundary overlays ----------------------
+
+    default(fmt=:png, background_color=:white, dpi=300,
+            markerstrokewidth=0, markersize=2, alpha=0.6)
 
     plt = plot(layout=(2,3), legend=false, size=(1600, 1200))
 
     for (k, p) in enumerate(selected_periods[1:nplots])
         sub = dfm[dfm.period .== p, :]
         ttl = string(Dates.format(p, dateformat"U yyyy"), "   (n=$(nrow(sub)))")
-        scatter!(
-            plt, sub.lon, sub.lat;
+
+        # base scatter
+        scatter!(plt, sub.lon, sub.lat;
             xlim=(lon_min, lon_max), ylim=(lat_min, lat_max),
             xlabel="Longitude", ylabel="Latitude",
             title=ttl, color=:dodgerblue, grid=false, framestyle=:box,
-            subplot=k, margin=5mm,
-        )
+            subplot=k, left_margin=8mm, bottom_margin=8mm)
+
+        # boundary overlay (thin black outline)
+        for poly in norm_polys
+            for (xs, ys) in poly
+                plot!(plt, xs, ys; lw=1.2, linecolor=:black, alpha=0.9, subplot=k)
+            end
+        end
     end
 
     display(plt)
-    savefig(plt, "figures/Incident_peaks.png")
+    isdir("figures") || mkdir("figures")
+    savefig(plt, "figures/Incident_peaks_with_boundary.png")
 end
+
 
 # ----------------------- Delay distributed reported incidents  ------------------------------------------
 begin

@@ -68,12 +68,12 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     = Exploratory Data Analysis (EDA) 
    a. Crime Type Distribution
-   #image("image.png")
+   #image("figures/N_of_Crime_vs_Type.png")
     Group and rank by "Crm Cd Desc".
     Plot 1: bar chart of top 10 crime types.
     Insight: most frequent vs. least frequent   crimes. (Favour Jack)
-    
 
+    Check if image loads properly.
 
    b. Temporal Patterns
 

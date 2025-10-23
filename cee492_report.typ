@@ -65,6 +65,49 @@ Together, these predictive and spatial approaches are expected to enhance respon
     - `LON (Number)`: Longitude coordinate of the incident.
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
+
+    = Exploratory Data Analysis (EDA)
+   a. Crime Type Distribution
+   #image("image.png")
+    Group and rank by "Crm Cd Desc".
+    Plot 1: bar chart of top 10 crime types.
+    Insight: most frequent vs. least frequent   crimes. (Favour Jack)
+    
+
+
+   b. Temporal Patterns
+
+
+
+   c. Spatial Patterns
+
+
+   d. Victim and Incident Attributes
+
+
+
+
+
+   4. Correlations and Relationships
+
+
+
+
+
+   5. Implications for Police Station Planning
+
+    Summarize the evidence:
+
+    Which areas have high and persistent crime density?
+
+    Which times need more coverage (e.g., night hours)?
+
+    Support with map + table of “Top 5 areas by crime density and trend”.
+
+
+   
+
+    = Predicitive Modeling 
   
 
 = Exploratory Data Analysis

@@ -217,4 +217,9 @@ To see the correlation between age and descent, we created a heatmap shown in #r
   ) <fig-age-descent>
 
   = Predictive Modeling
+
+  The plan for the modeling will be:
+  1. Dig into correlations between all features and introduce some new variables if necessary.
+  2. Come up with a suitable formulation (i.e. decide the structure of the model equation to calculate the number of crimes.)
+  3. Apply the machine learning scheme we learned in class to train the model and validate it.
   

@@ -78,7 +78,8 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
 
 = Exploratory Data Analysis (EDA) 
- == Crime Type Distribution
+ == *Crime Type Distribution*
+We begin our exploratory data analysis by examining the distribution of crime types in the dataset. Top 10 crime types with case number are shown in #ref(<fig-crime-hist>). From #ref(<fig-crime-type>), we can see that the types of crimes vary significantly across different areas of Los Angeles.  
   #figure(
     image("figures/top_hist.JPG"),
     caption: [Top 10 Crime Types in Los Angeles (2020–2024).],
@@ -89,11 +90,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
     caption: [Top 10 Crime Types in Los Angeles vs. Areas],
   ) <fig-crime-type>
   
-    Group and rank by "Crm Cd Desc".
-    Plot 1: bar chart of top 10 crime types.
-    Insight: most frequent vs. least frequent   crimes. (Favour Jack)
-
-    Check if image loads properly.
+   
 
 == *Temporal Analysis*
 
@@ -244,7 +241,7 @@ light, with a long right tail driven by a small set of far-out points. More such
 
 
 
-== Demographic Anlysis
+== *Demographic Anlysis*
 Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
 We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.
 

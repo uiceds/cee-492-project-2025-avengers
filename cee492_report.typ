@@ -74,7 +74,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
     Plot 1: bar chart of top 10 crime types.
     Insight: most frequent vs. least frequent   crimes. (Favour Jack)
 
-    Check if image loads properly.
+    The Crime Distribution analysis reveals that certain crime types are significantly more prevalent in Los Angeles. For instance, "VEHICLE STOLEN and "BATTERY-SIMPLE ASSUALT" emerge as the most frequent offenses, indicating areas where safety interventions may be most needed. This distribution helps prioritize resource allocation for law enforcement and urban planning efforts.  
 
 == *Temporal Analysis*
 

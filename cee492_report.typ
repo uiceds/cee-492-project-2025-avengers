@@ -231,17 +231,17 @@ To guard against faulty records, we flag implausible distances above a conservat
 Finally, to see how coverage accumulates with distance, we partition $r$ into analyst-chosen bands (e.g., $0$–$50$–$100$–$250$ m, …) and tabulate the share of crimes whose nearest-lamp distance falls into each band. This “coverage by band” view highlights where most gains occur (very small radii) and where diminishing returns set in as the radius grows.
 
 // Figure with short caption
-#figure(
-  image("/figures/Spatial_figures/Crime_nearest.svg", width: 100%),
-  caption: [Crime → nearest light distance (≤ p99), LA. ],
-)<fig:crime-nearest>
+// #figure(
+//   image("/figures/Spatial_figures/Crime_nearest.svg", width: 100%),
+//   caption: [Crime → nearest light distance (≤ p99), LA. ],
+// )<fig:crime-nearest>
 
 // Separate explanation paragraph (Typst)
-Figure @fig:crime-nearest shows a histogram of distances (meters) from each
-crime point to its nearest street light, limited to the 99th percentile to
-avoid outliers. Most crimes fall very close to a light (left-heavy bar mass),
-and the frequency declines rapidly with distance. The vertical orange line
-marks the chosen radius R used later as a working cutoff for proximity.
+// Figure @fig:crime-nearest shows a histogram of distances (meters) from each
+// crime point to its nearest street light, limited to the 99th percentile to
+// avoid outliers. Most crimes fall very close to a light (left-heavy bar mass),
+// and the frequency declines rapidly with distance. The vertical orange line
+// marks the chosen radius R used later as a working cutoff for proximity.
 
 @tab:la-dist-summary-typed summarizes the distance from each reported
 crime in Los Angeles to its nearest street light. It shows total valid

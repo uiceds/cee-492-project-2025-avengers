@@ -214,23 +214,19 @@ Finally, to see how coverage accumulates with distance, we partition $r$ into an
 
 
    
-    = Predictive Modeling 
-
-== Crime Type Patterns
-
-== Temporal Patterns of Crime 
-
-== Spatial Distribution of Crime
-
 == Demographic Patterns of Crime Victims
 Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
-We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>)
+We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.
 
  #figure(
   image("figures/victim_age_hist.png"),
   caption: [Age Distribution of Crime Victims]
 ) <fig-age>
 
+#figure(
+  image("figures/victim_descent_hist.png"),
+  caption: [Descent Distribution of Crime Victims]
+) <fig-descent>
 
 
   = Predictive Modeling

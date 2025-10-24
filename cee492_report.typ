@@ -240,11 +240,11 @@ marks the chosen radius R used later as a working cutoff for proximity.
   caption: [LA distance-to-light summary.],
 ) <tab:la-dist-summary-typed>
 
-Table @tab:la-dist-summary-typed summarizes the distance from each reported
+@tab:la-dist-summary-typed summarizes the distance from each reported
 crime in Los Angeles to its nearest street light. It shows total valid
 records, distribution percentiles (p25–p99), the maximum, and how many / what
 share fall within the working radius *R = 100 m*. Most crimes are close to a
-light, with a long right tail driven by a small set of far-out points.
+light, with a long right tail driven by a small set of far-out points. More such comparison will be carried out based upon availability of the data. 
 
 
    d. Victim and Incident Attributes

@@ -228,6 +228,12 @@ We analyzed age, sex, and descent compositions of victims. Overall, the victim p
   caption: [Descent Distribution of Crime Victims]
 ) <fig-descent>
 
+To see the correlation between age and descent, we created a heatmap shown in #ref(<fig-age-descent>). The pattern of age among all descent groups is similar, with the age group of 25-34 having the highest number of victims across all descent groups.
+
+  #figure(
+    image("figures/age_descent_heatmap.png"),
+    caption: [Heatmap of Victim Age vs. Descent]
+  ) <fig-age-descent>
 
   = Predictive Modeling
   

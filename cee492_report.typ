@@ -111,11 +111,11 @@ where $n$ is the number of crimes inside $B$. This yields a single, interpretabl
 From $\{d_i\}_{i=1}^n$ we build the empirical cumulative distribution function (ECDF):
 $F(r) = frac(1,n) sum_(i=1)^n bold(1){d_i <= r}, quad r >= 0,$
 so the coverage at an operational radius $R$ is simply:
-$$\text{Coverage}(R) = F(R).$$
+$"Coverage"(R) = F(R).$
 
 We report robust summaries of proximity (median) and tail behavior (p90, p99) along with the maximum distance. Quantiles are preferred over the mean because the distribution is typically right-skewed and outlier-sensitive.
 
-To guard against faulty records, we flag implausible distances above a conservative cap $T$ (e.g., $50{,}000$ m) and, if needed, compute robust z-scores using the median and MAD to identify unusual $d_i$ values.
+To guard against faulty records, we flag implausible distances above a conservative cap and, if needed, compute robust z-scores using the median and MAD to identify unusual $d_i$ values.
 
 Finally, to see how coverage accumulates with distance, we partition $r$ into analyst-chosen bands (e.g., $0$–$50$–$100$–$250$ m, …) and tabulate the share of crimes whose nearest-lamp distance falls into each band. This “coverage by band” view highlights where most gains occur (very small radii) and where diminishing returns set in as the radius grows.
 

@@ -76,79 +76,60 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     Check if image loads properly.
 
-== Temporal Patterns
-=== Temporal Reporting Pattern
+== *Temporal Analysis*
 
-The distribution of reporting delays (Date Rptd − DATE OCC) is strongly right-skewed. Most incidents are reported on or shortly after the occurrence date:
-- *Mean delay*: **2.96 days**
-- *Median delay*: **1 day**
-- ~90% of reports occur within **five days** of the incident
+==== (i) Temporal Patterns of Different Crime Categories
 
-This pattern suggests generally prompt reporting with a long tail of delayed reports, which may reflect discovery lag (e.g., fraud/identity crimes) or administrative delays.
-
-#figure(
-  image("figures/Delay_distribution.png", width: 100%),
-  caption: [Delay distribution of reported incidents (2020–2024).],
-)
-
-=== Hourly–Weekly Temporal Pattern
-
-Incident frequency follows a pronounced diurnal cycle. Activity is lowest between **03:00–06:00**, rises rapidly after 08:00, and remains elevated through the late afternoon and evening. Fridays and weekends show the highest intensities, consistent with nightlife and leisure travel.
-
-#figure(
-  image("figures/Hourly_incident_frequency.png", width: 100%),
-  caption: [Hourly heatmap of incident frequency by day of week.],
-)
-
-=== Spatial Distribution and Peak Months
-
-Spatial clusters are stable across years and concentrate in Downtown, Hollywood, Westlake, and South LA. The six panels below show representative peak months for each year; the scatter lies almost entirely within the official city boundary, confirming geospatial integrity.
-
-#figure(
-  image("figures/Incident_peaks_with_boundary.png", width: 100%),
-  caption: [Incident locations during peak months overlaid with the LA city boundary.],
-)
-
-=== Crime Category Distribution
-
-Using the generalized crime buckets, **motor-vehicle/bike theft** consistently ranks first (≈30–32k per year), followed by **simple assault**, **personal/retail theft**, and **vandalism**. **Aggravated assault** and **theft from vehicle** comprise the next tier. The dominance of property crimes is stable from 2020–2024, with a modest post-pandemic rise and a slight dip in 2024 (which may partially reflect reporting lag).
+The temporal profile of generalized crime categories reveals that **motor vehicle and bicycle theft** consistently rank as the most frequent crime types, averaging **30,000–32,000** cases per year. These are followed by **simple assault**, **personal or retail theft**, and **vandalism**, which collectively account for a substantial share of the total crime volume.  
+**Aggravated assault** and **theft from vehicle** form the next major tier, reflecting a stable yet diversified pattern of property and personal crimes. While total incident counts remained relatively stable from **2020–2023**, a modest uptick was observed in 2022–2023, coinciding with post-pandemic normalization of urban activity. A slight decline in 2024 may partially reflect data latency or reporting lag rather than an actual reduction in crime rates.
 
 #figure(
   image("figures/Temporal_Trend_of_Top_Crime.png", width: 100%),
-  caption: [Top-10 crime buckets by year (2020–2024).],
+  caption: [Top ten generalized crime categories by year (2020–2024).],
 )
 
-=== Summary Statistics
+==== (ii) Incident Frequency Heatmap
 
-#table(
-  columns: 2,
-  align: horizon,
-  inset: 8pt,
-  stroke: 0.5pt + luma(85%),
-  fill: none,
-  [
-    *Metric*                    , *Value*;
-    Total incidents (2020–2024) , 1,004,991;
-    Avg monthly incidents        , ≈ 20k–23k;
-    Distinct crime descriptions  , ≈ 140;
-    Generalized crime buckets    , 37;
-    Mean reporting delay         , 2.96 days;
-    Median reporting delay       , 1 day;
-    Spatial coverage             , City of Los Angeles (LAT/LON);
-  ]
+Incident frequency exhibits a strong diurnal and weekly rhythm, consistent with human activity cycles in an urban environment. As shown in the hourly heatmap, the lowest activity occurs during the early morning hours (**03:00–06:00**), followed by a sharp increase after **08:00** that persists throughout the day.  
+Evening hours remain active, peaking around typical commuting and social periods, and the highest overall frequencies are observed on **Fridays and weekends**. This pattern aligns with nightlife, leisure, and mobility trends, highlighting the influence of temporal human behavior on incident dynamics.
+
+#figure(
+  image("figures/Hourly_incident_frequency.png", width: 100%),
+  caption: [Hourly heatmap showing diurnal and weekly variations in incident frequency.],
+)
+
+==== (iii) Reporting Delay Distribution 
+
+The analysis of reporting delay is defined as the difference between the date reported and the date of occurrence (Date Rptd − DATE OCC) — reveals a pronounced right-skewed distribution. Most incidents are reported either on the same day or within a few days of occurrence, with a mean delay of **2.96 days** and a median delay of **1 day**. Approximately **90%** of all incidents are reported within **five days**, indicating generally prompt reporting behavior across most crime categories.  
+The long upper tail in the delay distribution likely reflects crimes with delayed discovery or complex administrative workflows, such as fraud, forgery, or identity-theft–related offenses. This temporal asymmetry underscores the importance of considering both immediate and delayed reporting in operational planning and predictive modeling.
+
+#figure(
+  image("figures/Delay_distribution.png", width: 100%),
+  caption: [Distribution of reporting delays (All recorded incidents, 2020–2024).],
+)
+
+#linebreak()
+
+==== (iv) Spatial Distribution and Temporal Stability
+
+Spatially, incident clusters remain highly consistent across the five-year period, concentrating in **Downtown**, **Hollywood**, **Westlake**, and **South Los Angeles**. These areas exhibit persistent activity regardless of month or year, suggesting enduring socioeconomic and infrastructural factors driving higher incident density.  
+The six representative panels display the months of peak activity for each year between 2020 and 2024. The scatter of points lies almost entirely within the official **Los Angeles city boundary**, confirming the spatial integrity and proper geocoding of the dataset. Such spatial persistence provides a reliable foundation for hotspot-based predictive modeling and targeted resource deployment.
+
+#figure(
+  image("figures/Incident_peaks_with_boundary.png", width: 100%),
+  caption: [Annual Peak Months of Incident Distributions (2020–2024)],
 )
 
 
-=== Characterization Summary
-
-- High-fidelity **spatio-temporal** records (daily/hourly timestamps; point coordinates within city boundary).
-- Broad **crime diversity** (≈140 descriptions collapsed to 37 buckets) with a clear **property-crime skew**.
-- Stable **hotspots** over time → suitable for hotspot prediction and deployment planning.
-- Predictable **daily/weekly seasonality** → supports patrol scheduling and risk-aware resource allocation.
 
 
 
-== Spatial Patterns
+
+
+
+
+
+== *Spatial Analysis*
 
 Another important aspect of our exploratory data analysis is the spatial distribution of crimes across Los Angeles. By mapping the latitude–longitude of each incident, we visualize hotspots and identify areas with high crime density.
 

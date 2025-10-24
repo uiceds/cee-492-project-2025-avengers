@@ -1,5 +1,5 @@
 #import "@preview/charged-ieee:0.1.4": ieee
-#import "Format.typ": *
+#import "report_format.typ": *
 
 #show: ieee.with(
   title: [#set text(size: 16pt)  // smaller than default ~18pt

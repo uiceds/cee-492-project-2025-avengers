@@ -86,6 +86,41 @@ Another important aspect of our exploratory data analysis is the spatial distrib
 
 We work with three spatial datasets: the set of crime points $C = \{C_i\}_{i=1}^{N_c}$, the set of street-lamp points $L = \{L_l\}_{l=1}^{N_l}$, and the city-boundary polygon $B$. We ensure longitudes and latitudes are numeric, finite, and within plausible ranges so that subsequent geometry remains meaningful.
 
+
+#figure(
+  image("/figures/Spatial_figures/top500crimefreq.png", width: 100%),
+  caption: [Top 500 crime count in each designated LAPD district.],
+)<fig:la-top500>
+
+Figure @fig:la-top500 ranks Los Angeles (city) LAPD reporting districts by
+total reported incidents (2020–present). The x-axis lists districts in
+descending order (leftmost = highest), and the y-axis shows incident counts.
+The distribution is heavy-tailed: a few districts concentrate many incidents,
+followed by a long tail of moderate activity.
+
+#figure(
+  image("/figures/Spatial_figures/top500crimefreq_ranked.png", width: 100%),
+  caption: [LA top-500 crime counts (ranked).],
+)<fig:la-top500-ranked>
+
+Figure @fig:la-top500-ranked shows the top 500 LAPD reporting districts
+sorted by total incidents, with the x-axis as rank (left = highest).
+The y-axis is the incident count. The curve is heavy-tailed: a few
+districts account for many incidents, followed by a long taper of
+moderate counts across the remaining ranked districts.
+
+#figure(
+  image("/figures/Spatial_figures/La_Slights.png", width: 100%),
+  caption: [LA street lights within the city boundary (n=221,897).]
+)<fig:lights>
+
+This map @fig:lights plots the reported street-light point locations for Los Angeles in geographic
+coordinates (longitude/latitude). The high point density makes many neighborhoods appear
+as solid filled regions, revealing broad coverage across the city and sparser coverage
+near edges and open spaces. Axes are in degrees to match the source data.
+
+=== Finding relationship between crime locations and street lights
+
 We project all coordinates into a single metric CRS so distances are measured in meters:
 
 $((x_i, y_i) = Φ(λ_i, φ_i), space (u_l, v_l) = Φ(λ'_l, φ'_l))$
@@ -119,7 +154,48 @@ To guard against faulty records, we flag implausible distances above a conservat
 
 Finally, to see how coverage accumulates with distance, we partition $r$ into analyst-chosen bands (e.g., $0$–$50$–$100$–$250$ m, …) and tabulate the share of crimes whose nearest-lamp distance falls into each band. This “coverage by band” view highlights where most gains occur (very small radii) and where diminishing returns set in as the radius grows.
 
+// Figure with short caption
+#figure(
+  image("/figures/Spatial_figures/Crime_nearest.svg", width: 100%),
+  caption: [Crime → nearest light distance (≤ p99), LA. ],
+)<fig:crime-nearest>
 
+// Separate explanation paragraph (Typst)
+Figure @fig:crime-nearest shows a histogram of distances (meters) from each
+crime point to its nearest street light, limited to the 99th percentile to
+avoid outliers. Most crimes fall very close to a light (left-heavy bar mass),
+and the frequency declines rapidly with distance. The vertical orange line
+marks the chosen radius R used later as a working cutoff for proximity.
+#figure(
+  table(
+    columns: 2,  // Two columns
+    align: (left, right),
+    inset: 6pt,
+    stroke: 0.5pt + gray,
+    
+    [*Metric*], [*Value*],
+    [N (valid)], [1,004,996],
+    [min (m)], [0.0852],
+    [mean (m)], [25,702.8],
+    [std (m)], [5.43e3],
+    [p25 (m)], [10.8821],
+    [median (m)], [14.2868],
+    [p75 (m)], [20.8421],
+    [p90 (m)], [81.4454],
+    [p95 (m)], [152.942],
+    [p99 (m)], [342.602],
+    [max (m)], [1.15167e7],
+    [≤R (count)], [922,403],
+    [≤R (%)], [91.7822],
+  ),
+  caption: [LA distance-to-light summary.],
+) <tab:la-dist-summary-typed>
+
+Table @tab:la-dist-summary-typed summarizes the distance from each reported
+crime in Los Angeles to its nearest street light. It shows total valid
+records, distribution percentiles (p25–p99), the maximum, and how many / what
+share fall within the working radius *R = 100 m*. Most crimes are close to a
+light, with a long right tail driven by a small set of far-out points.
 
 
    d. Victim and Incident Attributes

@@ -77,6 +77,74 @@ Together, these predictive and spatial approaches are expected to enhance respon
     Check if image loads properly.
 
 == Temporal Patterns
+=== Temporal Reporting Pattern
+
+The distribution of reporting delays (Date Rptd − DATE OCC) is strongly right-skewed. Most incidents are reported on or shortly after the occurrence date:
+- *Mean delay*: **2.96 days**
+- *Median delay*: **1 day**
+- ~90% of reports occur within **five days** of the incident
+
+This pattern suggests generally prompt reporting with a long tail of delayed reports, which may reflect discovery lag (e.g., fraud/identity crimes) or administrative delays.
+
+#figure(
+  image("figures/Delay_distribution.png", width: 100%),
+  caption: [Delay distribution of reported incidents (2020–2024).],
+)
+
+=== Hourly–Weekly Temporal Pattern
+
+Incident frequency follows a pronounced diurnal cycle. Activity is lowest between **03:00–06:00**, rises rapidly after 08:00, and remains elevated through the late afternoon and evening. Fridays and weekends show the highest intensities, consistent with nightlife and leisure travel.
+
+#figure(
+  image("figures/Hourly_incident_frequency.png", width: 100%),
+  caption: [Hourly heatmap of incident frequency by day of week.],
+)
+
+=== Spatial Distribution and Peak Months
+
+Spatial clusters are stable across years and concentrate in Downtown, Hollywood, Westlake, and South LA. The six panels below show representative peak months for each year; the scatter lies almost entirely within the official city boundary, confirming geospatial integrity.
+
+#figure(
+  image("figures/Incident_peaks_with_boundary.png", width: 100%),
+  caption: [Incident locations during peak months overlaid with the LA city boundary.],
+)
+
+=== Crime Category Distribution
+
+Using the generalized crime buckets, **motor-vehicle/bike theft** consistently ranks first (≈30–32k per year), followed by **simple assault**, **personal/retail theft**, and **vandalism**. **Aggravated assault** and **theft from vehicle** comprise the next tier. The dominance of property crimes is stable from 2020–2024, with a modest post-pandemic rise and a slight dip in 2024 (which may partially reflect reporting lag).
+
+#figure(
+  image("figures/Temporal_Trend_of_Top_Crime.png", width: 100%),
+  caption: [Top-10 crime buckets by year (2020–2024).],
+)
+
+=== Summary Statistics
+
+#table(
+  columns: 2,
+  align: horizon,
+  inset: 8pt,
+  stroke: 0.5pt + luma(85%),
+  fill: none,
+  [
+    *Metric*                    , *Value*;
+    Total incidents (2020–2024) , 1,004,991;
+    Avg monthly incidents        , ≈ 20k–23k;
+    Distinct crime descriptions  , ≈ 140;
+    Generalized crime buckets    , 37;
+    Mean reporting delay         , 2.96 days;
+    Median reporting delay       , 1 day;
+    Spatial coverage             , City of Los Angeles (LAT/LON);
+  ]
+)
+
+
+=== Characterization Summary
+
+- High-fidelity **spatio-temporal** records (daily/hourly timestamps; point coordinates within city boundary).
+- Broad **crime diversity** (≈140 descriptions collapsed to 37 buckets) with a clear **property-crime skew**.
+- Stable **hotspots** over time → suitable for hotspot prediction and deployment planning.
+- Predictable **daily/weekly seasonality** → supports patrol scheduling and risk-aware resource allocation.
 
 
 
@@ -146,138 +214,7 @@ Finally, to see how coverage accumulates with distance, we partition $r$ into an
 
 
    
-
-    = Predicitive Modeling 
-  
-
-= Exploratory Data Analysis
-=== Temporal Reporting Pattern
-
-The distribution of reporting delays (Date Rptd − DATE OCC) is strongly right-skewed. Most incidents are reported on or shortly after the occurrence date:
-- *Mean delay*: **2.96 days**
-- *Median delay*: **1 day**
-- ~90% of reports occur within **five days** of the incident
-
-This pattern suggests generally prompt reporting with a long tail of delayed reports, which may reflect discovery lag (e.g., fraud/identity crimes) or administrative delays.
-
-#figure(
-  image("figures/Delay_distribution.png", width: 100%),
-  caption: [Delay distribution of reported incidents (2020–2024).],
-)
-
-=== Hourly–Weekly Temporal Pattern
-
-Incident frequency follows a pronounced diurnal cycle. Activity is lowest between **03:00–06:00**, rises rapidly after 08:00, and remains elevated through the late afternoon and evening. Fridays and weekends show the highest intensities, consistent with nightlife and leisure travel.
-
-#figure(
-  image("figures/Hourly_incident_frequency.png", width: 100%),
-  caption: [Hourly heatmap of incident frequency by day of week.],
-)
-
-=== Spatial Distribution and Peak Months
-
-Spatial clusters are stable across years and concentrate in Downtown, Hollywood, Westlake, and South LA. The six panels below show representative peak months for each year; the scatter lies almost entirely within the official city boundary, confirming geospatial integrity.
-
-#figure(
-  image("figures/Incident_peaks_with_boundary.png", width: 100%),
-  caption: [Incident locations during peak months overlaid with the LA city boundary.],
-)
-
-=== Crime Category Distribution
-
-Using the generalized crime buckets, **motor-vehicle/bike theft** consistently ranks first (≈30–32k per year), followed by **simple assault**, **personal/retail theft**, and **vandalism**. **Aggravated assault** and **theft from vehicle** comprise the next tier. The dominance of property crimes is stable from 2020–2024, with a modest post-pandemic rise and a slight dip in 2024 (which may partially reflect reporting lag).
-
-#figure(
-  image("figures/Temporal_Trend_of_Top_Crime.png", width: 100%),
-  caption: [Top-10 crime buckets by year (2020–2024).],
-)
-
-=== Summary Statistics
-
-#table(
-  columns: 2,
-  inset: 6pt,
-  stroke: 0.5pt + luma(90%),
-  align: horizon,
-  [
-    *Metric*      , *Value*;
-    Total incidents (2020–2024), ~1,004,991;
-    Avg monthly incidents       , ≈ 20k–23k;
-    Distinct crime descriptions , ≈ 140;
-    Generalized crime buckets   , 37;
-    Mean reporting delay        , 2.96 days;
-    Median reporting delay      , 1 day;
-    Spatial coverage            , City of Los Angeles (LAT/LON);
-  ],
-)
-
-== Characterization Summary
-
-- High-fidelity **spatio-temporal** records (daily/hourly timestamps; point coordinates within city boundary).
-- Broad **crime diversity** (≈140 descriptions collapsed to 37 buckets) with a clear **property-crime skew**.
-- Stable **hotspots** over time → suitable for hotspot prediction and deployment planning.
-- Predictable **daily/weekly seasonality** → supports patrol scheduling and risk-aware resource allocation.
-Markdown version
-markdown
-Copy code
-## Temporal Reporting Pattern
-
-The distribution of reporting delays (Date Rptd − DATE OCC) is strongly right-skewed. Most incidents are reported on or shortly after the occurrence date:
-
-- **Mean delay:** 2.96 days  
-- **Median delay:** 1 day  
-- ~90% of reports occur within **five days** of the incident
-
-This suggests generally prompt reporting with a long tail of delayed reports (e.g., fraud/identity crimes).
-
-![Delay distribution](figures/Delay_distribution.png)
-
----
-
-## Hourly–Weekly Temporal Pattern
-
-Incident frequency shows a clear diurnal cycle: lowest at **03:00–06:00**, rising after 08:00, and staying elevated through the late afternoon/evening. **Fridays** and **weekends** are the most active, consistent with nightlife and leisure travel.
-
-![Hourly heatmap](figures/Hourly_incident_frequency.png)
-
----
-
-## Spatial Distribution and Peak Months
-
-Stable clusters appear in **Downtown**, **Hollywood**, **Westlake**, and **South LA** across years. The six panels show peak months per year; points lie within the official boundary, confirming geospatial integrity.
-
-![Peak months with boundary](figures/Incident_peaks_with_boundary.png)
-
----
-
-## Crime Category Distribution
-
-Using generalized buckets, **motor-vehicle/bike theft** ranks #1 (≈30–32k/year), followed by **simple assault**, **personal/retail theft**, **vandalism**, **aggravated assault**, and **theft from vehicle**. Property crime dominates 2020–2024, with a modest post-pandemic rise and a small 2024 dip (possible reporting lag).
-
-![Top 10 buckets](figures/Temporal_Trend_of_Top_Crime.png)
-
----
-
-## Summary Statistics
-
-| Metric                       | Value            |
-|-----------------------------|------------------|
-| Total incidents (2020–2024) | ~1,004,991       |
-| Avg monthly incidents       | ≈ 20k–23k        |
-| Distinct crime descriptions | ≈ 140            |
-| Generalized crime buckets   | 37               |
-| Mean reporting delay        | 2.96 days        |
-| Median reporting delay      | 1 day            |
-| Spatial coverage            | City of Los Angeles (LAT/LON) |
-
----
-
-## Characterization Summary
-
-- High-fidelity **spatio-temporal** data (daily/hourly timestamps; precise coordinates within boundary).  
-- **Property-crime skew**; 140 detailed codes collapsed to 37 readable buckets.  
-- Persistent **hotspots**, enabling hotspot prediction and strategic deployments.  
-- Strong **daily/weekly seasonality**, useful for staffing and patrol scheduling.
+    = Predictive Modeling 
 
 == Crime Type Patterns
 

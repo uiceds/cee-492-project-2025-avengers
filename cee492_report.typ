@@ -194,8 +194,9 @@ Finally, to see how coverage accumulates with distance, we partition $r$ into an
     Support with map + table of “Top 5 areas by crime density and trend”.
 
 
+
    
-== Demographic Patterns of Crime Victims
+== Demographic Anlysis
 Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
 We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.
 
@@ -215,6 +216,26 @@ To see the correlation between age and descent, we created a heatmap shown in #r
     image("figures/age_descent_heatmap.png"),
     caption: [Heatmap of Victim Age vs. Descent]
   ) <fig-age-descent>
+
+  == *Summary Statistics of Dataset*
+
+#table(
+  columns: (auto, auto),
+  table.header([*Metric*], [*Value*]),
+
+  "Total records (2020–2024)", "≈ 1,004,991 incidents",
+  "Average monthly incidents", "≈ 20,000–23,000",
+  "Distinct crime types", "≈ 140",
+  "Generalized crime types", "37 aggregated categories",
+  "Earliest date of Dataset", "2020-01-01",
+  "Latest date of Dataset", "2024-03-31",
+  "Mean Hotspot for Crime 
+(lat / lon)", "34.05 / −118.32
+(≈ Downtown LA)",
+  "Mean reporting delay after 
+incident", "2.96 days (mean), 
+1 day (median)",
+)
 
   = Predictive Modeling
   

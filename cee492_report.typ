@@ -67,8 +67,8 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
 
-    = Exploratory Data Analysis (EDA) 
-   == Crime Type Distribution
+= Exploratory Data Analysis (EDA) 
+ == Crime Type Distribution
    #image("figures/N_of_Crime_vs_Type.png")
     Group and rank by "Crm Cd Desc".
     Plot 1: bar chart of top 10 crime types.
@@ -76,11 +76,11 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     Check if image loads properly.
 
-   == Temporal Patterns
+== Temporal Patterns
 
 
 
-   == Spatial Patterns
+== Spatial Patterns
 
 Another important aspect of our exploratory data analysis is the spatial distribution of crimes across Los Angeles. By mapping the latitude–longitude of each incident, we visualize hotspots and identify areas with high crime density.
 
@@ -144,25 +144,9 @@ Finally, to see how coverage accumulates with distance, we partition $r$ into an
 
     Support with map + table of “Top 5 areas by crime density and trend”.
 
-
+== Demographic Patterns of Crime Victims
+For the whole dataset, we first analyzed the demographic distribution of crime victims based on age, sex, and descent. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing.
    
 
   = Predictive Modeling
   
-
-= Exploratory Data Analysis
-
-== Crime Type Patterns
-
-== Temporal Patterns of Crime 
-
-== Spatial Distribution of Crime
-
-== Demographic Patterns of Crime Victims
-For the whole dataset, we first analyzed the demographic distribution of crime victims based on age, sex, and descent. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing.
-
-
-
-
-
-= Predictive Modeling

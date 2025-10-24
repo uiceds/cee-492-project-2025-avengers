@@ -76,11 +76,60 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     The Crime Distribution analysis reveals that certain crime types are significantly more prevalent in Los Angeles. For instance, "VEHICLE STOLEN and "BATTERY-SIMPLE ASSUALT" emerge as the most frequent offenses, indicating areas where safety interventions may be most needed. This distribution helps prioritize resource allocation for law enforcement and urban planning efforts.  
 
-== Temporal Patterns
+== *Temporal Analysis*
+
+==== (i) Temporal Patterns of Different Crime Categories
+
+The temporal profile of generalized crime categories reveals that **motor vehicle and bicycle theft** consistently rank as the most frequent crime types, averaging **30,000–32,000** cases per year. These are followed by **simple assault**, **personal or retail theft**, and **vandalism**, which collectively account for a substantial share of the total crime volume.  
+**Aggravated assault** and **theft from vehicle** form the next major tier, reflecting a stable yet diversified pattern of property and personal crimes. While total incident counts remained relatively stable from **2020–2023**, a modest uptick was observed in 2022–2023, coinciding with post-pandemic normalization of urban activity. A slight decline in 2024 may partially reflect data latency or reporting lag rather than an actual reduction in crime rates.
+
+#figure(
+  image("figures/Temporal_Trend_of_Top_Crime.png", width: 100%),
+  caption: [Top ten generalized crime categories by year (2020–2024).],
+)
+
+==== (ii) Incident Frequency Heatmap
+
+Incident frequency exhibits a strong diurnal and weekly rhythm, consistent with human activity cycles in an urban environment. As shown in the hourly heatmap, the lowest activity occurs during the early morning hours (**03:00–06:00**), followed by a sharp increase after **08:00** that persists throughout the day.  
+Evening hours remain active, peaking around typical commuting and social periods, and the highest overall frequencies are observed on **Fridays and weekends**. This pattern aligns with nightlife, leisure, and mobility trends, highlighting the influence of temporal human behavior on incident dynamics.
+
+#figure(
+  image("figures/Hourly_incident_frequency.png", width: 100%),
+  caption: [Hourly heatmap showing diurnal and weekly variations in incident frequency.],
+)
+
+==== (iii) Reporting Delay Distribution 
+
+The analysis of reporting delay is defined as the difference between the date reported and the date of occurrence (Date Rptd − DATE OCC) — reveals a pronounced right-skewed distribution. Most incidents are reported either on the same day or within a few days of occurrence, with a mean delay of **2.96 days** and a median delay of **1 day**. Approximately **90%** of all incidents are reported within **five days**, indicating generally prompt reporting behavior across most crime categories.  
+The long upper tail in the delay distribution likely reflects crimes with delayed discovery or complex administrative workflows, such as fraud, forgery, or identity-theft–related offenses. This temporal asymmetry underscores the importance of considering both immediate and delayed reporting in operational planning and predictive modeling.
+
+#figure(
+  image("figures/Delay_distribution.png", width: 100%),
+  caption: [Distribution of reporting delays (All recorded incidents, 2020–2024).],
+)
+
+#linebreak()
+
+==== (iv) Spatial Distribution and Temporal Stability
+
+Spatially, incident clusters remain highly consistent across the five-year period, concentrating in **Downtown**, **Hollywood**, **Westlake**, and **South Los Angeles**. These areas exhibit persistent activity regardless of month or year, suggesting enduring socioeconomic and infrastructural factors driving higher incident density.  
+The six representative panels display the months of peak activity for each year between 2020 and 2024. The scatter of points lies almost entirely within the official **Los Angeles city boundary**, confirming the spatial integrity and proper geocoding of the dataset. Such spatial persistence provides a reliable foundation for hotspot-based predictive modeling and targeted resource deployment.
+
+#figure(
+  image("figures/Incident_peaks_with_boundary.png", width: 100%),
+  caption: [Annual Peak Months of Incident Distributions (2020–2024)],
+)
 
 
 
-== Spatial Patterns
+
+
+
+
+
+
+
+== *Spatial Analysis*
 
 Another important aspect of our exploratory data analysis is the spatial distribution of crimes across Los Angeles. By mapping the latitude–longitude of each incident, we visualize hotspots and identify areas with high crime density.
 
@@ -144,9 +193,22 @@ Finally, to see how coverage accumulates with distance, we partition $r$ into an
 
     Support with map + table of “Top 5 areas by crime density and trend”.
 
-== Demographic Patterns of Crime Victims
-For the whole dataset, we first analyzed the demographic distribution of crime victims based on age, sex, and descent. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing.
+
    
+== Demographic Patterns of Crime Victims
+Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
+We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.
+
+ #figure(
+  image("figures/victim_age_hist.png"),
+  caption: [Age Distribution of Crime Victims]
+) <fig-age>
+
+#figure(
+  image("figures/victim_descent_hist.png"),
+  caption: [Descent Distribution of Crime Victims]
+) <fig-descent>
+
 
   = Predictive Modeling
   

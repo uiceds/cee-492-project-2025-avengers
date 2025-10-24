@@ -145,8 +145,15 @@ Finally, to see how coverage accumulates with distance, we partition $r$ into an
     Support with map + table of “Top 5 areas by crime density and trend”.
 
 == Demographic Patterns of Crime Victims
-For the whole dataset, we first analyzed the demographic distribution of crime victims based on age, sex, and descent. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing.
-   
+Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
+We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>)
+
+ #figure(
+  image("figures/victim_age_hist.png"),
+  caption: [Age Distribution of Crime Victims]
+) <fig-age>
+
+
 
   = Predictive Modeling
   

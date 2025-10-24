@@ -46,6 +46,15 @@ Together, these predictive and spatial approaches are expected to enhance respon
   index-terms: ("Transportation safety","Crime data analysis","Predictive risk modeling", "Hotspot mapping","Machine learning","Urban infrastructure planning", "Pedestrian safety"),
   bibliography: bibliography("refs.bib"),
 )
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
 
 = Description of Dataset
     The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV @lapd_crime2020. It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
@@ -66,6 +75,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
     - `LON (Number)`: Longitude coordinate of the incident.
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
+
 
 = Exploratory Data Analysis (EDA) 
  == Crime Type Distribution
@@ -142,7 +152,7 @@ The six representative panels display the months of peak activity for each year 
 
 Another important aspect of our exploratory data analysis is the spatial distribution of crimes across Los Angeles. By mapping the latitude–longitude of each incident, we visualize hotspots and identify areas with high crime density.
 
-We work with three spatial datasets: the set of crime points $C = \{C_i\}_{i=1}^{N_c}$, the set of street-lamp points $L = \{L_l\}_{l=1}^{N_l}$, and the city-boundary polygon $B$. We ensure longitudes and latitudes are numeric, finite, and within plausible ranges so that subsequent geometry remains meaningful.
+We work with three spatial datasets: the set of crime points $C = \{C_i\}_{i=1}^{N_c}$, the set of street-lamp points $L = \{L_l\}_{l=1}^{N_l}$, and the city-boundary polygon $B$. We ensure longitudes and latitudes are numeric, finite, and within plausible ranges so that subsequent geometry remains meaningful. The street-light dataset is sourced from the City of Los Angeles GeoHub @la_geohub_streetlights.
 
 
 #figure(
@@ -224,6 +234,62 @@ crime point to its nearest street light, limited to the 99th percentile to
 avoid outliers. Most crimes fall very close to a light (left-heavy bar mass),
 and the frequency declines rapidly with distance. The vertical orange line
 marks the chosen radius R used later as a working cutoff for proximity.
+
+@tab:la-dist-summary-typed summarizes the distance from each reported
+crime in Los Angeles to its nearest street light. It shows total valid
+records, distribution percentiles (p25–p99), the maximum, and how many / what
+share fall within the working radius *R = 100 m*. Most crimes are close to a
+light, with a long right tail driven by a small set of far-out points. More such comparison will be carried out based upon availability of the data. 
+
+
+
+
+== Demographic Anlysis
+Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
+We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.
+
+ #figure(
+  image("figures/victim_age_hist.png"),
+  caption: [Age Distribution of Crime Victims]
+) <fig-age>
+
+#figure(
+  image("figures/victim_descent_hist.png"),
+  caption: [Descent Distribution of Crime Victims]
+) <fig-descent>
+
+To see the correlation between age and descent, we created a heatmap shown in #ref(<fig-age-descent>). The pattern of age among all descent groups is similar, with the age group of 25-34 having the highest number of victims across all descent groups.
+
+  #figure(
+    image("figures/age_descent_heatmap.png"),
+    caption: [Heatmap of Victim Age vs. Descent]
+  ) <fig-age-descent>
+
+  == *Summary Statistics of Dataset*
+
+#figure(
+  table(
+   columns: (auto, auto),
+    table.header([*Metric*], [*Value*]),
+
+    "Total records (2020–2024)", "≈ 1,004,991 incidents",
+    "Average monthly incidents", "≈ 20,000–23,000",
+    "Distinct crime types", "≈ 140",
+   "Generalized crime types", "37 aggregated categories",
+    "Earliest date of Dataset", "2020-01-01",
+    "Latest date of Dataset", "2024-03-31",
+    "Mean Hotspot for Crime 
+    (lat / lon)", "34.05 / −118.32
+    (≈ Downtown LA)",
+    "Mean reporting delay after 
+    incident", "2.96 days (mean), 
+    1 day (median)",
+    "Victim Sex Composition", "40.19% male, 35.68% female",
+    "Largest Victim Age Group", "30–34 years",
+    "Top Victim Descent", "Hispanic/Latin/Mexican"
+  ), caption: [Overview of key statistics of Crime Data from 2020 to 2024],
+)<tab:dataset-summary-typed>
+
 #figure(
   table(
     columns: 2,  // Two columns
@@ -248,82 +314,6 @@ marks the chosen radius R used later as a working cutoff for proximity.
   ),
   caption: [LA distance-to-light summary.],
 ) <tab:la-dist-summary-typed>
-
-@tab:la-dist-summary-typed summarizes the distance from each reported
-crime in Los Angeles to its nearest street light. It shows total valid
-records, distribution percentiles (p25–p99), the maximum, and how many / what
-share fall within the working radius *R = 100 m*. Most crimes are close to a
-light, with a long right tail driven by a small set of far-out points. More such comparison will be carried out based upon availability of the data. 
-
-
-   d. Victim and Incident Attributes
-
-
-
-
-
-   4. Correlations and Relationships
-
-
-
-
-
-   5. Implications for Police Station Planning
-
-    Summarize the evidence:
-
-    Which areas have high and persistent crime density?
-
-    Which times need more coverage (e.g., night hours)?
-
-    Support with map + table of “Top 5 areas by crime density and trend”.
-
-
-
-   
-== Demographic Anlysis
-Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
-We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.
-
- #figure(
-  image("figures/victim_age_hist.png"),
-  caption: [Age Distribution of Crime Victims]
-) <fig-age>
-
-#figure(
-  image("figures/victim_descent_hist.png"),
-  caption: [Descent Distribution of Crime Victims]
-) <fig-descent>
-
-To see the correlation between age and descent, we created a heatmap shown in #ref(<fig-age-descent>). The pattern of age among all descent groups is similar, with the age group of 25-34 having the highest number of victims across all descent groups.
-
-  #figure(
-    image("figures/age_descent_heatmap.png"),
-    caption: [Heatmap of Victim Age vs. Descent]
-  ) <fig-age-descent>
-
-  == *Summary Statistics of Dataset*
-
-#table(
-  columns: (auto, auto),
-  table.header([*Metric*], [*Value*]),
-
-  "Total records (2020–2024)", "≈ 1,004,991 incidents",
-  "Average monthly incidents", "≈ 20,000–23,000",
-  "Distinct crime types", "≈ 140",
-  "Generalized crime types", "37 aggregated categories",
-  "Earliest date of Dataset", "2020-01-01",
-  "Latest date of Dataset", "2024-03-31",
-  "Mean Hotspot for Crime 
-(lat / lon)", "34.05 / −118.32
-(≈ Downtown LA)",
-  "Mean reporting delay after 
-incident", "2.96 days (mean), 
-1 day (median)",
-  "Victim Sex Composition", "40.19% male, 35.68% female",
-  "Largest Victim Age Group", "30–34 years",
-  "Top Victim Descent", "Hispanic/Latin/Mexican"
-)
 
   = Predictive Modeling
 

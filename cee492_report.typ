@@ -79,7 +79,18 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
 = Exploratory Data Analysis (EDA) 
  == *Crime Type Distribution*
-We begin our exploratory data analysis by examining the distribution of crime types in the dataset. Top 10 crime types with case number are shown in #ref(<fig-crime-hist>). From #ref(<fig-crime-type>), we can see that the types of crimes vary significantly across different areas of Los Angeles.  
+The #ref(<fig-crime-hist>) ranks the most common crimes reported across Los Angeles between 2020 and the present.
+
+Vehicle-related crimes (particularly Vehicle Stolen, Burglary from Vehicle, and Theft from Motor Vehicle) dominate the dataset, together accounting for nearly half of all recorded incidents. These are followed by Battery – Simple Assault and Identity Theft, highlighting both property security and personal safety as key urban vulnerabilities. 
+
+To identify which areas experience the highest concentration of specific crimes, we generated a heatmap showing the top ten most frequent crime types across all police districts. Each cell represents the number of incidents for a given crime type within an area.
+
+The heatmap reveals that crime intensity is not evenly distributed across the city. Property-related crimes such as Theft, Burglary from Vehicle, and Motor Vehicle Theft dominate the overall dataset but are heavily concentrated in a few areas—particularly Central, 77th Street, and Newton divisions. Conversely, violent offenses like Assault with a Deadly Weapon and Robbery cluster around Southeast and Southwest areas, indicating localized vulnerability.
+
+The color gradients in the heatmap highlight that these high-frequency zones consistently report a wider mix of offenses than low-crime areas, suggesting persistent multi-type crime exposure. This uneven distribution underscores the importance of strategic resource allocation, as new or expanded police stations in these hotspots could improve response times and deter repeated offenses.
+These findings, combined with temporal and demographic analyses in later sections, provide quantitative evidence for prioritizing areas that face both high crime density and crime diversity, strengthening the case for targeted infrastructure and patrol expansion.
+
+
   #figure(
     image("figures/top_hist.JPG"),
     caption: [Top 10 Crime Types in Los Angeles (2020–2024).],

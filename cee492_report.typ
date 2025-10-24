@@ -69,7 +69,16 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
 = Exploratory Data Analysis (EDA) 
  == Crime Type Distribution
-   #image("figures/N_of_Crime_vs_Type.png")
+  #figure(
+    image("figures/top_hist.JPG"),
+    caption: [Top 10 Crime Types in Los Angeles (2020–2024).],
+  ) <fig-crime-hist>
+  
+   #figure(
+    image("figures/topcrime.JPG"),
+    caption: [Top 10 Crime Types in Los Angeles vs. Areas],
+  ) <fig-crime-type>
+  
     Group and rank by "Crm Cd Desc".
     Plot 1: bar chart of top 10 crime types.
     Insight: most frequent vs. least frequent   crimes. (Favour Jack)

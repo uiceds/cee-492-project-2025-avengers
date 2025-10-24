@@ -235,6 +235,9 @@ To see the correlation between age and descent, we created a heatmap shown in #r
   "Mean reporting delay after 
 incident", "2.96 days (mean), 
 1 day (median)",
+  "Victim Sex Composition", "40.19% male, 35.68% female",
+  "Largest Victim Age Group", "30–34 years",
+  "Top Victim Descent", "Hispanic/Latin/Mexican"
 )
 
   = Predictive Modeling

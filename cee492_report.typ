@@ -68,7 +68,7 @@ Together, these predictive and spatial approaches are expected to enhance respon
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
 
     = Exploratory Data Analysis (EDA) 
-   a. Crime Type Distribution
+   == Crime Type Distribution
    #image("figures/N_of_Crime_vs_Type.png")
     Group and rank by "Crm Cd Desc".
     Plot 1: bar chart of top 10 crime types.
@@ -76,11 +76,11 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
     Check if image loads properly.
 
-   b. Temporal Patterns
+   == Temporal Patterns
 
 
 
-   c. Spatial Patterns
+   == Spatial Patterns
 
 Another important aspect of our exploratory data analysis is examining the spatial distribution of crimes across Los Angeles. By mapping the latitude and longitude coordinates of each incident, we can visualize crime hotspots and identify areas with high crime density.
 

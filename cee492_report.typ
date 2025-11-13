@@ -385,16 +385,29 @@ Model performance:
 Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifier shows strong predictive capability. Learning curves indicate stable convergence with no signs of overfitting.\
 \
 ==== iv. *Hotspot Visualization*
+To improve interpretability, I generated multiple geographic visualizations that overlay model predictions on the official Los Angeles boundary shapefile. These figures demonstrate how predicted hotspot regions shift depending on the temporal query.
+#figure(
+  image("figures/Pred_1.png"),
+  caption: [Descent Distribution of Crime Victims]
+) <fig-descent>
 
-To improve interpretability, we created geographic visualizations overlaying predictions on the official Los Angeles boundary shapefile. For a user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour”), the visualization shows:
+#figure(
+  image("figures/Pred_2.png"),
+  caption: [Descent Distribution of Crime Victims]
+) <fig-descent>
 
-- historical crime points in the query window (gray)  
-- LA city boundary  
-- top 5 predicted hotspots, shown as magenta cluster centroids with ~1-mile radius highlight zones  
+For each user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour” or “Wednesdays in November at 12:00 ± 2 hours”), the visualizations display:
 
-These visualizations connect the statistical model to real-world spatial patterns and provide meaningful insights for planning, enforcement, and safety analysis.
+- historical crime points within the specified temporal window (gray)  
+- the LA city boundary outline  
+- the model’s top predicted hotspot centroids (magenta points)  
+- approximately 1-mile radius highlight zones around each centroid (magenta circles)  
 
-The predictive modeling approach successfully combines spatial clustering with supervised learning to forecast crime hotspot locations in Los Angeles. With an accuracy of approximately **87–88%** on unseen data, the results show that crime patterns exhibit strong temporal and contextual regularities that the model can effectively learn. The hotspot visualizations offer intuitive, actionable geographic insight for decision-making in urban safety and resource allocation.\
+The first visualization corresponds to **Friday in July around 20:00 (±1 hour)** and shows multiple active hotspots distributed across central and southern Los Angeles.
+
+The second visualization corresponds to **Wednesday in November around 12:00 (±2 hours)** and reveals a different spatial pattern with fewer but more concentrated predicted hotspots.
+
+Together, these visualizations illustrate how the model adapts hotspot predictions to specific time-of-day and seasonal contexts, providing interpretable, actionable spatial insights for operational decision-making.\
 \
 
 ==== v. *Future Works*

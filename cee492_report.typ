@@ -386,14 +386,15 @@ Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifi
 \
 ==== iv. *Hotspot Visualization*
 To improve interpretability, I generated multiple geographic visualizations that overlay model predictions on the official Los Angeles boundary shapefile. These figures demonstrate how predicted hotspot regions shift depending on the temporal query.
+
 #figure(
   image("figures/Pred_1.png"),
-  caption: [Descent Distribution of Crime Victims]
+  caption: [Prediction 01]
 ) <fig-descent>
 
 #figure(
   image("figures/Pred_2.png"),
-  caption: [Descent Distribution of Crime Victims]
+  caption: [Prediction 02]
 ) <fig-descent>
 
 For each user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour” or “Wednesdays in November at 12:00 ± 2 hours”), the visualizations display:

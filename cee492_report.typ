@@ -388,20 +388,44 @@ Model performance:
 - **Training accuracy:** ~87%  
 - **Test accuracy:** ~88%  
 - **Cross-entropy loss:** steadily decreased and stabilized  
+#figure(
+  image("figures/Accurancy.png"),
+  caption: [Training and testing accuracy over gradient steps.)]
+) <fig-accurancy>
+Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifier shows strong predictive capability. Learning curves indicate stable convergence with no signs of overfitting.
 
-Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifier shows strong predictive capability. Learning curves indicate stable convergence with no signs of overfitting.\
+#figure(
+  image("figures/Loss.png"),
+  caption: [Cross-entropy loss during training]
+) <fig-cross>
+
+We also observed loss decreases sharply during the first ~300 gradient updates, indicating rapid learning of the major temporal–spatial decision boundaries from the training data. After this initial phase, the loss continues to decline more slowly and eventually stabilizes around 0.32, demonstrating smooth and monotonic convergence without instability or oscillation. This behavior confirms that the learning rate and optimization setup are well-chosen, and that the model successfully minimizes classification error as it adapts to the training patterns. The absence of sudden spikes further suggests that the model is not overfitting to rare or noisy samples.\
 \
 ==== iv. *Hotspot Visualization*
+To improve interpretability, I generated multiple geographic visualizations that overlay model predictions on the official Los Angeles boundary shapefile. These figures demonstrate how predicted hotspot regions shift depending on the temporal query.
 
-To improve interpretability, we created geographic visualizations overlaying predictions on the official Los Angeles boundary shapefile. For a user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour”), the visualization shows:
+#figure(
+  image("figures/Pred_1.png"),
+  caption: [Spatial distribution of predicted crime hotspots for a sample temporal query (Wednesday, November, 12:00 ±2h)]
+) <fig-pred-1>
 
-- historical crime points in the query window (gray)  
-- LA city boundary  
-- top 5 predicted hotspots, shown as magenta cluster centroids with ~1-mile radius highlight zones  
+#figure(
+  image("figures/Pred_2.png"),
+  caption: [Spatial distribution of predicted crime hotspots for a sample temporal query (Friday, July, 20:00 ±1h)]
+) <fig-pred-2>
 
-These visualizations connect the statistical model to real-world spatial patterns and provide meaningful insights for planning, enforcement, and safety analysis.
+For each user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour” or “Wednesdays in November at 12:00 ± 2 hours”), the visualizations display:
 
-The predictive modeling approach successfully combines spatial clustering with supervised learning to forecast crime hotspot locations in Los Angeles. With an accuracy of approximately **87–88%** on unseen data, the results show that crime patterns exhibit strong temporal and contextual regularities that the model can effectively learn. The hotspot visualizations offer intuitive, actionable geographic insight for decision-making in urban safety and resource allocation.\
+- historical crime points within the specified temporal window (gray)  
+- the LA city boundary outline  
+- the model’s top predicted hotspot centroids (magenta points)  
+- approximately 1-mile radius highlight zones around each centroid (magenta circles)  
+
+The first visualization corresponds to **Friday in July around 20:00 (±1 hour)** and shows multiple active hotspots distributed across central and southern Los Angeles.
+
+The second visualization corresponds to **Wednesday in November around 12:00 (±2 hours)** and reveals a different spatial pattern with fewer but more concentrated predicted hotspots.
+
+Together, these visualizations illustrate how the model adapts hotspot predictions to specific time-of-day and seasonal contexts, providing interpretable, actionable spatial insights for operational decision-making.\
 \
 
 ==== v. *Future Works*

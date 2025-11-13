@@ -381,21 +381,31 @@ Model performance:
 - **Training accuracy:** ~87%  
 - **Test accuracy:** ~88%  
 - **Cross-entropy loss:** steadily decreased and stabilized  
+#figure(
+  image("figures/Accurancy.png"),
+  caption: [Training and testing accuracy over gradient steps.)]
+) <fig-accurancy>
+Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifier shows strong predictive capability. Learning curves indicate stable convergence with no signs of overfitting.
 
-Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifier shows strong predictive capability. Learning curves indicate stable convergence with no signs of overfitting.\
+#figure(
+  image("figures/Loss.png"),
+  caption: [Cross-entropy loss during training]
+) <fig-cross>
+
+We also observed loss decreases sharply during the first ~300 gradient updates, indicating rapid learning of the major temporal–spatial decision boundaries from the training data. After this initial phase, the loss continues to decline more slowly and eventually stabilizes around 0.32, demonstrating smooth and monotonic convergence without instability or oscillation. This behavior confirms that the learning rate and optimization setup are well-chosen, and that the model successfully minimizes classification error as it adapts to the training patterns. The absence of sudden spikes further suggests that the model is not overfitting to rare or noisy samples.\
 \
 ==== iv. *Hotspot Visualization*
 To improve interpretability, I generated multiple geographic visualizations that overlay model predictions on the official Los Angeles boundary shapefile. These figures demonstrate how predicted hotspot regions shift depending on the temporal query.
 
 #figure(
   image("figures/Pred_1.png"),
-  caption: [Prediction 01]
-) <fig-descent>
+  caption: [Spatial distribution of predicted crime hotspots for a sample temporal query (Wednesday, November, 12:00 ±2h)]
+) <fig-pred-1>
 
 #figure(
   image("figures/Pred_2.png"),
-  caption: [Prediction 02]
-) <fig-descent>
+  caption: [Spatial distribution of predicted crime hotspots for a sample temporal query (Friday, July, 20:00 ±1h)]
+) <fig-pred-2>
 
 For each user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour” or “Wednesdays in November at 12:00 ± 2 hours”), the visualizations display:
 

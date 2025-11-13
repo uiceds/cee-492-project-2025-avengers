@@ -333,3 +333,71 @@ To see the correlation between age and descent, we created a heatmap shown in #r
 === Crime Type Prediction with Demographic Features
 
 We first examined the relationship between demographic features of victims and the crime types happened on them. The characteristics of victims includes age, gender, and descent. After extracted necessary data from the original dataset, we set victim age, victim gender, and victim descent as features, and crime type as labels to train a decision tree classifier model. After organizing and encode data, the gender feature includes male and female; the age feature includes 9 age groups; the descent feature keeps the original categories; and the crime type includes top 20 types. 80% of the data was used for training and the remaining 20% was used for testing. After apply the standard decision tree classifier from DecisionTree.jl package, the accuracy of the model on the test data is 16.14%, which indicates low correlation between demographic features and crime types. Besides, only two features were used as features in the model in pairs (i.e. age and gender; age and descent; gender and descent), the accuracy of the model are 12.48%, 15.06%, and 13.45%, respectively. The results shows that either the decision tree method is not suitable for predicting crime types, or the demographic features of victims are not strongly related to the crime types happened on them.
+
+\
+\
+
+== *Temporal–Spatial Crime Hotspot Prediction Model*
+
+Motivated by urban safety and resource allocation in Los Angeles, we focused on the following predictive question: \
+\
+
+
+_Can we predict which spatial crime hotspot an incident will occur in using time of occurrence (hour of day, day of week, and month)?_\
+\
+
+
+This question is very important from a civil and environmental engineering perspective because police, EMS, and traffic management agencies often require time-of-day deployment strategies without knowing the exact location of future incidents. If reliable temporal–spatial patterns exist, agencies could proactively position resources within a select number of hotspot regions during specific time windows. \
+\
+==== i.  *Spatial Clustering of Crime Locations (Unsupervised)*
+
+To forecast crime hotspots in Los Angeles, we developed a predictive modeling framework that integrates unsupervised spatial clustering with supervised softmax classification. The objective is to predict which hotspot (cluster) is most likely to experience crime under specific temporal and categorical conditions such as month, day of week, hour, crime category, and LAPD geographic area.
+
+We applied k-means clustering to three years of historical crime data (2020–2022) using only geographic coordinates (latitude and longitude). After experimentation, we selected `K = 8` clusters, which produced meaningful and well-distributed hotspot regions across Los Angeles.
+
+For crimes occurring in the test years (2023–2024), each incident was assigned to the nearest cluster centroid using Euclidean distance. This ensures generalization and avoids information leakage, since test points were never used to form the clusters.
+
+This stage is fully unsupervised because the hotspot labels emerge solely from underlying spatial density patterns.\
+\
+==== ii. *Predicting Hotspot (Supervised)*
+
+After generating cluster IDs, I treated them as labels for a supervised classifier. The following predictive features were used:
+
+- hour of day  
+- day of week  
+- month  
+- type of crime
+- LAPD reporting area  
+
+Numeric features were normalized, and categorical features were consistently encoded using training-set levels.  
+A softmax neural network classifier was trained using cross-entropy loss and gradient descent, with accuracy and loss tracked across iterations.\
+\
+==== iii. *Evaluation and Performance*
+
+The dataset was split chronologically:
+- **Training:** 2020–2022  
+- **Testing:** 2023–2024  
+
+Model performance:
+- **Training accuracy:** ~87%  
+- **Test accuracy:** ~88%  
+- **Cross-entropy loss:** steadily decreased and stabilized  
+
+Compared to the baseline accuracy of 1/8 = 12.5% (random guessing), the classifier shows strong predictive capability. Learning curves indicate stable convergence with no signs of overfitting.\
+\
+==== iv. *Hotspot Visualization*
+
+To improve interpretability, we created geographic visualizations overlaying predictions on the official Los Angeles boundary shapefile. For a user-defined query (e.g., “Fridays in July at 20:00 ± 1 hour”), the visualization shows:
+
+- historical crime points in the query window (gray)  
+- LA city boundary  
+- top 5 predicted hotspots, shown as magenta cluster centroids with ~1-mile radius highlight zones  
+
+These visualizations connect the statistical model to real-world spatial patterns and provide meaningful insights for planning, enforcement, and safety analysis.
+
+The predictive modeling approach successfully combines spatial clustering with supervised learning to forecast crime hotspot locations in Los Angeles. With an accuracy of approximately **87–88%** on unseen data, the results show that crime patterns exhibit strong temporal and contextual regularities that the model can effectively learn. The hotspot visualizations offer intuitive, actionable geographic insight for decision-making in urban safety and resource allocation.\
+\
+
+==== v. *Future Works*
+
+Future improvements may include incorporating additional features such as weather, special events, socioeconomic indicators, or crime-type interactions. Alternative clustering approaches (e.g., DBSCAN, Gaussian Mixture Models) could capture more flexible hotspot shapes. In the supervised stage, deeper neural networks or ensemble models may further enhance accuracy. Deploying this framework as an interactive real-time tool would expand its usefulness for operational planning and situational awareness.

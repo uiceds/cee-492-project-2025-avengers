@@ -262,15 +262,18 @@ light, with a long right tail driven by a small set of far-out points. More such
 
 = Spatial Crime-Risk Modelling with Random Forests and Spatial Accessibility
 
-This document explains, in mathematical and conceptual detail, the workflow implemented in the Pluto.jl notebook for predicting the probability of crime at a location in Los Angeles.  
-The pipeline combines:
+Point-level crime incidents come from the
+LAPD "Crime Data from 2020 to Present" dataset @lapd_crime2020, combined with
+a detailed inventory of street-light locations from the Bureau of Street
+Lighting @la_geohub_streetlights. Accessibility features are constructed using
+countywide layers on mental health centers @la_county_mental_health_centers,
+food assistance providers @la_county_food_assistance, and public libraries
+@la_county_public_libraries_2023, together with parks and open space data at
+both the county @la_county_parks_open_space and city @la_city_parks_boundaries
+levels. School district boundaries @la_county_school_district_boundaries and
+LAPD community police station locations @lapd_police_stations provide
+additional institutional context. Following analysis was performed.
 
-- Point-level crime locations,
-- Multiple external spatial datasets (mental health centers, food assistance, libraries, parks, metro, police),
-- Nearest-neighbour–based spatial features, and
-- A Random Forest classifier trained on these features.
-
-We also summarize the final numerical results and model performance in a compact results table.
 
 == 1. Data, Notation, and Study Region
 

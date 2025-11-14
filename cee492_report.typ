@@ -427,3 +427,122 @@ Together, these visualizations illustrate how the model adapts hotspot predictio
 ==== v. *Future Works*
 
 Future improvements may include incorporating additional features such as weather, special events, socioeconomic indicators, or crime-type interactions. Alternative clustering approaches (e.g., DBSCAN, Gaussian Mixture Models) could capture more flexible hotspot shapes. In the supervised stage, deeper neural networks or ensemble models may further enhance accuracy. Deploying this framework as an interactive real-time tool would expand its usefulness for operational planning and situational awareness.
+
+== *Vehicle Crime Prediction Model*
+1. Introduction
+ Vehicle-related crimes (e.g., vehicle theft, burglary from vehicle, theft from motor vehicle) represent a significant portion of overall crime in Los Angeles, impacting public safety and urban mobility. Understanding and predicting these incidents can inform targeted policing strategies and resource allocation.
+The objective of this deliverable is to develop a supervised machine learning model that predicts whether a crime incident in Los Angeles is vehicle-related using only structured metadata available at the time of reporting. This is framed as a binary classification task where:
+•	y = 1 → vehicle-related crime
+•	y = 0 → non-vehicle crime
+This work supports broader goals in crime analytics: understanding spatial–temporal patterns, improving resource allocation, and supporting proactive policing. The central modeling question is:
+“Given the temporal, spatial, and demographic characteristics recorded at the time of a crime report, can we reliably predict if the incident is vehicle-related?”
+The focus is on feature engineering, model development, algorithm selection, evaluation metrics, and interpretation.
+________________________________________
+2. Data Preparation and Feature Engineering
+
+The Los Angeles crime dataset is large, irregular, and contains mixed formats, requiring extensive preprocessing before modeling.
+2.1 Cleaning and Standardizing Raw Fields
+Key steps included:
+•	Standardized column names using rename! to ensure consistent syntaxes.
+•	Parsed mixed-type numerical fields (e.g., Vict_Age, TIME_OCC).
+•	Converted categorical descriptors (Vict_Sex, Vict_Descent, AREA_NAME) into CategoricalArray types.
+•	Replaced unrealistic values (e.g., ages <10 or >110) with missing.
+•	Removed rows with unresolved missing values using dropmissing!.
+These steps ensure the models operate on clean and reliable inputs.
+2.2 Temporal Feature Engineering
+Two essential time-based predictors were constructed:
+•	hour – extracted from TIME_OCC (0–23).
+•	is_night – 1 if 20:00–05:59, else 0.
+ 
+Night hours are strongly associated with car break-ins, catalytic converter theft, and vehicle theft.
+2.3 Calendar-Based Features
+•	is_weekend – 1 if Saturday or Sunday, else 0.
+Weekend activity patterns influence both opportunity and exposure for vehicle crimes.
+ 
+2.4 Target Variable Construction
+Vehicle-related crimes were identified through keyword matching in Crm_Cd_Desc. Records containing:
+“VEHICLE”, “MOTOR VEHICLE”, “AUTO”, “CARJACKING”, “BIKE”, “BICYCLE”
+were labeled as 1, all others as 0.
+2.5 Final Modeling Dataset
+The final model_data DataFrame includes:
+•	Target: y
+•	Predictors: hour, is_night, is_weekend, AREA, Vict_Age, Vict_Sex, Vict_Descent
+________________________________________
+3. Modeling Approach
+Three supervised models were developed to provide a structured complexity progression:
+1.	Logistic Regression – interpretable baseline
+2.	Decision Tree Classifier – nonlinear relationships
+3.	Random Forest Classifier – ensemble generalization
+3.1 Training–Testing Split
+An 80/20 randomized train-test split was used.
+Random.seed!(1234) ensures reproducibility.
+________________________________________
+4. Logistic Regression Model
+4.1 Model Structure
+Model formula:
+y ~ hour + is_night + is_weekend + AREA + Vict_Age + Vict_Sex + Vict_Descent
+Trained using GLM.jl with a binomial family and logit link.
+4.2 Interpretation
+•	Captures linear contributions of each predictor to the log-odds of a vehicle crime.
+•	Highly interpretable but limited in modeling nonlinear or interactive effects.
+4.3 Performance Summary
+•	High precision but low recall → conservative classifier.
+•	Misses many true vehicle crimes but is usually correct when it predicts them.
+•	AUC reflects moderate ranking quality.
+________________________________________
+5. Decision Tree Model
+5.1 Motivation
+Decision trees:
+•	Capture nonlinearities
+•	Learn hierarchical rules
+•	Handle categorical variables naturally
+•	Provide clear visual interpretability
+5.2 Configuration
+•	max_depth = 6
+•	min_samples_leaf = 50
+These parameters reduce overfitting while preserving meaningful structure.
+5.3 Performance and Feature Importance
+•	Improved recall and AUC compared to logistic regression.
+•	Top predictors (permutation importance):
+1.	hour
+2.	AREA
+3.	Vict_Age
+Temporal and spatial patterns dominate crime behavior.
+________________________________________
+6. Random Forest Model
+6.1 Motivation
+Random Forest reduces the instability of single trees by aggregating many trees, improving:
+•	Accuracy
+•	Generalization
+•	Robustness to noise
+6.2 Configuration
+•	n_trees = 60
+•	max_depth = 12
+•	min_samples_leaf = 30
+6.3 Performance
+The Random Forest achieved:
+•	Highest accuracy
+•	Highest recall
+•	Highest AUC
+It captures nonlinear temporal–spatial interactions most effectively.
+________________________________________
+7. Model Comparison
+Metric	Best Model
+Accuracy	Random Forest
+Precision	Logistic / Random Forest
+Recall	Random Forest
+AUC	Random Forest
+Key Insights
+•	Vehicle crimes show strong night-time and weekend effects.
+•	AREA (geography) is a powerful predictor, reflecting stable hotspots.
+•	Demographics contribute less compared to spatial-temporal signals.
+________________________________________
+8. Conclusion
+This deliverable developed a complete predictive modeling pipeline to classify crime incidents as vehicle-related or not. After systematic preprocessing, engineered temporal and spatial features, and comparative modeling, the Random Forest emerged as the strongest model.
+Its superior recall and AUC suggest reliable pattern capture, making it well-suited for real-world applications such as:
+•	Targeted patrol planning
+•	Hotspot prioritization
+•	Proactive vehicle crime intervention strategies
+The work demonstrates that even with limited structured metadata, machine learning can produce meaningful insights into vehicle crime dynamics in Los Angeles.
+________________________________________
+

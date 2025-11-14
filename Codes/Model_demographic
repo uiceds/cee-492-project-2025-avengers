@@ -1,0 +1,77 @@
+using CategoricalArrays
+using CSV, DataFrames, StatsPlots, CategoricalArrays, Measures, StatsBase
+using DecisionTree
+df = CSV.read("/Users/demiyu/Desktop/CEE492/Crime_Data_from_2020_to_Present.csv", DataFrame)
+keydata = select(df, [:"Vict Age", :"Vict Sex", :"Vict Descent", :"Crm Cd Desc"])
+mydata = dropmissing!(keydata)
+mydata = filter(:"Vict Sex" => x -> x in ["M", "F"], mydata)
+mydata = filter(row -> all(val -> val != "-", row), mydata)
+mydata = filter(:"Vict Age" => x -> x ≥ 0, mydata)
+
+function age_to_group(age)
+    if age < 10
+        return 1
+    elseif age < 20
+        return 2
+    elseif age < 30
+        return 3
+    elseif age < 40
+        return 4
+    elseif age < 50
+        return 5
+    elseif age < 60
+        return 6
+    elseif age < 70
+        return 7
+    elseif age < 85
+        return 8
+    else
+        return 9
+    end
+end
+
+mydata.age_group = age_to_group.(mydata."Vict Age")
+print(first(mydata, 5))
+crimetype_counts = countmap(mydata."Crm Cd Desc")
+sorted_crimes = sort(collect(crimetype_counts), by = x -> x[2], rev = true)
+top20 = sorted_crimes[1:20]
+mydata = filter(:"Crm Cd Desc" => x -> x in [crime for (crime, count) in top20], mydata)
+# filted df has M and F for gender; 0-99 age; known descent; top 20 crime types with lowest type take around 1%
+mydata."Vict Sex"     = categorical(mydata."Vict Sex")
+mydata."Vict Descent" = categorical(mydata."Vict Descent")
+mydata.age_group     = categorical(mydata.age_group)
+mydata."Crm Cd Desc"  = categorical(mydata."Crm Cd Desc")
+age_code     = levelcode.(mydata.age_group)
+sex_code     = levelcode.(mydata."Vict Sex")
+descent_code = levelcode.(mydata."Vict Descent")
+
+
+#define features and label for decision DecisionTree
+features = float.(hcat(age_code, sex_code, descent_code))
+labels   = String.(mydata."Crm Cd Desc")
+#train the model 80%data for training, 20% for testing
+n = size(features, 1)
+n_train = round(Int, 0.8n)
+Xtr, ytr = features[1:n_train, :], labels[1:n_train]
+Xte, yte = features[n_train+1:end, :], labels[n_train+1:end]
+
+model = build_tree(ytr, Xtr)
+model = prune_tree(model, 0.95)  # merge very similar leaves                   
+ŷ = apply_tree(model, Xte)
+acc = mean(ŷ .== yte)
+# print_tree(model, 5)
+# apply_tree(model, [5.9,2.0,5.1])
+#only do two features
+features2 = float.(hcat(age_code, sex_code))
+labels2   = String.(mydata."Crm Cd Desc")
+n = size(features2, 1)
+n_train = round(Int, 0.8n)
+Xtr2, ytr2 = features2[1:n_train, :], labels2[1:n_train]
+Xte2, yte2 = features2[n_train+1:end, :], labels2[n_train+1:end]
+
+model2 = build_tree(ytr2, Xtr2)
+model2 = prune_tree(model2, 0.95)
+
+# Evaluate
+ŷ2 = apply_tree(model2, Xte2)
+acc2 = mean(ŷ2 .== yte2)

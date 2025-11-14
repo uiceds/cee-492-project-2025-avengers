@@ -252,6 +252,452 @@ light, with a long right tail driven by a small set of far-out points. More such
 
 
 
+
+
+
+
+
+
+#set document(title: "Spatial Crime-Risk Modelling with Random Forests and Accessibility Features")
+
+= Spatial Crime-Risk Modelling with Random Forests and Spatial Accessibility
+
+This document explains, in mathematical and conceptual detail, the workflow implemented in the Pluto.jl notebook for predicting the probability of crime at a location in Los Angeles.  
+The pipeline combines:
+
+- Point-level crime locations,
+- Multiple external spatial datasets (mental health centers, food assistance, libraries, parks, metro, police),
+- Nearest-neighbour–based spatial features, and
+- A Random Forest classifier trained on these features.
+
+We also summarize the final numerical results and model performance in a compact results table.
+
+== 1. Data, Notation, and Study Region
+
+=== 1.1 Crime and Non-Crime Points
+
+Let each location be represented by geographic coordinates:
+$ p_i = (text("lat")_i, text("lon")_i) ∈ bb("R")^2, i = 1, ..., N. $
+
+Each point has a binary crime label $y_i ∈ {0, 1}$, where
+
+- $y_i = 1$ if a crime is observed at $p_i$,
+- $y_i = 0$ if the point is treated as a non-crime location.
+
+The final analysis dataset contains:
+
+- N = 2,009,982 total records,
+- 1,004,991 crime locations ($y_i = 1$),
+- 1,004,991 non-crime locations ($y_i = 0$),
+
+so that the crime proportion is
+$ frac(1, N) * sum_(i=1)^N y_i = 0.50 text(" (50% crimes, 50% non-crimes).") $
+
+=== 1.2 Generating Non-Crime Locations
+
+The original crime dataset provides only locations where crime occurred. To train a binary classifier, we need contrasting “non-crime” points. The notebook generates these using a mixture of two strategies:
+
+1. *Nearby perturbations* around crime points (simulating “similar” areas where crime did not happen).
+2. *Random points* uniformly spread across the city’s bounding box.
+
+Formally, let $N_c$ be the number of original crime locations. We create:
+
+- $N_text("near") = floor(0.7 N_c)$ nearby points, and
+- $N_text("rand") = N_c - N_text("near")$ random points.
+
+For a subset of crime locations $p_i$, nearby non-crime points are generated as
+$ p_i^text("(near)") = p_i + Delta p_i, $
+where $Delta p_i$ is a random perturbation with typical magnitude
+$ ||Delta p_i|| approx 0.01°, $
+corresponding to roughly 1.1 km in latitude.
+
+Random points are sampled uniformly inside the geographic bounds:
+$ text("lat")_text("min") <= text("lat") <= text("lat")_text("max"),
+  quad
+  text("lon")_text("min") <= text("lon") <= text("lon")_text("max"). $
+
+=== 1.3 Geographic Coverage
+
+The combined dataset spans:
+
+- Latitude range: 0.0° to 34.3343°,
+- Longitude range: -118.6676° to 0.0°.
+
+The approximate spatial extent is computed using the standard “111 km per degree” approximation:
+
+- North–south size:
+  $ L_text("NS") approx (text("lat")_text("max") - text("lat")_text("min")) * 111 text(" km") approx 3811.1 text(" km"), $
+- East–west size:
+  $ L_text("EW") approx (text("lon")_text("max") - text("lon")_text("min")) * 111 cos(bar(text("lat"))) text(" km") approx 12585.3 text(" km"), $
+where $bar(text("lat"))$ is the mean latitude of the area.
+
+This is a conceptual bounding box; the actual points of interest are concentrated near the Los Angeles region.
+
+== 2. External Spatial Datasets and KD-Trees
+
+The notebook loads several facility layers, each represented as a set of points:
+
+- Mental health centers,
+- Food assistance providers,
+- Public libraries,
+- County parks,
+- City parks,
+- Metro lines / stations (where coordinates are available),
+- Police stations.
+
+For each facility type $k$, we denote its locations as
+$ F^(k) = { f_j^(k) ∈ bb("R")^2 : j = 1, ..., M_k }. $
+
+To efficiently query distances and neighbours, each $F^(k)$ is indexed with a KD-tree (using the `NearestNeighbors.jl` package). A KD-tree enables fast queries of the form:
+
+- *Nearest neighbour*:
+  $ f_text("nn")^(k)(p) = op("argmin")_(f ∈ F^(k)) || p - f ||_2, $
+- *Radius search* (all facilities within distance $r$):
+  $ { f ∈ F^(k) : || p - f ||_2 <= r }. $
+
+The notebook’s `build_kdtree` function converts latitude/longitude columns into a 2×M_k matrix and builds `KDTree(coords, Euclidean())`.
+
+== 3. Spatial Accessibility Features
+
+For each crime or non-crime point $p_i$, and each facility type $k$, the notebook computes two families of features:
+
+1. *Nearest distance*:
+   $ d_i^(k) = min_(1 <= j <= M_k) || p_i - f_j^(k) ||_2. $
+
+2. *Count within a radius $r$*:
+   $ c_i^(k)(r) =
+      sum_(j=1)^M_k bold(1)(|| p_i - f_j^(k) ||_2 <= r), $
+   where $bold(1)(·)$ acts as an indicator function (1 if the condition holds, 0 otherwise).
+
+The code implements this via:
+
+- `knn(tree, query_coords, 1, true)` for nearest distances,
+- `inrange(tree, query_point, radius, false)` to count facilities within radius.
+
+The chosen radius is
+$ r = 0.01° approx 1.1 text(" km"), $
+interpreted as a local neighbourhood scale.
+
+For seven facility types, the total number of engineered features is:
+
+- 7 nearest-distance features, and
+- 7 radius-count features,
+
+for a total of 14 spatial features:
+$ p = 14. $
+
+In Typst-style notation, the feature vector for point $p_i$ can be written as:
+$ x_i =
+  (
+    d_i^text("mh"), c_i^text("mh"),
+    d_i^text("food"), c_i^text("food"),
+    ...,
+    d_i^text("police"), c_i^text("police")
+  ) ∈ bb("R")^14.
+$
+
+The `augment_with_spatial_features!` function takes a DataFrame with `latitude`, `longitude`, and `crime`, and *mutates* it in-place by adding these 14 columns.
+
+== 4. Correlation Analysis and Descriptive Statistics
+
+Before modelling, the notebook computes the Pearson correlation between each spatial feature and the crime label.
+
+Given a numeric feature vector $X = (X_1, ..., X_N)$ and labels $Y = (Y_1, ..., Y_N)$ with $Y_i ∈ {0, 1}$, the Pearson correlation coefficient is
+$ rho_(X Y) =
+  frac(
+    op("cov")(X, Y),
+    sigma_X sigma_Y
+  )
+$
+
+The function `analyze_correlations`:
+
+- Selects all columns whose names contain `_nearest_dist` or `_count_radius`,
+- Replaces `Inf` values (e.g., if no facility is found) with a large constant $10^10$,
+- Computes $rho$ between each feature and the crime indicator,
+- Sorts features by absolute correlation.
+
+Additionally, the function `summary_by_crime` compares *mean feature values* between crime and non-crime groups:
+
+- Mean among crime points:
+  $ mu_text("crime")(X) = frac(1, N_1) sum_(i: y_i = 1) X_i, $
+- Mean among non-crime points:
+  $ mu_text("no-crime")(X) = frac(1, N_0) sum_(i: y_i = 0) X_i. $
+
+This helps interpret whether, for example, crime locations tend to be closer or farther from certain facilities than non-crime locations.
+
+== 5. Machine-Learning Dataset Construction
+
+We now build the design matrix $X$ and label vector $y$ for supervised learning.
+
+Let
+$ X ∈ bb("R")^(N × p), quad y ∈ {0, 1}^N. $
+
+The `prepare_ml_data` function:
+
+1. Selects all spatial features and any existing lighting features (columns containing `"light"`).
+2. Replaces infinite values with a large constant (e.g. $10^10$).
+3. Imputes any NaNs with the feature median.
+4. Encodes the target as string labels `"0"` or `"1"` for use with `DecisionTree.jl`.
+5. Creates a random train–test split with test ratio $alpha = 0.2$.
+
+Given $N = 2,009,982$ and $alpha = 0.2$,
+
+- Training size:
+  $ N_text("train") = (1 - alpha) N = 0.8 N = 1,607,986, $
+- Test size:
+  $ N_text("test") = alpha N = 401,996. $
+
+Class counts:
+
+- Train: 803,826 crimes, 804,160 non-crimes,
+- Test: 201,165 crimes, 200,831 non-crimes.
+
+The dataset is therefore close to perfectly balanced in both train and test splits.
+
+== 6. Random Forest Classifier
+
+The model is a Random Forest classifier trained on the feature matrix $X$ to predict the binary label $y$.
+
+=== 6.1 Single Decision Tree
+
+A single decision tree recursively partitions the feature space $bb("R")^p$ into axis-aligned regions by splitting on conditions of the form
+$ x_j <= tau, $
+where $x_j$ is feature $j$ and $tau$ is a threshold. At each node, the algorithm chooses a feature and threshold to reduce impurity (e.g. Gini impurity or entropy).
+
+For a node with class probabilities $(p_0, p_1)$, the Gini impurity is:
+$ I_text("Gini") = 1 - p_0^2 - p_1^2. $
+
+=== 6.2 Random Forest Ensemble
+
+A Random Forest builds an ensemble of $T$ trees ${ h_t(x) }_(t=1)^T$ using:
+
+- Bootstrap samples of the training data,
+- A random subset of features (of size $m_text("sub") approx sqrt(p)$) considered at each split.
+
+Given the notebook’s configuration:
+
+- Algorithm: Random Forest,
+- Number of trees: $T = 100$,
+- Maximum depth per tree: $text("max_depth") = 10$,
+- Number of features: $p = 14$,
+- Subset size at each split: $m_text("sub") = max(1, floor(sqrt(p))) = 3$.
+
+For a new feature vector $x$, each tree outputs a class prediction $h_t(x) ∈ {0, 1}$, and the forest prediction is the majority vote:
+$ hat(y)(x) = op("mode"){ h_t(x) : t = 1, ..., T }. $
+
+The probabilistic prediction used for ROC analysis is
+$ hat(p)(x) = frac(1, T) sum_(t=1)^T bold(1)(h_t(x) = 1), $
+i.e. the fraction of trees voting for class 1 (crime).
+
+=== 6.3 Feature Importance
+
+`DecisionTree.impurity_importance(model)` returns the *impurity-based feature importance*. For feature $j$, the importance score $I_j$ is the sum over all splits that use feature $j$ of the decrease in impurity, weighted by the number of samples that pass through the split.
+
+The importances are normalised so that
+$ sum_(j=1)^p I_j = 1. $
+
+The top 5 most important features in the final model are:
+
+1. `mental_health_nearest_dist`: 36.01%
+2. `food_assistance_nearest_dist`: 17.31%
+3. `county_park_nearest_dist`: 16.45%
+4. `police_nearest_dist`: 14.66%
+5. `library_nearest_dist`: 10.56%
+
+Six of the 14 features have zero importance (never used in any split), suggesting they do not contribute to the forest’s decisions.
+
+== 7. Evaluation Metrics: Accuracy, Precision, Recall, ROC
+
+Let the test set contain $N_text("test")$ instances with true labels $y_i ∈ {0, 1}$ and predicted labels $hat(y)_i$.
+
+We define:
+
+- *True Positives (TP)*: $y_i = 1$ and $hat(y)_i = 1$,
+- *True Negatives (TN)*: $y_i = 0$ and $hat(y)_i = 0$,
+- *False Positives (FP)*: $y_i = 0$ but $hat(y)_i = 1$,
+- *False Negatives (FN)*: $y_i = 1$ but $hat(y)_i = 0$.
+
+From the notebook’s final confusion matrix on the test set:
+
+- TP = 195,396
+- TN = 70,697
+- FP = 130,134
+- FN = 5,769
+
+The key performance metrics are:
+
+1. *Accuracy*:
+   $ text("Accuracy") =
+     frac(text("TP") + text("TN"), text("TP") + text("TN") + text("FP") + text("FN"))
+     approx 66.19%. $
+
+2. *Precision* (positive predictive value):
+   $ text("Precision") =
+     frac(text("TP"), text("TP") + text("FP"))
+     approx 60.02%. $
+
+3. *Recall* (true positive rate, TPR):
+   $ text("Recall") =
+     frac(text("TP"), text("TP") + text("FN"))
+     approx 97.13%. $
+
+Thus, the model catches most crime locations (very high recall) but at the cost of a substantial number of false positives (only moderate precision).
+
+=== 7.1 ROC Curve and AUC
+
+The ROC (Receiver Operating Characteristic) curve is constructed by varying the decision threshold $theta$ on the predicted probability $hat(p)(x)$ and, for each threshold, computing:
+
+- $text("TPR")(theta)$ = Recall,
+- $text("FPR")(theta) = frac(text("FP")(theta), text("FP")(theta) + text("TN")(theta)).$
+
+The Area Under the Curve (AUC) is approximated numerically via the trapezoidal rule:
+$ text("AUC") approx
+  sum_(k=2)^K
+  [
+    text("FPR")_k - text("FPR")_(k-1)
+  ]
+  *
+  frac(text("TPR")_k + text("TPR")_(k-1), 2).
+$
+
+The function `compute_roc` implements this calculation explicitly.
+
+== 8. Spatial Prediction and Crime Risk Heatmaps
+
+To evaluate the learned model at an arbitrary location $(text("lat"), text("lon"))$, the function `predict_at_location`:
+
+1. Constructs a query point $q = (text("lon"), text("lat")).$
+2. For each facility type $k$, computes:
+   - the nearest distance $d^(k)(q)$ via `knn`,
+   - the count $c^(k)(q; r)$ via `inrange`.
+3. Builds a feature dictionary and aligns it with the trained model’s `feature_names`.
+4. Replaces any `Inf` distances with $10^10$.
+5. Calls `apply_forest_proba(model, feature_vec, classes)` to obtain class probabilities.
+
+The returned value is the probability
+$ hat(p)(text("crime") | q) = P(y = 1 | text("features at ") q). $
+
+The `predict_grid` function evaluates this probability over a regular grid:
+$ text("lat")_1, ..., text("lat")_R;
+  quad
+  text("lon")_1, ..., text("lon")_C, $
+and stores probabilities in a matrix
+$ P_(i j) = hat(p)(text("crime") | text("lat")_i, text("lon")_j), $
+which is then visualised with a heatmap in `plot_heatmap` as a *crime risk map*.
+
+== 9. Comprehensive Summary and Result Table
+
+The notebook prints a comprehensive summary of the data, features, model configuration, and performance. Key points:
+
+- *Data overview* – Total records: 2,009,982  
+  - Crime: 1,004,991 (50.0%)  
+  - Non-crime: 1,004,991 (50.0%)
+
+- *Feature engineering* – Total engineered features: 14  
+  - Distance features: 7  
+  - Count features: 7  
+  - Search radius: 0.01° ≈ 1.1 km.
+
+- *Train/test split* – Training: 1,607,986 records (80%)  
+    - Crime: 803,826  
+    - Non-crime: 804,160  
+  - Test: 401,996 records (20%)  
+    - Crime: 201,165  
+    - Non-crime: 200,831  
+
+- *Model configuration* – Algorithm: Random Forest  
+  - Trees: 100  
+  - Max depth: 10  
+  - Features used: 14  
+
+- *Performance* – Training accuracy: 66.15%  
+  - Test accuracy: 66.19%  
+  - Precision: 60.02%  
+  - Recall: 97.13%  
+  - 6 features with zero importance.
+
+=== 9.1 Results Summary Table
+
+#table(
+  columns: (auto, auto, auto),
+  align: (left, left, left),
+
+  [*Category*], [*Metric*], [*Value / Comment*],
+
+  [Data], [Total records], [2,009,982],
+  [Data], [Crime locations], [1,004,991 (50.0%)],
+  [Data], [Non-crime locations], [1,004,991 (50.0%)],
+
+  [Geography], [Latitude range], [0.0° to 34.3343°],
+  [Geography], [Longitude range], [-118.6676° to 0.0°],
+  [Geography], [Approx. coverage], [≈ 3811.1 km × 12585.3 km],
+
+  [Features], [Total features], [14 (7 distances, 7 counts)],
+  [Features], [Search radius], [0.01° ≈ 1.1 km],
+
+  [Split], [Training set size], [1,607,986 (80.0%)],
+  [Split], [Test set size], [401,996 (20.0%)],
+
+  [Model], [Algorithm], [Random Forest (100 trees, depth 10)],
+  [Model], [Features used], [14, with 6 zero-importance],
+
+  [Performance], [Train accuracy], [66.15%],
+  [Performance], [Test accuracy], [66.19%],
+  [Performance], [Precision (test)], [60.02%],
+  [Performance], [Recall (test)], [97.13%],
+
+  [Importance], [1st: mental_health], [36.01%],
+  [Importance], [2nd: food_assistance], [17.31%],
+  [Importance], [3rd: county_park], [16.45%],
+  [Importance], [4th: policet], [14.66%],
+  [Importance], [5th: library], [10.56%],
+)
+
+== 10. Conclusions and Insights
+
+- The model trades precision for recall: it correctly flags most crime locations (recall ≈ 97%) but produces many false positives (precision ≈ 60%).
+- Distance-based accessibility to mental health centers, food assistance, county parks, police stations, and libraries carries the strongest signal for distinguishing crime vs non-crime points in this setup.
+- Several derived features are unused, suggesting opportunities for feature reduction, alternative feature engineering (e.g., non-linear transformations, interaction terms), or different models.
+
+The ROC curve in @fig_roc shows that the model has a reasonably strong ability
+to distinguish crime from non-crime locations: the blue ROC line sits well
+above the grey random-guess baseline and yields an AUC of about 0.76, meaning
+that in roughly three out of four randomly chosen crime/non-crime pairs the
+model assigns a higher risk to the crime point. The crime risk map in
+@fig_risk translates these probabilities into space, displaying predicted crime
+risk over a latitude–longitude grid: each cell’s colour encodes the model’s
+estimated probability of crime, with greener cells indicating higher risk and
+red–orange cells indicating lower risk. Together, Figures @fig_roc and
+@fig_risk show that the classifier is meaningfully better than random and that
+it identifies coherent high-risk clusters and lower-risk areas across the Los
+Angeles region rather than uniform risk everywhere.
+
+#figure(
+  image("figures/Spatial_figures/crime_riskco.png"),
+  caption: [
+    Crime risk map over Los Angeles generated from Random Forest predictions.
+    Colours show the estimated crime probability on a longitude–latitude grid
+    (green = higher risk, red = lower risk).
+  ],
+) <fig_risk>
+
+#figure(
+  image("figures/Spatial_figures/flase_positive.png"),
+  caption: [
+    Receiver operating characteristic (ROC) curve for the Random Forest crime
+    classifier on the test set. The blue line shows the trade-off between true
+    positive rate and false positive rate, and the dashed line is the
+    random-guess baseline. The area under the curve (AUC) is approximately 0.76.
+  ],
+) <fig_roc>
+
+
+
+
+
+
+
 == *Demographic Anlysis*
 Besides analyzing crime types and its patterns over time and space, exmining the demographic characteristics of crime victims might provide some useful sights.
 We analyzed age, sex, and descent compositions of victims. Overall, the victim population is 40.19% male, 35.68% female, and 24.13% unknown or missing. The age distribution of victims is shown in #ref(<fig-age>). It shows that the age group of 30-34 has the highest number of victims, followed by the age group of 25-29. The descent distribution of victims is shown in #ref(<fig-descent>). It shows that the major victim descent groups are Hispanic/Latin/Mexican, White, and Black, with the percentages of 34.45%, 23.41%, and 15.79%, respectively.

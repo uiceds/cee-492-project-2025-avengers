@@ -482,6 +482,8 @@ ________________________________________
 Model formula:
 y ~ hour + is_night + is_weekend + AREA + Vict_Age + Vict_Sex + Vict_Descent
 Trained using GLM.jl with a binomial family and logit link.
+#image("image.png")
+#image("image-1.png")
 4.2 Interpretation
 •	Captures linear contributions of each predictor to the log-odds of a vehicle crime.
 •	Highly interpretable but limited in modeling nonlinear or interactive effects.
@@ -497,6 +499,8 @@ Decision trees:
 •	Learn hierarchical rules
 •	Handle categorical variables naturally
 •	Provide clear visual interpretability
+#image("image-2.png")
+#image("image-3.png")
 5.2 Configuration
 •	max_depth = 6
 •	min_samples_leaf = 50
@@ -519,6 +523,7 @@ Random Forest reduces the instability of single trees by aggregating many trees,
 •	n_trees = 60
 •	max_depth = 12
 •	min_samples_leaf = 30
+#image("image-4.png")
 6.3 Performance
 The Random Forest achieved:
 •	Highest accuracy
@@ -527,6 +532,7 @@ The Random Forest achieved:
 It captures nonlinear temporal–spatial interactions most effectively.
 ________________________________________
 7. Model Comparison
+#image("image-5.png")
 Metric	Best Model
 Accuracy	Random Forest
 Precision	Logistic / Random Forest

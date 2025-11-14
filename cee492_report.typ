@@ -841,6 +841,9 @@ To evaluate the model at an arbitrary location $(text("lat"), text("lon"))$, the
 5. Applies the forest to obtain a crime probability $hat(p)(text("crime") | q)$.
 
 The `predict_grid` function evaluates these probabilities over a regular latitude–longitude grid, producing a matrix $P_{i j}$ that is visualized with a heatmap in `plot_heatmap`.
+\
+\
+The resulting map identifies **coherent high-risk clusters and lower-risk areas** across Los Angeles, rather than uniform risk.
 
 #figure(
   image("figures/Spatial_figures/crime_riskco.png"),
@@ -851,18 +854,9 @@ The `predict_grid` function evaluates these probabilities over a regular latitud
   ],
 ) <fig_risk>
 
-The resulting map identifies **coherent high-risk clusters and lower-risk areas** across Los Angeles, rather than uniform risk.
-\
 \
 
 ==== 9. *Summary and Interpretation*
-
-Key points:
-
-- The model **prioritizes recall** (≈ 97%), which is valuable for applications where missing high-risk locations is more costly than generating false alarms.  
-- Accessibility to mental health centers, food assistance sites, county parks, police stations, and libraries carries the strongest signal for crime vs non-crime distinction in this setup.  
-- Several features neither improve accuracy nor gain importance, suggesting opportunities for feature selection and additional feature engineering.
-
 #figure(
   image("figures/Spatial_figures/flase_positive.png"),
   caption: [
@@ -872,6 +866,204 @@ Key points:
     random-guess baseline. The area under the curve (AUC) is approximately 0.76.
   ],
 ) <fig_roc2>
+Key points:
+
+- The model **prioritizes recall** (≈ 97%), which is valuable for applications where missing high-risk locations is more costly than generating false alarms.  
+- Accessibility to mental health centers, food assistance sites, county parks, police stations, and libraries carries the strongest signal for crime vs non-crime distinction in this setup.  
+- Several features neither improve accuracy nor gain importance, suggesting opportunities for feature selection and additional feature engineering.
+
+== *Vehicle Crime Prediction Model*
+
+While the Random Forest risk model focuses on where crime is likely, we also investigate a **crime-category-specific** question:
+
+_Given the temporal, spatial, and demographic characteristics recorded at the time of a crime report, can we predict whether the incident is vehicle-related?_
+
+Vehicle-related crimes (e.g., vehicle theft, burglary from vehicle, theft from motor vehicle, carjacking) represent a substantial share of crime in Los Angeles and directly affect urban mobility and safety.
+
+\
+\
+
+==== 1. *Data Preparation and Feature Engineering*
+
+The Los Angeles crime dataset is large and contains mixed formats, so extensive preprocessing was required.
+
+==== 1.1 Cleaning and Standardizing Raw Fields
+
+Key steps:
+
+- Standardized column names using `rename!` for consistency.  
+- Parsed mixed-type numeric fields (e.g., `Vict_Age`, `TIME_OCC`).  
+- Converted categorical descriptors (`Vict_Sex`, `Vict_Descent`, `AREA_NAME`) into `CategoricalArray` types.  
+- Replaced unrealistic values with `missing`.  
+- Removed rows with unresolved missing values using `dropmissing!`.
+
+These steps ensure that the models operate on clean, reliable inputs.
+
+\
+\
+
+==== 1.2 Temporal and Calendar Features
+
+We engineered time-based predictors:
+
+- `hour`: extracted from `TIME_OCC` (0–23).  
+- `is_night`: indicator = 1 if 20:00–05:59, else 0.  
+- `is_weekend`: indicator = 1 if Saturday or Sunday, else 0.
+
+Night and weekend indicators capture known temporal patterns in vehicle-related crimes.
+
+\
+\
+
+==== 1.3 Target Variable Construction
+
+Vehicle-related crimes were identified via keyword matching in `Crm_Cd_Desc`. Records containing:
+
+- `"VEHICLE"`, `"MOTOR VEHICLE"`, `"AUTO"`, `"CARJACKING"`, `"BIKE"`, `"BICYCLE"`
+
+were labeled as:
+
+- $y = 1$: vehicle-related crime,  
+
+All other records were labeled:
+
+- $y = 0$: non-vehicle crime.
+
+\
+\
+
+==== 1.4 Final Modeling Dataset
+
+The final `model_data` DataFrame includes:
+
+- **Target:**  
+  - `y` (vehicle-related vs. non-vehicle)
+
+- **Predictors:**  
+  - `hour`  
+  - `is_night`  
+  - `is_weekend`  
+  - `AREA` (LAPD area index)  
+  - `Vict_Age`  
+  - `Vict_Sex`  
+  - `Vict_Descent`
+
+An 80/20 randomized train–test split was used with `Random.seed!(1234)` for reproducibility.
+
+\
+\
+
+==== 2. *Modeling Approach*
+
+We trained three supervised classifiers of increasing complexity:
+
+1. **Logistic Regression** (baseline, interpretable)  
+2. **Decision Tree Classifier** (nonlinear, rule-based)  
+3. **Random Forest Classifier** (ensemble for stronger generalization)
+
+This progression allows us to compare linear vs. nonlinear vs. ensemble methods on the same prediction task.
+
+\
+\
+==== 3. *Logistic Regression Model*
+
+==== 3.1 Model Structure
+
+A logistic regression model was fit using `GLM.jl` with binomial family and logit link. The model estimates:
+
+logit$(P(y = 1 | x)) = beta_0 + beta_1$ hour + beta_2 is_night + ... 
+
+This captures linear contributions of each predictor to the log-odds that a crime is vehicle-related.
+
+#image("image.png")
+#image("image-1.png")
+
+\
+\
+
+==== 3.2 Interpretation and Performance
+
+Key characteristics:
+
+- The model is **highly interpretable**, but limited in capturing nonlinearities and interactions (e.g., how weekend effects change by area).  
+- It achieves relatively **high precision but lower recall**, meaning it is conservative: when it predicts vehicle crime, it is often correct, but it **misses many true vehicle crimes**.  
+- The AUC indicates moderate ranking ability.
+
+Logistic regression thus provides a clear baseline and helps identify which features drive the log-odds, but leaves room for improvement in recall and overall discrimination.
+
+\
+\
+
+==== 4. *Decision Tree Model*
+
+==== 4.1 Motivation
+
+Decision trees:
+
+- Capture nonlinear splittings and interactions,  
+- Handle categorical predictors naturally,  
+- Provide transparent, rule-based representations.
+
+#image("image-2.png")
+#image("image-3.png")
+
+\
+\
+
+==== 4.2 Configuration
+
+We trained a decision tree with:
+
+- `max_depth = 6`  
+- `min_samples_leaf = 50`
+
+These hyperparameters constrain tree growth to reduce overfitting while preserving meaningful structure.
+
+\
+\
+
+==== 4.3 Performance and Feature Importance
+
+Compared to logistic regression, the decision tree:
+
+- Improves **recall** and **AUC**, indicating better capture of nonlinear temporal–spatial patterns,  
+- Assigns highest importance to:
+  1. `hour`  
+  2. `AREA`  
+  3. `Vict_Age`
+
+This highlights that **temporal and spatial context dominate** over demographics in predicting vehicle involvement.
+
+\
+\
+
+=== 5. Random Forest Model
+
+==== 5.1 Motivation
+
+Random Forests reduce the instability of single trees by aggregating many of them, improving:
+
+- Accuracy  
+- Generalization  
+- Robustness to noise and outliers
+
+\
+\
+
+==== 5.2 Configuration and Training
+
+We trained a Random Forest with:
+
+- `n_trees = 60`  
+- `max_depth = 12`  
+- `min_samples_leaf = 30`
+
+#image("image-4.png")
+
+\
+\
+
+
 
 
 

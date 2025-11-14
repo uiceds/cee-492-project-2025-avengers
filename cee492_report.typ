@@ -871,10 +871,7 @@ Key points:
     positive rate and false positive rate, and the dashed line is the
     random-guess baseline. The area under the curve (AUC) is approximately 0.76.
   ],
-) <fig_roc>
-
-\
-\
+) <fig_roc2>
 
 
 

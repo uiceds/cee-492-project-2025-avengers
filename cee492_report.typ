@@ -876,7 +876,7 @@ Key points:
 
 While the Random Forest risk model focuses on where crime is likely, we also investigate a **crime-category-specific** question:
 
-_Given the temporal, spatial, and demographic characteristics recorded at the time of a crime report, can we predict whether the incident is vehicle-related?_
+Given the temporal, spatial, and demographic characteristics recorded at the time of a crime report, we aim to predict **whether the incident is vehicle-related**.
 
 Vehicle-related crimes (e.g., vehicle theft, burglary from vehicle, theft from motor vehicle, carjacking) represent a substantial share of crime in Los Angeles and directly affect urban mobility and safety.
 
@@ -900,7 +900,6 @@ Key steps:
 These steps ensure that the models operate on clean, reliable inputs.
 
 \
-\
 
 ==== 1.2 Temporal and Calendar Features
 
@@ -912,7 +911,6 @@ We engineered time-based predictors:
 
 Night and weekend indicators capture known temporal patterns in vehicle-related crimes.
 
-\
 \
 
 ==== 1.3 Target Variable Construction
@@ -929,7 +927,6 @@ All other records were labeled:
 
 - $y = 0$: non-vehicle crime.
 
-\
 \
 
 ==== 1.4 Final Modeling Dataset
@@ -951,8 +948,6 @@ The final `model_data` DataFrame includes:
 An 80/20 randomized train–test split was used with `Random.seed!(1234)` for reproducibility.
 
 \
-\
-
 ==== 2. *Modeling Approach*
 
 We trained three supervised classifiers of increasing complexity:
@@ -964,20 +959,32 @@ We trained three supervised classifiers of increasing complexity:
 This progression allows us to compare linear vs. nonlinear vs. ensemble methods on the same prediction task.
 
 \
-\
 ==== 3. *Logistic Regression Model*
 
 ==== 3.1 Model Structure
 
+
+#figure(
+  image("image.jpeg"),
+  caption: [
+    Performance summary for the logistic regression vehicle-crime classifier,
+    including overall accuracy and confusion-matrix structure.
+  ],
+) <fig-veh-logit-summary>
+
+#figure(
+  image("image-1.jpeg"),
+  caption: [
+    ROC and/or precision–recall diagnostics for the logistic regression model,
+    showing its ranking ability for vehicle vs. non-vehicle crimes.
+  ],
+) <fig-veh-logit-curves>
+
 A logistic regression model was fit using `GLM.jl` with binomial family and logit link. The model estimates:
 
-logit$(P(y = 1 | x)) = beta_0 + beta_1$ hour + beta_2 is_night + ... 
+logit$(P(y = 1 | x)) = beta_0 + beta_1 text("hour") + beta_2 text("is_night") + dots $
 
 This captures linear contributions of each predictor to the log-odds that a crime is vehicle-related.
-
-#image("image.png")
-#image("image-1.png")
-
 \
 \
 
@@ -992,22 +999,33 @@ Key characteristics:
 Logistic regression thus provides a clear baseline and helps identify which features drive the log-odds, but leaves room for improvement in recall and overall discrimination.
 
 \
-\
 
 ==== 4. *Decision Tree Model*
 
 ==== 4.1 Motivation
+
+
+#figure(
+  image("image-2.jpeg"),
+  caption: [
+    Learned decision tree structure for the vehicle-crime classifier,
+    illustrating hierarchical splits on hour, AREA, and victim attributes.
+  ],
+) <fig-veh-tree-structure>
+
+#figure(
+  image("image-3.jpeg"),
+  caption: [
+    Feature importance for the decision tree model, highlighting hour,
+    AREA, and Vict_Age as the most influential predictors.
+  ],
+) <fig-veh-tree-importance>
 
 Decision trees:
 
 - Capture nonlinear splittings and interactions,  
 - Handle categorical predictors naturally,  
 - Provide transparent, rule-based representations.
-
-#image("image-2.png")
-#image("image-3.png")
-
-\
 \
 
 ==== 4.2 Configuration
@@ -1035,9 +1053,8 @@ Compared to logistic regression, the decision tree:
 This highlights that **temporal and spatial context dominate** over demographics in predicting vehicle involvement.
 
 \
-\
 
-=== 5. Random Forest Model
+==== 5. *Random Forest Model*
 
 ==== 5.1 Motivation
 
@@ -1058,14 +1075,66 @@ We trained a Random Forest with:
 - `max_depth = 12`  
 - `min_samples_leaf = 30`
 
-#image("image-4.png")
+#figure(
+  image("image-4.jpeg"),
+  caption: [
+    Random Forest performance diagnostics for the vehicle-crime model,
+    including test accuracy and ROC behaviour across thresholds.
+  ],
+) <fig-veh-rf-performance>
+\
+==== 5.3 Performance
+
+Across accuracy, recall, and AUC, the Random Forest consistently outperforms the logistic regression and single decision tree:
+
+- **Highest accuracy**  
+- **Highest recall**  
+- **Highest AUC**
+
+The ensemble captures richer interactions among time-of-day, weekend effects, area, and victim characteristics, making it the most effective model for this binary vehicle–non-vehicle classification task.
 
 \
+==== 6. *Model Comparison and Summary*
+
+To summarize the comparative performance qualitatively:
+
+#figure(table(
+  columns: (auto, auto),
+  align: (left, left),
+
+  [*Metric*], [*Best Model*],
+
+  [Accuracy], [Random Forest],
+  [Precision], [Logistic regression / Random Forest],
+  [Recall], [Random Forest],
+  [AUC], [Random Forest],
+))
+
+#figure(
+  image("image-5.jpeg"),
+  caption: [
+    Comparison of accuracy, precision, recall, and AUC across the three
+    vehicle-crime classifiers: logistic regression, decision tree, and Random Forest.
+  ],
+) <fig-veh-model-compare>
+
+Key insights:
+
+- Vehicle crimes show **strong night-time and weekend effects**.  
+- `AREA` (spatial context) is a powerful predictor, reflecting stable vehicle-crime hotspots.  
+- Demographic predictors (`Vict_Age`, `Vict_Sex`, `Vict_Descent`) contribute, but less than temporal–spatial features.  
+- The Random Forest achieves the best balance of accuracy, recall, and discriminative power, making it the most suitable candidate for operational use.
+
 \
 
+== *Connection Back to the Main Problem Statement*
 
+Across all four modeling components, we observe a consistent pattern:
 
+- **Detailed crime type** is hard to predict from demographics and coarse temporal–spatial features alone (decision trees achieve ≈ 16–17% accuracy across 20 classes).  
+- **Coarser spatial outcomes** such as k-means crime hotspots are much more predictable from temporal and categorical context, with softmax neural networks reaching ≈ 88% test accuracy.  
+- **Continuous spatial risk** can be modeled effectively using Random Forests with accessibility features, achieving high recall and an AUC of ≈ 0.76.  
+- For **category-specific prediction** (vehicle vs non-vehicle), Random Forests again perform best, leveraging temporal and spatial structure.
 
-
-
+These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
 

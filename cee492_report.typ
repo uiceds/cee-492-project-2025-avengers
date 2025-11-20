@@ -55,6 +55,32 @@ Together, these predictive and spatial approaches are expected to enhance respon
 #linebreak()
 #linebreak()
 #linebreak()
+#linebreak()
+
+
+
+
+
+
+
+
+
+
+
+
+= Introduction(NEW SECTION)
+*Format*
+
+Motivation
+
+Research question
+
+Short dataset overview (2–3 sentences)
+
+Short explanation of modeling phases
+
+One paragraph connecting EDA → Modeling
+
 
 = Description of Dataset
     The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV @lapd_crime2020. It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
@@ -980,7 +1006,7 @@ This progression allows us to compare linear vs. nonlinear vs. ensemble methods 
   ],
 ) <fig-veh-logit-curves>
 
-A logistic regression model was fit using `GLM.jl` with binomial family and logit link. The model estimates:
+[ logistic regression model was fit using `GLM.jl` with binomial family and logit link. The model estimates:
 
 logit$(P(y = 1 | x)) = beta_0 + beta_1 text("hour") + beta_2 text("is_night") + dots $
 
@@ -1066,8 +1092,7 @@ Random Forests reduce the instability of single trees by aggregating many of the
 
 \
 \
-
-==== 5.2 Configuration and Training
+=== 5.2 Configuration and Training
 
 We trained a Random Forest with:
 
@@ -1137,4 +1162,42 @@ Across all four modeling components, we observe a consistent pattern:
 - For **category-specific prediction** (vehicle vs non-vehicle), Random Forests again perform best, leveraging temporal and spatial structure.
 
 These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
+
+  = Predictive Modeling
+Here We interpret and connect everything:
+\
+\
+Why predicting exact crime type fails (weak demographic signal)?
+\
+\
+Why hotspot prediction works (strong temporal–spatial patterns)?
+\
+\
+Why Random Forest risk maps work (accessibility features are predictive)?
+\
+\
+Vehicle crime model performance summary?
+\
+\
+What is “good enough” for city planning vs. policing vs. actuaries
+
+
+
+  = NEXT STEPS (NEW)
+We can briefly talk on these
+\
+\
+Add weather, events, transit ridership, socioeconomic data (in details)
+\
+\
+We can try GMM, DBSCAN, neural nets (in details)
+\
+\
+Maybe Build interactive visualization platform (In details )
+\
+\
+Improve feature engineering (e.g., street-network metrics), you can add more 
+\
+\
+
 

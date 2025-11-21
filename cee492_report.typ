@@ -68,22 +68,34 @@ Together, these predictive and spatial approaches are expected to enhance respon
 
 
 
-= Introduction(NEW SECTION)
-*Format*
+= Introduction
 
-Motivation
 
-Research question
+Understanding how crime patterns evolve across space and time is essential for urban safety, transportation planning, and civil-engineering decision-making. Los Angeles, with nearly one million reported incidents since 2020, provides one of the richest real-world datasets for studying how public infrastructure, accessibility, and human activity shape the geography of crime. While crime analysis is traditionally handled within criminology and policing, its implications for engineering are direct: unsafe streets restrict pedestrian mobility, influence transit-stop design, and determine where cities must invest in lighting, connectivity, and safety interventions.
 
-Short dataset overview (2–3 sentences)
+This project explores four connected predictive questions that reflect different levels of engineering relevance:
 
-Short explanation of modeling phases
+1. **Can demographic characteristics predict detailed crime types?
+2. **Can temporal patterns—hour, day, and month—predict which spatial hotspot will be active?
+3. **Can accessibility to public services (libraries, food assistance, parks, mental-health centers) predict continuous crime risk across the city?
+4. **Can temporal–spatial–demographic features predict whether an incident is vehicle-related?
+\
 
-One paragraph connecting EDA → Modeling
+The motivation for these questions comes from three strands of prior work. First, criminology research consistently finds that detailed crime types are extremely difficult to predict from demographics alone, due to noise and weak causal links; studies confirm that successful prediction accuracy remains highly dependent on geographical granularity and the inclusion of non-demographic features such as environmental data and Points of Interest @he2021prediction.  Second, the criminology-of-place literature shows crime hotspots remain stable over time and follow strong temporal rhythms, encapsulated by the Law of Crime Concentration, which states that the majority of crime incidents cluster at a small number of places and this concentration level remains constant over time @weisburd2015law
+
+
+Third, environmental criminology emphasizes that accessibility and the built environment strongly shape crime risk, formalized in theories like Crime Pattern Theory which explains that crime occurs at the intersection of motivated offenders and suitable targets, whose convergence is dictated by the predictable structure of the urban environment—specifically, the nodes (activity centers), paths (routes), and edges (boundaries) that are directly relevant to engineering design @brantingham1993nodes. 
+
+However, most previous studies focus on either crime-type prediction or hotspot detection—not both. Many rely on limited feature sets, do not evaluate multiple model types side-by-side, or do not incorporate accessibility features relevant to engineering design. Our work integrates these strands by evaluating four predictive tasks within a single pipeline using a dataset rich in temporal, spatial, demographic, and accessibility detail.
+
+Using the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV @lapd_crime2020 which is maintained and released by the Los Angeles Police Department (LAPD), we examine how different predictive models behave across these questions. 
+
+The dataset is particularly suitable for our analysis because it provides precise geographic coordinates, detailed timestamps, structured victim demographics, LAPD area identifiers, and descriptive crime classifications. These attributes support a tiered modeling pipeline that mirrors the different dimensions of our research question. We begin with decision trees to test whether demographic and basic temporal–spatial features can predict crime characteristics. We then train a softmax-based neural network to predict membership in spatial crime hotspots derived from K-means clustering, followed by a Random Forest model that uses accessibility to public facilities to produce a continuous crime-risk surface across Los Angeles. Finally, we develop a vehicle-crime classifier using logistic regression, decision trees, and Random Forests to determine whether an incident is vehicle-related.
+
 
 
 = Description of Dataset
-    The dataset used for this project is the #strong[#emph[ “Crime Data from 2020 to Present”]] dataset for the City of Los Angeles, which is publicly available on DATA.GOV @lapd_crime2020. It is maintained and released by the Los Angeles Police Department (LAPD) as part of the city’s open-data initiative, based on official crime reports filed by law enforcement officers.
+
 
     The dataset is provided in CSV format and contains over 1 million rows of crime incidents. The full dataset consists of 28 columns, while our project will focus on the following 12 key attributes:
 
@@ -1006,6 +1018,7 @@ This progression allows us to compare linear vs. nonlinear vs. ensemble methods 
   ],
 ) <fig-veh-logit-curves>
 
+[ logistic regression model was fit using `GLM.jl` with binomial family and logit link. The model estimates:
 
 logit$(P(y = 1 | x)) = beta_0 + beta_1 text("hour") + beta_2 text("is_night") + dots $
 

@@ -564,9 +564,9 @@ Here, the goal is to move from **cluster-level predictions** to a **continuous c
 
 \
 
-==== (i) *Data, Notation, and Study Region*
+==== 1. *Data, Notation, and Study Region*
 
-==== (i).1 Crime and Non-Crime Points
+==== 1.1 Crime and Non-Crime Points
 
 Let each location be represented by geographic coordinates:
 $ p_i = (text("lat")_i, text("lon")_i) ∈ bb("R")^2, i = 1, ..., N. $
@@ -585,6 +585,7 @@ The final analysis dataset contains:
 so that the crime proportion is:
 $ frac(1, N) * sum_(i=1)^N y_i = 0.50 text(" (50% crimes, 50% non-crimes).") $
 
+\
 \
 ==== 1.2 Generating Non-Crime Locations
 
@@ -717,8 +718,9 @@ Features with higher absolute correlation are inspected more closely. Additional
 This helps interpret whether crime locations tend to be closer or farther from certain facilities than non-crime points.
 
 \
+\
 
-==== (v). *Machine-Learning Dataset Construction*
+==== 5. *Machine-Learning Dataset Construction*
 
 We construct:
 
@@ -749,16 +751,16 @@ Both splits are almost perfectly balanced.
 
 \
 
-==== (vi). *Random Forest Classifier*
+==== 6. *Random Forest Classifier*
 
-==== (vi).1 Single Decision Tree (Conceptual)
+==== 6.1 Single Decision Tree (Conceptual)
 
 A single decision tree partitions $bb("R")^p$ using axis-aligned splits of the form $x_j <= tau$. At each node, a feature and threshold are chosen to reduce impurity. For class probabilities $(p_0, p_1)$, Gini impurity is:
 $ I_text("Gini") = 1 - p_0^2 - p_1^2. $
 
 \
 
-==== (vi).2 Random Forest Ensemble
+==== 6.2 Random Forest Ensemble
 
 The Random Forest builds an ensemble of $T$ trees ${ h_t(x) }_(t=1)^T$ using:
 
@@ -799,7 +801,7 @@ Six of the 14 features have zero importance, suggesting they do not contribute t
 
 \
 
-==== (vii). *Evaluation Metrics: Accuracy, Precision, Recall, ROC*
+==== 7. *Evaluation Metrics: Accuracy, Precision, Recall, ROC*
 
 On the test set, the confusion matrix yields:
 
@@ -840,7 +842,7 @@ The Area Under the Curve (AUC) is approximated via the trapezoidal rule and is a
 
 \
 
-==== (viii). *Spatial Prediction and Crime Risk Heatmaps*
+==== 8. *Spatial Prediction and Crime Risk Heatmaps*
 
 To evaluate the model at an arbitrary location $(text("lat"), text("lon"))$, the `predict_at_location` function:
 
@@ -897,7 +899,7 @@ Vehicle-related crimes (e.g., vehicle theft, burglary from vehicle, theft from m
 
 \
 
-==== (i). *Data Preparation and Feature Engineering*
+==== 1. *Data Preparation and Feature Engineering*
 
 The Los Angeles crime dataset is large and contains mixed formats, so extensive preprocessing was required.
 
@@ -915,7 +917,7 @@ These steps ensure that the models operate on clean, reliable inputs.
 
 \
 
-==== (i).2 Temporal and Calendar Features
+==== 1.2 Temporal and Calendar Features
 
 We engineered time-based predictors:
 
@@ -927,7 +929,7 @@ Night and weekend indicators capture known temporal patterns in vehicle-related 
 
 \
 
-==== (i).3 Target Variable Construction
+==== 1.3 Target Variable Construction
 
 Vehicle-related crimes were identified via keyword matching in `Crm_Cd_Desc`. Records containing:
 
@@ -943,7 +945,7 @@ All other records were labeled:
 
 \
 
-==== (i).4 Final Modeling Dataset
+==== 1.4 Final Modeling Dataset
 
 The final `model_data` DataFrame includes:
 
@@ -962,7 +964,7 @@ The final `model_data` DataFrame includes:
 An 80/20 randomized train–test split was used with `Random.seed!(1234)` for reproducibility.
 
 \
-==== (ii). *Modeling Approach*
+==== 2. *Modeling Approach*
 
 We trained three supervised classifiers of increasing complexity:
 
@@ -1005,7 +1007,7 @@ This captures linear contributions of each predictor to the log-odds that a crim
 \
 \
 
-==== (iii).2 Interpretation and Performance
+==== 3.2 Interpretation and Performance
 
 Key characteristics:
 
@@ -1053,7 +1055,7 @@ Decision trees:
 - Provide transparent, rule-based representations.
 \
 
-==== (iv).2 Configuration
+==== 4.2 Configuration
 
 We trained a decision tree with:
 
@@ -1063,10 +1065,9 @@ We trained a decision tree with:
 These hyperparameters constrain tree growth to reduce overfitting while preserving meaningful structure.
 
 \
-\
-\
 
-==== (iv).3 Performance and Feature Importance
+
+==== 4.3 Performance and Feature Importance
 
 Compared to logistic regression, the decision tree:
 
@@ -1080,9 +1081,9 @@ This highlights that **temporal and spatial context dominate** over demographics
 
 \
 
-==== (v). *Random Forest Model*
+==== 5. *Random Forest Model*
 
-==== (v).1 Motivation
+==== 5.1 Motivation
 
 Random Forests reduce the instability of single trees by aggregating many of them, improving:
 
@@ -1091,8 +1092,7 @@ Random Forests reduce the instability of single trees by aggregating many of the
 - Robustness to noise and outliers
 
 \
-\
-==== (v).2 Configuration and Training
+==== 5.2 Configuration and Training
 
 We trained a Random Forest with:
 
@@ -1111,7 +1111,7 @@ We trained a Random Forest with:
 **The resulting performance diagnostics are shown in @fig-veh-rf-performance.**
 
 \
-==== (v).3 Performance
+==== 5.3 Performance
 
 Across accuracy, recall, and AUC, the Random Forest consistently outperforms the logistic regression and single decision tree:
 
@@ -1120,7 +1120,8 @@ Across accuracy, recall, and AUC, the Random Forest consistently outperforms the
 - **Highest AUC**
 
 The ensemble captures richer interactions among time-of-day, weekend effects, area, and victim characteristics, making it the most effective model for this binary vehicle–non-vehicle classification task.
-
+\
+\
 ==== 6. *Model Comparison and Summary*
 
 To summarize the comparative performance qualitatively, **@tbl-model-compare lists the best performing model for each metric, while @fig-veh-model-compare provides a visual comparison.**

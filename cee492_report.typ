@@ -856,9 +856,7 @@ To evaluate the model at an arbitrary location $(text("lat"), text("lon"))$, the
 4. Replaces any `Inf` distances with $10^10$.
 5. Applies the forest to obtain a crime probability $hat(p)(text("crime") | q)$.
 
-The `predict_grid` function evaluates these probabilities over a regular latitude–longitude grid, producing a matrix $P_{i j}$.
 
-The resulting map, **visualized in @fig_risk**, identifies **coherent high-risk clusters and lower-risk areas** across Los Angeles, rather than uniform risk.
 
 #figure(
   image("figures/Spatial_figures/crime_risk_map.png"),
@@ -869,7 +867,11 @@ The resulting map, **visualized in @fig_risk**, identifies **coherent high-risk 
   ],
 ) <fig_risk>
 
+The `predict_grid` function evaluates these probabilities over a regular latitude–longitude grid, producing a matrix $P_{i j}$.
 
+The resulting map, **visualized in @fig_risk**, identifies **coherent high-risk clusters and lower-risk areas** across Los Angeles, rather than uniform risk.
+\
+\
 
 ==== 9. *Summary and Interpretation*
 #figure(
@@ -1139,16 +1141,7 @@ Key insights:
 - Demographic predictors (`Vict_Age`, `Vict_Sex`, `Vict_Descent`) contribute, but less than temporal–spatial features.
 - The Random Forest achieves the best balance of accuracy, recall, and discriminative power, making it the most suitable candidate for operational use.
 
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-
+\
 
 
 == *Connection Back to the Main Problem Statement*
@@ -1162,7 +1155,6 @@ Across all four modeling components, we observe a consistent pattern:
 
 These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
 
-#pagebreak()
 
   = DISCUSSION
 Based on the models trained, the research question regarding vehicle crime prediction was only partially answered due to the inherent difficulty of isolating specific criminal intent from general data. While Logistic Regression, Decision Trees, and Random Forests all achieved relatively high accuracy, this was largely an artifact of a dataset dominated by non-vehicle crimes. The models demonstrated extremely low recall and only moderate AUC, indicating that predicting the exact crime type fails when relying on standard inputs. For the decision tree models applied to predicting crime types from demographic and temporal-spatial features, the accuracy is always under 17%, which indicates weak correlations between these features and specific crime categories. They also suggest that the temporal and demographic variables available contain a weak predictive signal for distinguishing vehicle crimes from other offense types. To improve performance, future iterations must address the severe class imbalance and incorporate richer spatial features to see if vehicle-specific patterns can be teased out of the noise.
@@ -1179,9 +1171,7 @@ Finally, the application of a Random Forest classifier to spatial accessibility 
 #linebreak()
 #linebreak()
 #linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
+
 
 
 

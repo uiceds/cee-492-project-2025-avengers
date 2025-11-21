@@ -56,15 +56,10 @@ In this study, raw crime record data will be transformed into actionable hotspot
 #linebreak()
 #linebreak()
 #linebreak()
-
-
-
-
-
-
-
-
-
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
 
 
 
@@ -135,7 +130,7 @@ To operationalize the spatial accessibility and risk analysis, we integrated a c
 
 = Exploratory Data Analysis (EDA)
 == *Crime Type Distribution*
-The @fig-crime-hist ranks the most common crimes reported across Los Angeles between 2020 and the present.
+The @fig-crime-type ranks the most common crimes reported across Los Angeles between 2020 and the present.
 
 Vehicle-related crimes (particularly Vehicle Stolen, Burglary from Vehicle, and Theft from Motor Vehicle) dominate the dataset, together accounting for nearly half of all recorded incidents. These are followed by Battery – Simple Assault and Identity Theft, highlighting both property security and personal safety as key urban vulnerabilities.
 
@@ -167,16 +162,18 @@ These findings, combined with temporal and demographic analyses in later section
   caption: [Top ten generalized crime categories by year (2020–2024).],
 ) <fig-temp-trend>
 
+
 ==== (ii)* Incident Frequency Heatmap*
 
 Incident frequency exhibits a strong diurnal and weekly rhythm, consistent with human activity cycles in an urban environment. As shown in the hourly heatmap **(@fig-hourly-freq)**, the lowest activity occurs during the early morning hours (**03:00–06:00**), followed by a sharp increase after **08:00** that persists throughout the day.
-Evening hours remain active, peaking around typical commuting and social periods, and the highest overall frequencies are observed on **Fridays and weekends**. This pattern aligns with nightlife, leisure, and mobility trends, highlighting the influence of temporal human behavior on incident dynamics.
 
 #figure(
   image("figures/Hourly_incident_frequency.png", width: 100%),
   caption: [Hourly heatmap showing diurnal and weekly variations in incident frequency.],
 ) <fig-hourly-freq>
-
+Evening hours remain active, peaking around typical commuting and social periods, and the highest overall frequencies are observed on **Fridays and weekends**. This pattern aligns with nightlife, leisure, and mobility trends, highlighting the influence of temporal human behavior on incident dynamics.
+\
+\
 ==== (iii) *Reporting Delay Distribution *
 
 The analysis of reporting delay is defined as the difference between the date reported and the date of occurrence (Date Rptd − DATE OCC) — and is **visualized in @fig-delay-dist**. The data reveals a pronounced right-skewed distribution. Most incidents are reported either on the same day or within a few days of occurrence, with a mean delay of **2.96 days** and a median delay of **1 day**.
@@ -188,7 +185,7 @@ The analysis of reporting delay is defined as the difference between the date re
  Approximately **90%** of all incidents are reported within **five days**, indicating generally prompt reporting behavior across most crime categories.
 The long upper tail in the delay distribution likely reflects crimes with delayed discovery or complex administrative workflows, such as fraud, forgery, or identity-theft–related offenses. This temporal asymmetry underscores the importance of considering both immediate and delayed reporting in operational planning and predictive modeling.
 #linebreak()
-
+\
 ==== (iv) *Spatial Distribution and Temporal Stability*
 
 Spatially, incident clusters remain highly consistent across the five-year period, concentrating in **Downtown**, **Hollywood**, **Westlake**, and **South Los Angeles**. These areas exhibit persistent activity regardless of month or year, suggesting enduring socioeconomic and infrastructural factors driving higher incident density.
@@ -357,9 +354,6 @@ Based on the exploratoty analysis from precious sections, we summarized the key 
   caption: [LA distance-to-light summary.],
 ) <tab:la-dist-summary-typed>
 \
-#linebreak()
-#linebreak()
-#linebreak()
 
   = Predictive Modeling
 
@@ -388,7 +382,6 @@ To answer this overarching question, we organize our predictive modeling into fo
 Together, these models move from **fine-grained crime-type prediction** (which proves difficult) toward **region-level hotspot and risk prediction** (which is more successful), and finally to **category-specific prediction for vehicle-related crime**. Each modeling effort informs our understanding of what is and is not predictable from the available features.
 
 \
-#pagebreak()
 
 == *Crime Type Prediction with Decision Tree Classifiers*
 
@@ -659,7 +652,8 @@ To efficiently query distances and neighbors, each $F^(k)$ is indexed with a KD-
 - *Radius search*:
   $ { f ∈ F^(k) : || p - f ||_2 <= r }. $
 
-#pagebreak()
+\
+
 ==== 3. *Spatial Accessibility Features*
 
 For each point $p_i$ and each facility type $k$, two feature families are computed:
@@ -889,6 +883,8 @@ Key points:
 - The model **prioritizes recall** (≈ 97%), which is valuable for applications where missing high-risk locations is more costly than generating false alarms.
 - Accessibility to mental health centers, food assistance sites, county parks, police stations, and libraries carries the strongest signal for crime vs non-crime distinction in this setup.
 - Several features neither improve accuracy nor gain importance, suggesting opportunities for feature selection and additional feature engineering.
+\
+\
 
 
 == *Vehicle Crime Prediction Model*
@@ -1020,7 +1016,22 @@ Key characteristics:
 Logistic regression thus provides a clear baseline and helps identify which features drive the log-odds, but leaves room for improvement in recall and overall discrimination.
 
 \
-
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
 ==== 4. *Decision Tree Model*
 \
 \
@@ -1142,21 +1153,8 @@ Key insights:
 - The Random Forest achieves the best balance of accuracy, recall, and discriminative power, making it the most suitable candidate for operational use.
 
 #linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-
-#linebreak()
-#linebreak()
 
 
-#linebreak()
-#linebreak()
-#linebreak()
-#linebreak()
-
-#linebreak()
-#linebreak()
 
 
 == *Connection Back to the Main Problem Statement*
@@ -1169,7 +1167,6 @@ Across all four modeling components, we observe a consistent pattern:
 - For **category-specific prediction** (vehicle vs non-vehicle), Random Forests again perform best, leveraging temporal and spatial structure.
 
 These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
-#pagebreak()
 
 
   = DISCUSSION

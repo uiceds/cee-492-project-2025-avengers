@@ -1006,7 +1006,6 @@ This progression allows us to compare linear vs. nonlinear vs. ensemble methods 
   ],
 ) <fig-veh-logit-curves>
 
-[ logistic regression model was fit using `GLM.jl` with binomial family and logit link. The model estimates:
 
 logit$(P(y = 1 | x)) = beta_0 + beta_1 text("hour") + beta_2 text("is_night") + dots $
 
@@ -1092,7 +1091,7 @@ Random Forests reduce the instability of single trees by aggregating many of the
 
 \
 \
-=== 5.2 Configuration and Training
+==== 5.2 Configuration and Training
 
 We trained a Random Forest with:
 
@@ -1163,7 +1162,7 @@ Across all four modeling components, we observe a consistent pattern:
 
 These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
 
-  = Predictive Modeling
+  = DISCUSSION
 Here We interpret and connect everything:
 \
 \

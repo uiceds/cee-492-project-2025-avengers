@@ -1193,23 +1193,13 @@ Vehicle crime model performance summary?
 \
 What is “good enough” for city planning vs. policing vs. actuaries
 
+Incoporate *Next Steps* in your answer 
+\
+\
+
+F.Jack
 
 
-  = NEXT STEPS (NEW)
-We can briefly talk on these
-\
-\
-Add weather, events, transit ridership, socioeconomic data (in details)
-\
-\
-We can try GMM, DBSCAN, neural nets (in details)
-\
-\
-Maybe Build interactive visualization platform (In details )
-\
-\
-Improve feature engineering (e.g., street-network metrics), you can add more 
-\
-\
+Based on the models trained, I was only partially able to answer my research question. Logistic Regression, Decision Trees, and Random Forests all achieved relatively high accuracy because the dataset is dominated by non-vehicle crimes. However, all models demonstrated extremely low recall and only moderate AUC, meaning they struggled to correctly identify actual vehicle-related incidents. This suggests that the temporal and demographic variables available in the dataset contain limited predictive signal for distinguishing vehicle crimes from other crime types. If I were to continue this work, I would address the severe class imbalance, incorporate richer spatial and contextual features, and experiment with stronger models such as gradient boosting and spatial machine learning. These steps would help determine whether vehicle-crime prediction can be improved with enhanced data and more advanced methods.
 
 

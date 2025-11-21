@@ -130,12 +130,12 @@ These findings, combined with temporal and demographic analyses in later section
 
 
   #figure(
-    image("figures/top_hist.JPG"),
+    image("image.png"),
     caption: [Top 10 Crime Types in Los Angeles (2020–2024).],
   ) <fig-crime-hist>
   
    #figure(
-    image("figures/topcrime.JPG"),
+    image("image-1.png"),
     caption: [Top 10 Crime Types in Los Angeles vs. Areas],
   ) <fig-crime-type>
   

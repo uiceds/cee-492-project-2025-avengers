@@ -124,7 +124,7 @@ The #ref(<fig-crime-hist>) ranks the most common crimes reported across Los Ange
 
 Vehicle-related crimes (particularly Vehicle Stolen, Burglary from Vehicle, and Theft from Motor Vehicle) dominate the dataset, together accounting for nearly half of all recorded incidents. These are followed by Battery – Simple Assault and Identity Theft, highlighting both property security and personal safety as key urban vulnerabilities. 
 
-To identify which areas experience the highest concentration of specific crimes, we generated a heatmap showing the top ten most frequent crime types across all police districts. Each cell represents the number of incidents for a given crime type within an area.
+To identify which areas experience the highest concentration of specific crimes, we generated a heatmap (@fig-crime-type) showing the top ten most frequent crime types across all police districts. Each cell represents the number of incidents for a given crime type within an area.
 
 The heatmap reveals that crime intensity is not evenly distributed across the city. Property-related crimes such as Theft, Burglary from Vehicle, and Motor Vehicle Theft dominate the overall dataset but are heavily concentrated in a few areas—particularly Central, 77th Street, and Newton divisions. Conversely, violent offenses like Assault with a Deadly Weapon and Robbery cluster around Southeast and Southwest areas, indicating localized vulnerability.
 
@@ -146,7 +146,7 @@ These findings, combined with temporal and demographic analyses in later section
 
 == *Temporal Analysis*
 
-==== (i) Temporal Patterns of Different Crime Categories
+==== (i) Temporal Patterns of Different Crime Categories 
 
 The temporal profile of generalized crime categories reveals that **motor vehicle and bicycle theft** consistently rank as the most frequent crime types, averaging **30,000–32,000** cases per year. These are followed by **simple assault**, **personal or retail theft**, and **vandalism**, which collectively account for a substantial share of the total crime volume.  
 **Aggravated assault** and **theft from vehicle** form the next major tier, reflecting a stable yet diversified pattern of property and personal crimes. While total incident counts remained relatively stable from **2020–2023**, a modest uptick was observed in 2022–2023, coinciding with post-pandemic normalization of urban activity. A slight decline in 2024 may partially reflect data latency or reporting lag rather than an actual reduction in crime rates.
@@ -203,7 +203,7 @@ We work with three spatial datasets: the set of crime points $C = \{C_i\}_{i=1}^
   caption: [Top 500 crime count in each designated LAPD district.],
 )<fig:la-top500>
 
-Figure @fig:la-top500 ranks Los Angeles (city) LAPD reporting districts by
+@fig:la-top500 ranks Los Angeles (city) LAPD reporting districts by
 total reported incidents (2020–present). The x-axis lists districts in
 descending order (leftmost = highest), and the y-axis shows incident counts.
 The distribution is heavy-tailed: a few districts concentrate many incidents,
@@ -214,7 +214,7 @@ followed by a long tail of moderate activity.
   caption: [LA top-500 crime counts (ranked).],
 )<fig:la-top500-ranked>
 
-Figure @fig:la-top500-ranked shows the top 500 LAPD reporting districts
+@fig:la-top500-ranked shows the top 500 LAPD reporting districts
 sorted by total incidents, with the x-axis as rank (left = highest).
 The y-axis is the incident count. The curve is heavy-tailed: a few
 districts account for many incidents, followed by a long taper of
@@ -225,7 +225,7 @@ moderate counts across the remaining ranked districts.
   caption: [LA street lights within the city boundary (n=221,897).]
 )<fig:lights>
 
-This map @fig:lights plots the reported street-light point locations for Los Angeles in geographic
+The map shown in @fig:lights plots the reported street-light point locations for Los Angeles in geographic
 coordinates (longitude/latitude). The high point density makes many neighborhoods appear
 as solid filled regions, revealing broad coverage across the city and sparser coverage
 near edges and open spaces. Axes are in degrees to match the source data.
@@ -307,6 +307,7 @@ To see the correlation between age and descent, we created a heatmap shown in #r
   ) <fig-age-descent>
 
   == *Summary Statistics of Dataset*
+Based on the exploratoty analysis from precious sections, we summarized the key statistics in #ref(<tab:dataset-summary-typed>), which gives a general idea of crime information on the scale, temporal and spatial span, and demographic composition. Additionally, #ref(<tab:la-dist-summary-typed>) provides a summary of the distance from crime spots to lights, which is useful for understanding the spatial relationship between crime locations and street lighting infrastructure. 
 
 #figure(
   table(

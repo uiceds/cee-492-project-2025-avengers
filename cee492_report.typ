@@ -114,6 +114,9 @@ The dataset is particularly suitable for our analysis because it provides precis
 
     This dataset provides both spatial (latitude/longitude, area, district) and socio-demographic (victim age, sex, descent) attributes, along with temporal information (date and time of crime occurrence), enabling spatial, temporal, and predictive risk modeling for transportation safety interventions.
 
+To operationalize the spatial accessibility and risk analysis, we integrated a comprehensive array of datasets to contextualize the primary incident reports provided by the LAPD @lapd_crime2020. Beyond raw crime statistics, we constructed a multi-layered environmental profile by incorporating physical infrastructure and boundary data, such as streetlights @la_geohub_streetlights and school districts @la_county_school_district_boundaries, alongside critical enforcement locations like police stations @lapd_police_stations. Recognizing the predictive importance of social infrastructure—which our models later identified as key proxies for risk—we further augmented the dataset with coordinates for mental health centers @la_county_mental_health_centers, food assistance providers @la_county_food_assistance, and public libraries @la_county_public_libraries_2023, while also accounting for open spaces through both city and county park boundaries @la_city_parks_boundaries @la_county_parks_open_space.
+
+
 
 = Exploratory Data Analysis (EDA) 
  == *Crime Type Distribution*
@@ -1176,30 +1179,10 @@ Across all four modeling components, we observe a consistent pattern:
 These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
 
   = DISCUSSION
-Here We interpret and connect everything:
-\
-\
-Why predicting exact crime type fails (weak demographic signal)?
-\
-\
-Why hotspot prediction works (strong temporal–spatial patterns)?
-\
-\
-Why Random Forest risk maps work (accessibility features are predictive)?
-\
-\
-Vehicle crime model performance summary?
-\
-\
-What is “good enough” for city planning vs. policing vs. actuaries
+Based on the models trained, the research question regarding vehicle crime prediction was only partially answered due to the inherent difficulty of isolating specific criminal intent from general data. While Logistic Regression, Decision Trees, and Random Forests all achieved relatively high accuracy, this was largely an artifact of a dataset dominated by non-vehicle crimes. The models demonstrated extremely low recall and only moderate AUC, indicating that predicting the exact crime type fails when relying on standard inputs. This suggests that the temporal and demographic variables available contain a weak predictive signal for distinguishing vehicle crimes from other offense types. To improve performance, future iterations must address the severe class imbalance and incorporate richer spatial features to see if vehicle-specific patterns can be teased out of the noise.
 
-Incoporate *Next Steps* in your answer 
-\
-\
+In sharp contrast, the hotspot prediction model proved highly effective because it taps into the strong temporal–spatial patterns that govern urban life. By leveraging variables like hour, day, and month combined with broad crime context, the model successfully anticipated active spatial hotspots in Los Angeles, achieving a test accuracy of 88% against a 12.5% baseline. This success indicates that while specific crime types are hard to predict, the where and when of general criminal activity is highly regular. For operational policing, this level of accuracy is "good enough" to inform patrol allocation and resource deployment, even if the model currently relies on simple K-means clustering that may oversimplify the city's geometry.
 
-F.Jack
-
-
-Based on the models trained, I was only partially able to answer my research question. Logistic Regression, Decision Trees, and Random Forests all achieved relatively high accuracy because the dataset is dominated by non-vehicle crimes. However, all models demonstrated extremely low recall and only moderate AUC, meaning they struggled to correctly identify actual vehicle-related incidents. This suggests that the temporal and demographic variables available in the dataset contain limited predictive signal for distinguishing vehicle crimes from other crime types. If I were to continue this work, I would address the severe class imbalance, incorporate richer spatial and contextual features, and experiment with stronger models such as gradient boosting and spatial machine learning. These steps would help determine whether vehicle-crime prediction can be improved with enhanced data and more advanced methods.
+Finally, the application of a Random Forest classifier to spatial accessibility features demonstrates that environmental context—specifically accessibility features—is highly predictive of crime risk. The model effectively discriminates between crime and non-crime locations (AUC ~0.76) by identifying proximity to social infrastructure, such as mental health centers and food assistance providers, as key risk proxies. However, the model prioritizes sensitivity (97.13% recall) over precision. This creates a distinct split in utility: while the high false-positive rate makes the model unsuitable for actuaries who require precise risk pricing, the conservative "wide-net" approach is highly valuable for city planning and policing. For these stakeholders, a model that over-flags potential risks is preferable to one that overlooks actual hotspots, making this configuration an effective tool for proactive safety planning.
 
 

@@ -884,11 +884,11 @@ The `predict_grid` function evaluates these probabilities over a regular latitud
 The resulting map identifies **coherent high-risk clusters and lower-risk areas** across Los Angeles, rather than uniform risk.
 
 #figure(
-  image("figures/Spatial_figures/crime_riskco.png"),
+  image("figures/Spatial_figures/crime_risk_map.png"),
   caption: [
     Crime risk map over Los Angeles generated from Random Forest predictions.
     Colours show the estimated crime probability on a longitude–latitude grid
-    (green = higher risk, red = lower risk).
+    (blue = lower risk, yellow = higher risk).
   ],
 ) <fig_risk>
 

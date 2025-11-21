@@ -146,7 +146,7 @@ These findings, combined with temporal and demographic analyses in later section
 
 == *Temporal Analysis*
 
-==== (i) Temporal Patterns of Different Crime Categories 
+==== (i)* Temporal Patterns of Different Crime Categories *
 
 The temporal profile of generalized crime categories reveals that **motor vehicle and bicycle theft** consistently rank as the most frequent crime types, averaging **30,000–32,000** cases per year. These are followed by **simple assault**, **personal or retail theft**, and **vandalism**, which collectively account for a substantial share of the total crime volume.  
 **Aggravated assault** and **theft from vehicle** form the next major tier, reflecting a stable yet diversified pattern of property and personal crimes. While total incident counts remained relatively stable from **2020–2023**, a modest uptick was observed in 2022–2023, coinciding with post-pandemic normalization of urban activity. A slight decline in 2024 may partially reflect data latency or reporting lag rather than an actual reduction in crime rates.
@@ -156,7 +156,7 @@ The temporal profile of generalized crime categories reveals that **motor vehicl
   caption: [Top ten generalized crime categories by year (2020–2024).],
 )
 
-==== (ii) Incident Frequency Heatmap
+==== (ii)* Incident Frequency Heatmap*
 
 Incident frequency exhibits a strong diurnal and weekly rhythm, consistent with human activity cycles in an urban environment. As shown in the hourly heatmap, the lowest activity occurs during the early morning hours (**03:00–06:00**), followed by a sharp increase after **08:00** that persists throughout the day.  
 Evening hours remain active, peaking around typical commuting and social periods, and the highest overall frequencies are observed on **Fridays and weekends**. This pattern aligns with nightlife, leisure, and mobility trends, highlighting the influence of temporal human behavior on incident dynamics.
@@ -166,7 +166,7 @@ Evening hours remain active, peaking around typical commuting and social periods
   caption: [Hourly heatmap showing diurnal and weekly variations in incident frequency.],
 )
 
-==== (iii) Reporting Delay Distribution 
+==== (iii) *Reporting Delay Distribution *
 
 The analysis of reporting delay is defined as the difference between the date reported and the date of occurrence (Date Rptd − DATE OCC) — reveals a pronounced right-skewed distribution. Most incidents are reported either on the same day or within a few days of occurrence, with a mean delay of **2.96 days** and a median delay of **1 day**. Approximately **90%** of all incidents are reported within **five days**, indicating generally prompt reporting behavior across most crime categories.  
 The long upper tail in the delay distribution likely reflects crimes with delayed discovery or complex administrative workflows, such as fraud, forgery, or identity-theft–related offenses. This temporal asymmetry underscores the importance of considering both immediate and delayed reporting in operational planning and predictive modeling.
@@ -178,7 +178,7 @@ The long upper tail in the delay distribution likely reflects crimes with delaye
 
 #linebreak()
 
-==== (iv) Spatial Distribution and Temporal Stability
+==== (iv) *Spatial Distribution and Temporal Stability*
 
 Spatially, incident clusters remain highly consistent across the five-year period, concentrating in **Downtown**, **Hollywood**, **Westlake**, and **South Los Angeles**. These areas exhibit persistent activity regardless of month or year, suggesting enduring socioeconomic and infrastructural factors driving higher incident density.  
 The six representative panels display the months of peak activity for each year between 2020 and 2024. The scatter of points lies almost entirely within the official **Los Angeles city boundary**, confirming the spatial integrity and proper geocoding of the dataset. Such spatial persistence provides a reliable foundation for hotspot-based predictive modeling and targeted resource deployment.
@@ -376,9 +376,7 @@ Based on the exploratoty analysis from precious sections, we summarized the key 
 
 == *Problem Statement and Modeling Strategy*
 
-The Los Angeles Police Department (LAPD) "Crime Data from 2020 to Present" dataset provides rich temporal, spatial, demographic, and contextual information about crime incidents. Our overarching goal in this deliverable is to use machine learning to understand and predict crime patterns that are relevant for urban safety, resource allocation, and transportation systems.
-
-Our **main predictive research question** is:\
+Recall that our **main predictive research question** is:\
 \
 
 _*Can we use structured temporal, spatial, demographic, and accessibility features to reliably predict (i) what kind of crime occurs, (ii) where it is most likely to occur, and (iii) whether it is vehicle-related in Los Angeles?*_
@@ -585,9 +583,9 @@ Here, the goal is to move from **cluster-level predictions** to a **continuous c
 \
 \
 
-==== 1. *Data, Notation, and Study Region*
+==== (i) *Data, Notation, and Study Region*
 
-==== 1.1 Crime and Non-Crime Points
+==== (i).1 Crime and Non-Crime Points
 
 Let each location be represented by geographic coordinates:
 $ p_i = (text("lat")_i, text("lon")_i) ∈ bb("R")^2, i = 1, ..., N. $
@@ -609,7 +607,7 @@ $ frac(1, N) * sum_(i=1)^N y_i = 0.50 text(" (50% crimes, 50% non-crimes).") $
 \
 \
 
-==== 1.2 Generating Non-Crime Locations
+==== (i).2 Generating Non-Crime Locations
 
 The original crime dataset provides only locations where crime occurred. To train a binary classifier, we need contrasting “non-crime” points. The notebook generates these using a mixture of two strategies:
 
@@ -635,7 +633,7 @@ $ text("lat")_text("min") <= text("lat") <= text("lat")_text("max"),
 \
 \
 
-==== 1.3 Geographic Coverage
+==== (i).3 Geographic Coverage
 
 The combined dataset spans:
 
@@ -654,7 +652,7 @@ where $bar(text("lat"))$ is the mean latitude. This is a conceptual bounding box
 \
 \
 
-==== 2. *External Spatial Datasets and KD-Trees*
+==== (ii). *External Spatial Datasets and KD-Trees*
 
 The notebook loads several facility layers, each represented as a set of points:
 
@@ -679,7 +677,7 @@ To efficiently query distances and neighbors, each $F^(k)$ is indexed with a KD-
 \
 \
 
-==== 3. *Spatial Accessibility Features*
+==== (iii). *Spatial Accessibility Features*
 
 For each point $p_i$ and each facility type $k$, two feature families are computed:
 
@@ -720,7 +718,8 @@ $
 
 \
 \
-==== 4. *Correlation Analysis and Descriptive Statistics*
+
+==== (iv). *Correlation Analysis and Descriptive Statistics*
 
 Before modeling, we compute Pearson correlations between each spatial feature and the crime label.
 
@@ -744,7 +743,7 @@ This helps interpret whether crime locations tend to be closer or farther from c
 \
 \
 
-==== 5. *Machine-Learning Dataset Construction*
+==== (v). *Machine-Learning Dataset Construction*
 
 We construct:
 
@@ -776,9 +775,9 @@ Both splits are almost perfectly balanced.
 \
 \
 
-==== 6. *Random Forest Classifier*
+==== (vi). *Random Forest Classifier*
 
-==== 6.1 Single Decision Tree (Conceptual)
+==== (vi).1 Single Decision Tree (Conceptual)
 
 A single decision tree partitions $bb("R")^p$ using axis-aligned splits of the form $x_j <= tau$. At each node, a feature and threshold are chosen to reduce impurity. For class probabilities $(p_0, p_1)$, Gini impurity is:
 $ I_text("Gini") = 1 - p_0^2 - p_1^2. $
@@ -786,7 +785,7 @@ $ I_text("Gini") = 1 - p_0^2 - p_1^2. $
 \
 \
 
-==== 6.2 Random Forest Ensemble
+==== (vi).2 Random Forest Ensemble
 
 The Random Forest builds an ensemble of $T$ trees ${ h_t(x) }_(t=1)^T$ using:
 
@@ -811,7 +810,7 @@ $ hat(p)(x) = frac(1, T) sum_(t=1)^T bold(1)(h_t(x) = 1). $
 \
 \
 
-==== 6.3 Feature Importance
+==== (vi).3 Feature Importance
 
 `DecisionTree.impurity_importance(model)` returns normalized impurity-based feature importance scores $\{I_j\}$, where:
 $ sum_(j=1)^p I_j = 1. $
@@ -829,7 +828,7 @@ Six of the 14 features have zero importance, suggesting they do not contribute t
 \
 \
 
-==== 7. *Evaluation Metrics: Accuracy, Precision, Recall, ROC*
+==== (vii). *Evaluation Metrics: Accuracy, Precision, Recall, ROC*
 
 On the test set, the confusion matrix yields:
 
@@ -860,7 +859,7 @@ Thus, the model achieves **very high recall** (it identifies most crime location
 \
 \
 
-==== 7.1 ROC Curve and AUC
+==== (vii).1 ROC Curve and AUC
 
 The ROC curve is built by varying a decision threshold $theta$ on $hat(p)(x)$, and computing:
 
@@ -872,7 +871,7 @@ The Area Under the Curve (AUC) is approximated via the trapezoidal rule and is a
 \
 \
 
-==== 8. *Spatial Prediction and Crime Risk Heatmaps*
+==== (viii). *Spatial Prediction and Crime Risk Heatmaps*
 
 To evaluate the model at an arbitrary location $(text("lat"), text("lon"))$, the `predict_at_location` function:
 
@@ -898,7 +897,7 @@ The resulting map identifies **coherent high-risk clusters and lower-risk areas*
 
 \
 
-==== 9. *Summary and Interpretation*
+==== (ix). *Summary and Interpretation*
 #figure(
   image("figures/Spatial_figures/flase_positive.png"),
   caption: [
@@ -925,11 +924,11 @@ Vehicle-related crimes (e.g., vehicle theft, burglary from vehicle, theft from m
 \
 \
 
-==== 1. *Data Preparation and Feature Engineering*
+==== (i). *Data Preparation and Feature Engineering*
 
 The Los Angeles crime dataset is large and contains mixed formats, so extensive preprocessing was required.
 
-==== 1.1 Cleaning and Standardizing Raw Fields
+==== (i).1 Cleaning and Standardizing Raw Fields
 
 Key steps:
 
@@ -943,7 +942,7 @@ These steps ensure that the models operate on clean, reliable inputs.
 
 \
 
-==== 1.2 Temporal and Calendar Features
+==== (i).2 Temporal and Calendar Features
 
 We engineered time-based predictors:
 
@@ -955,7 +954,7 @@ Night and weekend indicators capture known temporal patterns in vehicle-related 
 
 \
 
-==== 1.3 Target Variable Construction
+==== (i).3 Target Variable Construction
 
 Vehicle-related crimes were identified via keyword matching in `Crm_Cd_Desc`. Records containing:
 
@@ -971,7 +970,7 @@ All other records were labeled:
 
 \
 
-==== 1.4 Final Modeling Dataset
+==== (i).4 Final Modeling Dataset
 
 The final `model_data` DataFrame includes:
 
@@ -990,7 +989,7 @@ The final `model_data` DataFrame includes:
 An 80/20 randomized train–test split was used with `Random.seed!(1234)` for reproducibility.
 
 \
-==== 2. *Modeling Approach*
+==== (ii). *Modeling Approach*
 
 We trained three supervised classifiers of increasing complexity:
 
@@ -1001,9 +1000,9 @@ We trained three supervised classifiers of increasing complexity:
 This progression allows us to compare linear vs. nonlinear vs. ensemble methods on the same prediction task.
 
 \
-==== 3. *Logistic Regression Model*
+==== (iii). *Logistic Regression Model*
 
-==== 3.1 Model Structure
+==== (iii).1 Model Structure
 
 
 #figure(
@@ -1030,7 +1029,7 @@ This captures linear contributions of each predictor to the log-odds that a crim
 \
 \
 
-==== 3.2 Interpretation and Performance
+==== (iii).2 Interpretation and Performance
 
 Key characteristics:
 
@@ -1042,9 +1041,9 @@ Logistic regression thus provides a clear baseline and helps identify which feat
 
 \
 
-==== 4. *Decision Tree Model*
+==== (iv). *Decision Tree Model*
 
-==== 4.1 Motivation
+==== (iv).1 Motivation
 
 
 #figure(
@@ -1070,7 +1069,7 @@ Decision trees:
 - Provide transparent, rule-based representations.
 \
 
-==== 4.2 Configuration
+==== (iv).2 Configuration
 
 We trained a decision tree with:
 
@@ -1082,7 +1081,7 @@ These hyperparameters constrain tree growth to reduce overfitting while preservi
 \
 \
 
-==== 4.3 Performance and Feature Importance
+==== (iv).3 Performance and Feature Importance
 
 Compared to logistic regression, the decision tree:
 
@@ -1096,9 +1095,9 @@ This highlights that **temporal and spatial context dominate** over demographics
 
 \
 
-==== 5. *Random Forest Model*
+==== (v). *Random Forest Model*
 
-==== 5.1 Motivation
+==== (v).1 Motivation
 
 Random Forests reduce the instability of single trees by aggregating many of them, improving:
 
@@ -1108,7 +1107,7 @@ Random Forests reduce the instability of single trees by aggregating many of the
 
 \
 \
-==== 5.2 Configuration and Training
+==== (v).2 Configuration and Training
 
 We trained a Random Forest with:
 
@@ -1124,7 +1123,7 @@ We trained a Random Forest with:
   ],
 ) <fig-veh-rf-performance>
 \
-==== 5.3 Performance
+==== (v).3 Performance
 
 Across accuracy, recall, and AUC, the Random Forest consistently outperforms the logistic regression and single decision tree:
 
@@ -1135,7 +1134,7 @@ Across accuracy, recall, and AUC, the Random Forest consistently outperforms the
 The ensemble captures richer interactions among time-of-day, weekend effects, area, and victim characteristics, making it the most effective model for this binary vehicle–non-vehicle classification task.
 
 \
-==== 6. *Model Comparison and Summary*
+==== (vi). *Model Comparison and Summary*
 
 To summarize the comparative performance qualitatively:
 
@@ -1182,7 +1181,8 @@ These findings jointly answer our overarching question: **while granular crime t
   = DISCUSSION
 Based on the models trained, the research question regarding vehicle crime prediction was only partially answered due to the inherent difficulty of isolating specific criminal intent from general data. While Logistic Regression, Decision Trees, and Random Forests all achieved relatively high accuracy, this was largely an artifact of a dataset dominated by non-vehicle crimes. The models demonstrated extremely low recall and only moderate AUC, indicating that predicting the exact crime type fails when relying on standard inputs. This suggests that the temporal and demographic variables available contain a weak predictive signal for distinguishing vehicle crimes from other offense types. To improve performance, future iterations must address the severe class imbalance and incorporate richer spatial features to see if vehicle-specific patterns can be teased out of the noise.
 
-In sharp contrast, the hotspot prediction model proved highly effective because it taps into the strong temporal–spatial patterns that govern urban life. By leveraging variables like hour, day, and month combined with broad crime context, the model successfully anticipated active spatial hotspots in Los Angeles, achieving a test accuracy of 88% against a 12.5% baseline. This success indicates that while specific crime types are hard to predict, the where and when of general criminal activity is highly regular. For operational policing, this level of accuracy is "good enough" to inform patrol allocation and resource deployment, even if the model currently relies on simple K-means clustering that may oversimplify the city's geometry.
+
+In sharp contrast, the hotspot prediction model proved highly effective because it taps into the strong temporal–spatial patterns that govern urban life. By leveraging variables like hour, day, and month combined with broad crime context, the model successfully anticipated active spatial hotspots in Los Angeles, achieving a test accuracy of 88% against a 12.5% baseline. This successfully indicates that while specific crime types are hard to predict, the where and when of general criminal activity is highly regular. For operational policing, this level of accuracy is "good enough" to inform patrol allocation and resource deployment, even if the model currently relies on simple K-means clustering that may oversimplify the city's geometry.
 
 Finally, the application of a Random Forest classifier to spatial accessibility features demonstrates that environmental context—specifically accessibility features—is highly predictive of crime risk. The model effectively discriminates between crime and non-crime locations (AUC ~0.76) by identifying proximity to social infrastructure, such as mental health centers and food assistance providers, as key risk proxies. However, the model prioritizes sensitivity (97.13% recall) over precision. This creates a distinct split in utility: while the high false-positive rate makes the model unsuitable for actuaries who require precise risk pricing, the conservative "wide-net" approach is highly valuable for city planning and policing. For these stakeholders, a model that over-flags potential risks is preferable to one that overlooks actual hotspots, making this configuration an effective tool for proactive safety planning.
 

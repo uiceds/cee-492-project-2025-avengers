@@ -130,11 +130,15 @@ To operationalize the spatial accessibility and risk analysis, we integrated a c
 
 = Exploratory Data Analysis (EDA)
 == *Crime Type Distribution*
-The @fig-crime-type ranks the most common crimes reported across Los Angeles between 2020 and the present.
+The @fig-crime-hist ranks the most common crimes reported across Los Angeles between 2020 and the present.
 
 Vehicle-related crimes (particularly Vehicle Stolen, Burglary from Vehicle, and Theft from Motor Vehicle) dominate the dataset, together accounting for nearly half of all recorded incidents. These are followed by Battery – Simple Assault and Identity Theft, highlighting both property security and personal safety as key urban vulnerabilities.
 
 To identify which areas experience the highest concentration of specific crimes, we generated a heatmap (@fig-crime-type) showing the top ten most frequent crime types across all police districts. Each cell represents the number of incidents for a given crime type within an area.
+#figure(
+  image("image.png"),
+  caption: [Top 10 Crime Types in Los Angeles (2020–2024).],
+) <fig-crime-hist>
 
 The heatmap reveals that crime intensity is not evenly distributed across the city. Property-related crimes such as Theft, Burglary from Vehicle, and Motor Vehicle Theft dominate the overall dataset but are heavily concentrated in a few areas—particularly Central, 77th Street, and Newton divisions. Conversely, violent offenses like Assault with a Deadly Weapon and Robbery cluster around Southeast and Southwest areas, indicating localized vulnerability.
 
@@ -885,9 +889,6 @@ Key points:
 - The model **prioritizes recall** (≈ 97%), which is valuable for applications where missing high-risk locations is more costly than generating false alarms.
 - Accessibility to mental health centers, food assistance sites, county parks, police stations, and libraries carries the strongest signal for crime vs non-crime distinction in this setup.
 - Several features neither improve accuracy nor gain importance, suggesting opportunities for feature selection and additional feature engineering.
-\
-\
-
 
 == *Vehicle Crime Prediction Model*
 
@@ -1019,21 +1020,6 @@ Logistic regression thus provides a clear baseline and helps identify which feat
 
 \
 \
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
 ==== 4. *Decision Tree Model*
 \
 \
@@ -1154,7 +1140,14 @@ Key insights:
 - The Random Forest achieves the best balance of accuracy, recall, and discriminative power, making it the most suitable candidate for operational use.
 
 #linebreak()
-
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
+#linebreak()
 
 
 
@@ -1169,6 +1162,7 @@ Across all four modeling components, we observe a consistent pattern:
 
 These findings jointly answer our overarching question: **while granular crime type is difficult to predict, time-of-day, location, and accessibility features provide strong predictive power for where crime is likely to occur and whether it is vehicle-related**, offering actionable insights for civil and environmental engineering applications in urban safety and resource allocation.
 
+#pagebreak()
 
   = DISCUSSION
 Based on the models trained, the research question regarding vehicle crime prediction was only partially answered due to the inherent difficulty of isolating specific criminal intent from general data. While Logistic Regression, Decision Trees, and Random Forests all achieved relatively high accuracy, this was largely an artifact of a dataset dominated by non-vehicle crimes. The models demonstrated extremely low recall and only moderate AUC, indicating that predicting the exact crime type fails when relying on standard inputs. For the decision tree models applied to predicting crime types from demographic and temporal-spatial features, the accuracy is always under 17%, which indicates weak correlations between these features and specific crime categories. They also suggest that the temporal and demographic variables available contain a weak predictive signal for distinguishing vehicle crimes from other offense types. To improve performance, future iterations must address the severe class imbalance and incorporate richer spatial features to see if vehicle-specific patterns can be teased out of the noise.
